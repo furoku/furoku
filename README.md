@@ -27,7 +27,7 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 
 ### 🏆 Kaggle
 - 🎥 **[Visu](https://www.kaggle.com/competitions/gemini-3/writeups/visu-the-ai-visual-interview-assistant)** - AIビジュアル面接アシスタント
-- ✨ **[BananaImagine](https://www.kaggle.com/competitions/gemini-3/writeups/bananaimagine)** - Kawaii AI studio for text erasure, magic editing & style remixing
+- ✨ **[BananaImagine](https://aistudio.google.com/apps/drive/1370Vr3wjkDLqbS25U8Tlgy_--oKUOX1n)** - Kawaii AI studio for text erasure, magic editing & style remixing
 
 ### 🧪 AI Studio Apps
 - 📸 **[Polaroid Board](https://aistudio.google.com/apps/drive/16Hy-uyPF7iKAs3txgntDqMI0zTLD8gfH)** - Google Maps × nano banana風ポラロイド写真ボード
