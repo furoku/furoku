@@ -1,16 +1,16 @@
-## Hi there 👋
+# Hi there 👋
 
-<!--
-**furoku/furoku** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+泣いたり笑ったりそこにいる。ワークショップデザイナー。
 
-Here are some ideas to get you started:
+## 🍌 Projects
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+### [banana-infograph](https://github.com/furoku/banana-infograph)
+
+Xの投稿テキストから正方形インフォグラフィックを生成して、自動で画像を添付するChrome拡張機能
+
+![Stars](https://img.shields.io/github/stars/furoku/banana-infograph?style=flat-square)
+![Forks](https://img.shields.io/github/forks/furoku/banana-infograph?style=flat-square)
+
+---
+
+📍 Shibuya, Tokyo / [@furoku](https://x.com/furoku)
