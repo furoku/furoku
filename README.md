@@ -15,16 +15,31 @@
 ## 🍌 Chrome Extensions
 
 ### [banana-infograph](https://github.com/furoku/banana-infograph)
-Xの投稿テキストから正方形インフォグラフィックを生成して、自動で画像を添付するChrome拡張機能
+X（旧Twitter）の投稿テキストからインフォグラフィック画像を自動生成するChrome拡張機能
 
 ![Stars](https://img.shields.io/github/stars/furoku/banana-infograph?style=flat-square)
 ![Forks](https://img.shields.io/github/forks/furoku/banana-infograph?style=flat-square)
 
+- ✨ ワンクリックでインフォグラフィック生成
+- 📸 最大4枚を一括生成＆自動添付
+- 🌍 多言語対応（英語/日本語/韓国語/中国語）
+- 🎨 カスタムプロンプト＆アスペクト比選択
+
 ### [BananaNL](https://chromewebstore.google.com/detail/banananl/mjennffndagebhgcbeblffhgooohling)
-NotebookLM Design Engine - NotebookLMでデザイン生成
+NotebookLMのデザインスタイルを効率的に管理・適用するツール
+
+- 🎨 プロ級デザインテンプレート
+- 👀 サイドパネルでプレビュー
+- 💾 スタイルの保存＆ワンクリック呼び出し
+- 🌍 多言語対応（英語/日本語/韓国語/中国語）
+- 🔥 [Orynthランキング参加中！](https://www.orynth.dev/projects/banananl-notebooklm-design-engine)
 
 ### [BananaGM](https://chromewebstore.google.com/detail/bananagm/ipjhfbcgjmbiledamkaghljnneabaock)
-Google Maps拡張機能
+プロンプトサイト→Geminiへのシームレス転送ツール
+
+- 💾 対応サイトでワンクリック保存
+- 📋 Geminiでドロップダウンから選択→即挿入
+- ⚡ コピペ地獄からの解放
 
 ---
 
@@ -33,7 +48,7 @@ Google Maps拡張機能
 ### [AI活用事例ギャラリー](https://furoku.github.io/bananaX/projects/dena_100/)
 DeNA 100事例をインタラクティブに紹介
 
-### [Banana X プロンプトパターン集](https://furoku.github.io/bananaX/projects/infographic-evaluation/)
+### [Banana X プロンプトパターン集](https://furoku.github.io/bananaX/projects/infographic_evaluation/)
 NotebookLM活用ガイド＆プロンプト評価ツール
 
 ---
