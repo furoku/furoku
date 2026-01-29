@@ -48,7 +48,7 @@ NotebookLMのデザインスタイルを効率的に管理・適用するツー�
 ### [AI活用事例ギャラリー](https://furoku.github.io/bananaX/projects/dena_100/)
 DeNA 100事例をインタラクティブに紹介
 
-### [Banana X プロンプトパターン集](https://furoku.github.io/bananaX/projects/infographic_evaluation/)
+### [Banana X プロンプトパターン集](https://furoku.github.io/bananaX/projects/infographic-evaluation/)
 NotebookLM活用ガイド＆プロンプト評価ツール
 
 ---
@@ -59,15 +59,23 @@ NotebookLM活用ガイド＆プロンプト評価ツール
 Gemini API Competition - AIビジュアル面接アシスタント
 
 ### [BananaImagine](https://www.kaggle.com/competitions/gemini-3/writeups/bananaimagine)
-Gemini API Competition - 画像生成プロジェクト
+A kawaii AI studio for smart text erasure, magic editing, and style remixing using Gemini 2.5 & 3
 
 ---
 
 ## 🧪 AI Studio Apps
 
-- [AI Studio App 1](https://aistudio.google.com/apps/drive/1bah8PPO0JwOR-GJIlXEnYhDp8XxTo6wy)
-- [AI Studio App 2](https://aistudio.google.com/apps/drive/1EAdUnOxfrEbbi53qzPqAzmS4af0MVScF)
-- [AI Studio App 3](https://aistudio.google.com/apps/drive/16Hy-uyPF7iKAs3txgntDqMI0zTLD8gfH)
+### [📸 Polaroid Board](https://aistudio.google.com/apps/drive/16Hy-uyPF7iKAs3txgntDqMI0zTLD8gfH)
+Google Maps × nano banana風ポラロイド写真ボード
+
+### [⌨️ YOLO Builder](https://aistudio.google.com/apps/drive/1bah8PPO0JwOR-GJIlXEnYhDp8XxTo6wy)
+バイブコーディング用コンパクトキー配列
+
+### [🎥 Fantasy Cam](https://aistudio.google.com/apps/drive/1EAdUnOxfrEbbi53qzPqAzmS4af0MVScF)
+AI搭載の自動定点カメラアプリ
+
+### [🧩 Chrome Extension Builder](https://aistudio.google.com/apps/drive/1xi3X84rfGFXD4kQs_yy_whHKkt7NOddZ)
+Chrome拡張機能を作るためのツール
 
 ---
 
