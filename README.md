@@ -52,13 +52,25 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 
 ---
 
-## Media / Interviews
+## Media
 
-- 📰 **[JT Tsushin: Dejima Style Plus Report](https://www.jt-tsushin.jp/article/ctc-g-report-20211217)** - Moderator @ Sendai City Local Transport Workshop
-- 🌐 **[Work Design Lab Profile](https://work-redesign.com/partner/kai_hiroki/)** - 働き方と組織の未来 - Partner Profile
-- 📝 **[e-Agency Official Note](https://note.com/eagency/n/nbec48166d3a8)** - 新入社員インタビュー動画のメリット
-- 🗣️ **[PR Dialogue Part 1](https://note.com/futurespirits/n/nbec9e013bf6c)** - Future Spirits x e-Agency トークセッション
-- 🎙️ **[PR Dialogue Part 2](https://note.com/eagency/n/n4299b66236b3)** - Future Spirits x e-Agency トークセッション
+### Profiles
+- 🌐 **[Work Design Lab Profile](https://work-redesign.com/partner/kai_hiroki/)** - 働き方と組織の未来 Partner Profile
+
+### Event Reports
+- 📰 **[自治体通信Online](https://www.jt-tsushin.jp/articles/event/ctc-g-report-20211217)** - 第5回デジマ式 plus 開催レポート（司会）
+
+### Talk Sessions / Interviews
+- 🗣️ **[PR Dialogue Part 1](https://note.com/futurespirits/n/n873624154cc5)** - フューチャースピリッツ×イー・エージェンシー広報対談 前編
+- 🗣️ **[PR Dialogue Part 2](https://note.com/eagency/n/n93379d0117be)** - フューチャースピリッツ×イー・エージェンシー広報対談 後編
+
+### Talks / Panels
+- 🎤 **[GUNMA WORK STYLE EVENT 2024 登壇レポート](https://note.com/eagency/n/n8c5638852aaa)** - 群馬県主催イベント登壇
+- 🏛️ **[GUNMA WORK STYLE EVENT 2024](https://gunmagurashi.pref.gunma.jp/g_telework/information/1111.html)** - 群馬県公式告知ページ
+
+### Press Releases
+- 📰 **[滋賀県基本構想タウンミーティング](https://prtimes.jp/main/html/rd/p/000000061.000036705.html)** - ワークショップ企画（PR TIMES）
+- 📰 **[GUNMA SHIAWASE × TECH 学生アイデアコンテスト2021](https://prtimes.jp/main/html/rd/p/000000093.000036705.html)** - イベント企画（PR TIMES）
 
 ---
 
