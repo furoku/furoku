@@ -12,70 +12,26 @@
 
 ---
 
-## 🍌 Chrome Extensions
+## Current Projects
 
-### [banana-infograph](https://github.com/furoku/banana-infograph)
-X（旧Twitter）の投稿テキストからインフォグラフィック画像を自動生成するChrome拡張機能
+### 🍌 Chrome Extensions
+- 🖼️ **[banana-infograph](https://github.com/furoku/banana-infograph)** - X投稿からインフォグラフィックを自動生成、最大4枚同時＆多言語対応
+- 📓 **[BananaNL](https://chromewebstore.google.com/detail/banananl/mjennffndagebhgcbeblffhgooohling)** - NotebookLMのデザインスタイル管理、プレビュー＆テンプレート適用
+- 🚀 **[BananaGM](https://chromewebstore.google.com/detail/bananagm/ipjhfbcgjmbiledamkaghljnneabaock)** - プロンプトサイト→Geminiへワンクリック転送
 
-![Stars](https://img.shields.io/github/stars/furoku/banana-infograph?style=flat-square)
-![Forks](https://img.shields.io/github/forks/furoku/banana-infograph?style=flat-square)
+### 🌐 Web Projects
+- 📊 **[AI活用事例ギャラリー](https://furoku.github.io/bananaX/projects/dena_100/)** - DeNA 100事例をインタラクティブに紹介
+- 🎨 **[Banana X プロンプトパターン集](https://furoku.github.io/bananaX/projects/infographic-evaluation/)** - NotebookLM活用ガイド＆プロンプト評価ツール
 
-- ✨ ワンクリックでインフォグラフィック生成
-- 📸 最大4枚を一括生成＆自動添付
-- 🌍 多言語対応（英語/日本語/韓国語/中国語）
-- 🎨 カスタムプロンプト＆アスペクト比選択
+### 🏆 Kaggle
+- 🎥 **[Visu](https://www.kaggle.com/competitions/gemini-3/writeups/visu-the-ai-visual-interview-assistant)** - AIビジュアル面接アシスタント
+- ✨ **[BananaImagine](https://www.kaggle.com/competitions/gemini-3/writeups/bananaimagine)** - Kawaii AI studio for text erasure, magic editing & style remixing
 
-### [BananaNL](https://chromewebstore.google.com/detail/banananl/mjennffndagebhgcbeblffhgooohling)
-NotebookLMのデザインスタイルを効率的に管理・適用するツール
-
-- 🎨 プロ級デザインテンプレート
-- 👀 サイドパネルでプレビュー
-- 💾 スタイルの保存＆ワンクリック呼び出し
-- 🌍 多言語対応（英語/日本語/韓国語/中国語）
-- 🔥 [Orynthランキング参加中！](https://www.orynth.dev/projects/banananl-notebooklm-design-engine)
-
-### [BananaGM](https://chromewebstore.google.com/detail/bananagm/ipjhfbcgjmbiledamkaghljnneabaock)
-プロンプトサイト→Geminiへのシームレス転送ツール
-
-- 💾 対応サイトでワンクリック保存
-- 📋 Geminiでドロップダウンから選択→即挿入
-- ⚡ コピペ地獄からの解放
-
----
-
-## 🌐 Web Projects
-
-### [AI活用事例ギャラリー](https://furoku.github.io/bananaX/projects/dena_100/)
-DeNA 100事例をインタラクティブに紹介
-
-### [Banana X プロンプトパターン集](https://furoku.github.io/bananaX/projects/infographic-evaluation/)
-NotebookLM活用ガイド＆プロンプト評価ツール
-
----
-
-## 🏆 Kaggle
-
-### [Visu: The AI Visual Interview Assistant](https://www.kaggle.com/competitions/gemini-3/writeups/visu-the-ai-visual-interview-assistant)
-Gemini API Competition - AIビジュアル面接アシスタント
-
-### [BananaImagine](https://www.kaggle.com/competitions/gemini-3/writeups/bananaimagine)
-A kawaii AI studio for smart text erasure, magic editing, and style remixing using Gemini 2.5 & 3
-
----
-
-## 🧪 AI Studio Apps
-
-### [📸 Polaroid Board](https://aistudio.google.com/apps/drive/16Hy-uyPF7iKAs3txgntDqMI0zTLD8gfH)
-Google Maps × nano banana風ポラロイド写真ボード
-
-### [⌨️ YOLO Builder](https://aistudio.google.com/apps/drive/1bah8PPO0JwOR-GJIlXEnYhDp8XxTo6wy)
-バイブコーディング用コンパクトキー配列
-
-### [🎥 Fantasy Cam](https://aistudio.google.com/apps/drive/1EAdUnOxfrEbbi53qzPqAzmS4af0MVScF)
-AI搭載の自動定点カメラアプリ
-
-### [🧩 Chrome Extension Builder](https://aistudio.google.com/apps/drive/1xi3X84rfGFXD4kQs_yy_whHKkt7NOddZ)
-Chrome拡張機能を作るためのツール
+### 🧪 AI Studio Apps
+- 📸 **[Polaroid Board](https://aistudio.google.com/apps/drive/16Hy-uyPF7iKAs3txgntDqMI0zTLD8gfH)** - Google Maps × nano banana風ポラロイド写真ボード
+- ⌨️ **[YOLO Builder](https://aistudio.google.com/apps/drive/1bah8PPO0JwOR-GJIlXEnYhDp8XxTo6wy)** - バイブコーディング用コンパクトキー配列
+- 🎥 **[Fantasy Cam](https://aistudio.google.com/apps/drive/1EAdUnOxfrEbbi53qzPqAzmS4af0MVScF)** - AI搭載の自動定点カメラアプリ
+- 🧩 **[Chrome Extension Builder](https://aistudio.google.com/apps/drive/1xi3X84rfGFXD4kQs_yy_whHKkt7NOddZ)** - Chrome拡張機能を作るためのツール
 
 ---
 
