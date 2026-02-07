@@ -157,6 +157,18 @@ img {
     cursor: pointer;
     user-select: none;
 }
+
+/* AI Notice */
+.ai-notice {
+    background: #fff3cd;
+    color: #856404;
+    text-align: center;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-top: 2px solid #ffc107;
+    border-bottom: 2px solid #ffc107;
+}
 .cta-button:hover {
     background-color: #0056b3;
     text-decoration: none;
