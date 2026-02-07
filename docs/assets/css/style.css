@@ -261,9 +261,11 @@ h2 {
 /* Post Page */
 .post-header {
     height: 50vh;
+    min-height: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 60px;
     text-align: center;
     color: #fff;
     background-size: cover;
@@ -351,6 +353,15 @@ h2 {
     .post-card-large .post-card-image,
     .post-card-large .post-card-content {
         width: 100%;
+    }
+
+    .post-title {
+        font-size: 1.8em;
+    }
+
+    .post-header {
+        height: 40vh;
+        padding-top: 50px;
     }
 }
 
