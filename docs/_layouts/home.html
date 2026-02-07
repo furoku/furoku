@@ -1,0 +1,43 @@
+---
+layout: default
+---
+
+<div class="hero-section">
+    <div class="container">
+        <h1>furoku</h1>
+        <p class="subtitle">Banana Builder / Workshop Designer</p>
+        <p class="motto">泣いたり笑ったりそこにいる。世界は指数でできてる。</p>
+        <a href="#" class="cta-button">Get in Touch</a>
+    </div>
+</div>
+
+<div class="container">
+    {% assign featured_post = site.posts.first %}
+    <section class="featured-post">
+        <h2>Featured Post</h2>
+        <a href="{{ featured_post.url | relative_url }}" class="post-card-large">
+            <div class="post-card-image" style="background-image: url('{{ featured_post.image | relative_url }}');"></div>
+            <div class="post-card-content">
+                <h3 class="post-card-title">{{ featured_post.title }}</h3>
+                <p>{{ featured_post.excerpt | strip_html | normalize_whitespace | truncate: 150 }}</p>
+                <span class="post-card-date">{{ featured_post.date | date: "%B %d, %Y" }}</span>
+            </div>
+        </a>
+    </section>
+
+    <section class="post-list">
+        <h2>All Posts</h2>
+        <div class="post-grid">
+            {% for post in site.posts offset: 1 %}
+            <a href="{{ post.url | relative_url }}" class="post-card">
+                <div class="post-card-image" style="background-image: url('{{ post.image | relative_url }}');"></div>
+                <div class="post-card-content">
+                    <h3 class="post-card-title">{{ post.title }}</h3>
+                    <p>{{ post.excerpt | strip_html | normalize_whitespace | truncate: 80 }}</p>
+                    <span class="post-card-date">{{ post.date | date: "%B %d, %Y" }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+</div>

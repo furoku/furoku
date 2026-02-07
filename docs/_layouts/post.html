@@ -1,18 +1,29 @@
 ---
 layout: default
 ---
+
 <article class="post">
-  {% if page.image %}
-  <div class="post-hero">
-    <img src="{{ page.image | relative_url }}" alt="{{ page.title }}">
-  </div>
-  {% endif %}
-  <h1 class="post-title">{{ page.title }}</h1>
-  <div class="post-meta">
-    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y.%m.%d" }}</time>
-    {% if page.tags %} · {% for tag in page.tags %}<span class="tag">{{ tag }}</span>{% endfor %}{% endif %}
-  </div>
-  <div class="post-content">
-    {{ content }}
-  </div>
+    <header class="post-header" style="background-image: url('{{ page.image | relative_url }}');">
+        <div class="container">
+            <h1 class="post-title">{{ page.title }}</h1>
+            <p class="post-meta">{{ page.date | date: "%B %d, %Y" }}</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="post-content">
+            {{ content }}
+        </div>
+    </div>
 </article>
+
+<nav class="post-navigation">
+    <div class="container">
+        {% if page.previous.url %}
+        <a href="{{ page.previous.url | relative_url }}" class="prev">&laquo; {{ page.previous.title }}</a>
+        {% endif %}
+        {% if page.next.url %}
+        <a href="{{ page.next.url | relative_url }}" class="next">{{ page.next.title }} &raquo;</a>
+        {% endif %}
+    </div>
+</nav>
