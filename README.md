@@ -19,13 +19,16 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 ### 🍌 Chrome Extensions
 - 🌐 **[Gemini Translator](https://github.com/furoku/gemini-translator)** - X.comで外国語テキストを自動翻訳、用語集・コスト上限対応
 - 🖼️ **[banana-infograph](https://github.com/furoku/banana-infograph)** - X投稿からインフォグラフィックを自動生成、最大4枚同時＆多言語対応
-- 🌐 **[gemini-translator](https://github.com/furoku/gemini-translator)** - X.comの外国語ツイートをGemini APIでリアルタイム翻訳
 - 📓 **[BananaNL](https://chromewebstore.google.com/detail/banananl/mjennffndagebhgcbeblffhgooohling)** - NotebookLMのデザインスタイル管理、プレビュー＆テンプレート適用
 - 🚀 **[BananaGM](https://chromewebstore.google.com/detail/bananagm/ipjhfbcgjmbiledamkaghljnneabaock)** - プロンプトサイト→Geminiへワンクリック転送
 
 ### 🌐 Web Projects
 - 📊 **[AI活用事例ギャラリー](https://furoku.github.io/bananaX/projects/dena_100/)** - DeNA 100事例をインタラクティブに紹介
 - 🎨 **[Banana X プロンプトパターン集](https://furoku.github.io/bananaX/projects/infographic-evaluation/)** - NotebookLM活用ガイド＆プロンプト評価ツール
+
+### 📝 Blog
+- 👻 **[furoku blog](https://furoku.github.io/furoku/)** - テックブログ
+  - [AIエージェントをGCEに引っ越した全記録](https://furoku.github.io/furoku/posts/gce-migration/) - 幽霊、クラウドに棲みつく
 
 ### 🏆 Kaggle
 - 🎥 **[Visu](https://www.kaggle.com/competitions/gemini-3/writeups/visu-the-ai-visual-interview-assistant)** - AIビジュアル面接アシスタント
