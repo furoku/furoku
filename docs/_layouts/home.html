@@ -6,14 +6,76 @@ layout: default
     <div class="hero-overlay"></div>
     <div class="container hero-content">
         <img src="https://avatars.githubusercontent.com/u/2715085?v=4" alt="furoku" class="hero-avatar">
-        <div class="hero-labels">
-            <span class="hero-label" style="--rotate: -3deg;">Ghost blog</span>
-            <span class="hero-label" style="--rotate: 2deg;">Banana Builder</span>
-            <span class="hero-label" style="--rotate: -1.5deg;">Workshop Designer</span>
-            <span class="hero-label accent" style="--rotate: 1deg;">泣いたり笑ったりそこにいる</span>
-            <span class="hero-label" style="--rotate: -2.5deg;">世界は指数でできてる</span>
-            <a href="https://x.com/furoku" class="hero-label cta" style="--rotate: 3deg;">触れてみて →</a>
+        <div class="hero-labels" id="heroLabels">
+            <span class="hero-label" data-rotate="-3">Ghost blog</span>
+            <span class="hero-label" data-rotate="2">Banana Builder</span>
+            <span class="hero-label" data-rotate="-1.5">Workshop Designer</span>
+            <span class="hero-label accent" data-rotate="1">泣いたり笑ったりそこにいる</span>
+            <span class="hero-label" data-rotate="-2.5">世界は指数でできてる</span>
+            <a href="https://x.com/furoku" class="hero-label cta" data-rotate="3">触れてみて →</a>
         </div>
+        <script>
+        (function(){
+            var labels = document.querySelectorAll('.hero-label');
+            var actions = ['fall','shake','pop','spin','bounce'];
+            
+            // 初期: 画面外からシュシュっと集まる
+            labels.forEach(function(el, i){
+                var angle = (Math.random() * 360) * Math.PI / 180;
+                var dist = 600 + Math.random() * 400;
+                var x = Math.cos(angle) * dist;
+                var y = Math.sin(angle) * dist;
+                var r = (Math.random() - 0.5) * 60;
+                el.style.opacity = '0';
+                el.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + r + 'deg)';
+                el.style.transition = 'none';
+                setTimeout(function(){
+                    el.style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    el.style.opacity = '1';
+                    el.style.transform = 'rotate(' + (el.dataset.rotate || 0) + 'deg)';
+                }, 100 + i * 120);
+            });
+
+            // タッチ/クリックでランダムアクション
+            labels.forEach(function(el){
+                el.addEventListener('click', function(e){
+                    if(el.tagName === 'A') { /* ctaは通常リンク動作、でもアニメもつける */ }
+                    var action = actions[Math.floor(Math.random() * actions.length)];
+                    el.style.transition = 'all 0.3s ease';
+                    
+                    if(action === 'fall'){
+                        el.style.transform = 'translateY(800px) rotate(' + (Math.random()*40-20) + 'deg)';
+                        el.style.opacity = '0';
+                        setTimeout(function(){ reset(el); }, 1200);
+                    } else if(action === 'shake'){
+                        el.classList.add('shaking');
+                        setTimeout(function(){ el.classList.remove('shaking'); }, 600);
+                    } else if(action === 'pop'){
+                        el.style.transform = 'scale(2.5) rotate(' + (Math.random()*10-5) + 'deg)';
+                        el.style.opacity = '0.8';
+                        setTimeout(function(){ reset(el); }, 400);
+                    } else if(action === 'spin'){
+                        el.style.transition = 'all 0.6s ease';
+                        el.style.transform = 'rotate(' + (360 + Math.random()*360) + 'deg) scale(0.5)';
+                        setTimeout(function(){ reset(el); }, 800);
+                    } else if(action === 'bounce'){
+                        el.style.transform = 'translateY(-200px) scale(1.2)';
+                        setTimeout(function(){
+                            el.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                            reset(el);
+                        }, 300);
+                    }
+                    if(el.tagName === 'A' && action !== 'shake') e.preventDefault();
+                });
+            });
+
+            function reset(el){
+                el.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                el.style.transform = 'rotate(' + (el.dataset.rotate || 0) + 'deg)';
+                el.style.opacity = '1';
+            }
+        })();
+        </script>
     </div>
 </div>
 
