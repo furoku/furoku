@@ -83,32 +83,58 @@ img {
     box-shadow: 0 4px 16px rgba(0,0,0,0.3);
 }
 
-.hero-section h1 {
-    font-size: 3em;
-    margin: 0 0 10px;
+.hero-labels {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 14px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.hero-label {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 24px;
     color: #fff;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    font-size: 1rem;
+    font-weight: 500;
+    transform: rotate(var(--rotate, 0deg));
+    transition: transform 0.3s ease, background 0.3s ease;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
-.hero-section .subtitle {
-    font-size: 1.2em;
-    color: rgba(255,255,255,0.9);
-    margin: 0 0 20px;
+.hero-label:first-child {
+    font-size: 1.6rem;
+    font-weight: 700;
+    padding: 10px 28px;
 }
 
-.hero-section .motto {
-    font-size: 1em;
-    color: rgba(255,255,255,0.8);
-    margin-bottom: 30px;
+.hero-label:hover {
+    transform: rotate(0deg) scale(1.05);
+    background: rgba(255,255,255,0.25);
+}
+
+.hero-label.accent {
+    background: rgba(255,200,50,0.2);
+    border-color: rgba(255,200,50,0.4);
     font-style: italic;
 }
 
-.cta-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 12px 25px;
-    border-radius: 5px;
-    font-weight: bold;
+.hero-label.cta {
+    background: rgba(255,255,255,0.9);
+    color: #1a1a2e;
+    font-weight: 700;
+    border: none;
+}
+
+.hero-label.cta:hover {
+    background: #fff;
+    transform: rotate(0deg) scale(1.08);
 }
 .cta-button:hover {
     background-color: #0056b3;
