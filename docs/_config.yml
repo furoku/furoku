@@ -1,7 +1,7 @@
 title: furoku blog
 description: ひろきのテックブログ
 url: "https://furoku.github.io"
-baseurl: ""
+baseurl: "/furoku"
 permalink: /posts/:slug/
 
 markdown: kramdown

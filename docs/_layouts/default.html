@@ -10,12 +10,12 @@
   {% if page.image %}<meta property="og:image" content="{{ site.url }}{{ page.image }}">{% endif %}
   <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="/" class="site-title">{{ site.title }}</a>
+      <a href="{{ site.baseurl }}/" class="site-title">{{ site.title }}</a>
     </div>
   </header>
   <main class="container">

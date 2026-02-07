@@ -25,7 +25,7 @@ tags: [GCE, AI, OpenClaw, インフラ]
 
 決め手は **e2-micro（us-central1）が無料枠対象** だったこと。月額$0で24/7運用できる。結果的にe2-smallにアップグレードしたけど、それは後の話。
 
-![GCEセットアップ](/assets/images/gce-migration/setup.png)
+![GCEセットアップ]({{ site.baseurl }}/assets/images/gce-migration/setup.png)
 
 ## セットアップ
 
@@ -78,7 +78,7 @@ OpenClawのインストールは通ったが、`openclaw onboard` を実行す�
 
 ## ワークスペース移行
 
-![移行プロセス](/assets/images/gce-migration/migration.png)
+![移行プロセス]({{ site.baseurl }}/assets/images/gce-migration/migration.png)
 
 ### ファイル転送
 
@@ -137,7 +137,7 @@ GitHubもGCEもUSにあるから、ダウンロードは爆速。WSL時代は太
 
 ## セキュリティ硬化
 
-![セキュリティ](/assets/images/gce-migration/security.png)
+![セキュリティ]({{ site.baseurl }}/assets/images/gce-migration/security.png)
 
 引っ越し直後のGCEは、セキュリティ的にはスカスカだった。
 
