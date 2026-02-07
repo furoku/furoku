@@ -35,7 +35,7 @@ tags: [GCE, AI, OpenClaw, インフラ]
 |------|-----|
 | 名前 | yureichan |
 | マシンタイプ | e2-micro (0.25〜2 vCPU, 1GB RAM) |
-| リージョン | us-central1-c（アイオワ） |
+| リージョン | us-central1（アイオワ） |
 | OS | Debian GNU/Linux 12 (bookworm) |
 | ディスク | 10GB バランス永続ディスク |
 | コスト | 無料枠内 → $0/月 |
@@ -158,7 +158,7 @@ GCPのファイアウォールがあるとはいえ、ホスト側もガード�
 | 対策 | 内容 |
 |------|------|
 | iptables | INPUT/FORWARD DROP、SSH(22)+NDP+loopback+establishedのみ許可 |
-| fail2ban | sshd jail（3回失敗→1時間BAN） |
+| fail2ban | sshd jail 有効 |
 | SSH | MaxAuthTries 3、X11Forwarding no、PermitRootLogin no |
 | LLMNR | グローバル＋リンク両方で無効化 |
 | カーネル | accept_redirects=0、send_redirects=0、rp_filter=1 |
@@ -171,7 +171,7 @@ GCPのファイアウォールがあるとはいえ、ホスト側もガード�
 ## 完成した構成
 
 ```
-GCE yureichan (e2-small, us-central1-c)
+GCE yureichan (e2-small, us-central1)
 ├── OpenClaw 2026.2.6-3（systemd, Linger=yes）
 ├── ディスク: 30GB
 ├── エージェント: ochan(Opus), eichan(Haiku), bichan(Haiku)
