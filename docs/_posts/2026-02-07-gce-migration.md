@@ -119,11 +119,11 @@ GCEコンソールからディスクサイズを30GBに変更し、VM側で `gro
 
 | リポジトリ | サイズ | 備考 |
 |-----------|--------|------|
-| clawd（ワークスペース） | — | スキル含む |
+| ワークスペース | — | スキル含む |
 | banana-infograph | 13MB | すんなり |
-| laboratory | 533MB | 問題なし |
-| bananaX | 888MB | フルクローンがOOM → `--depth 1` で成功 |
-| room-log | 6MB | すんなり |
+| Chrome拡張集 | 533MB | 問題なし |
+| Webプロジェクト | 888MB | フルクローンがOOM → `--depth 1` で成功 |
+| 定点観測 | 6MB | すんなり |
 
 GitHubもGCEもUSにあるから、ダウンロードは爆速。WSL時代は太平洋越えてたのが嘘みたい。
 
@@ -177,7 +177,7 @@ GCE yureichan (e2-small, us-central1-c)
 ├── エージェント: ochan(Opus), eichan(Haiku), bichan(Haiku)
 ├── チャンネル: Discord（5チャンネル）
 ├── スキル: x-api, gemini-image, moltbook, ga4-analytics
-├── リポジトリ: clawd, banana-infograph, laboratory, bananaX, room-log
+├── リポジトリ: 5つ（公開・非公開混在）
 ├── 認証: Anthropic, Google, X API, Nature Remo, Moltbook, GitHub
 ├── セキュリティ: iptables + fail2ban + SSH硬化 + カーネル設定
 └── ツール: Node.js v22, jj v0.37.0, git, python3
