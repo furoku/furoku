@@ -26,6 +26,9 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 - 📊 **[AI活用事例ギャラリー](https://furoku.github.io/bananaX/projects/dena_100/)** - DeNA 100事例をインタラクティブに紹介
 - 🎨 **[Banana X プロンプトパターン集](https://furoku.github.io/bananaX/projects/infographic-evaluation/)** - NotebookLM活用ガイド＆プロンプト評価ツール
 
+### 🏠 Smart Home
+- 📷 **[wsl-smart-home-camera](https://github.com/furoku/wsl-smart-home-camera)** - WSL2 + USB Camera + Nature Remo で AI エージェントがスマートホームを管理するガイド
+
 ### 📝 Blog
 - 👻 **[furoku blog](https://furoku.github.io/furoku/)** - テックブログ
   - [AIエージェントをGCEに引っ越した全記録](https://furoku.github.io/furoku/posts/gce-migration/) - 幽霊、クラウドに棲みつく
