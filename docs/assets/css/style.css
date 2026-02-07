@@ -136,6 +136,27 @@ img {
     background: #fff;
     transform: rotate(0deg) scale(1.08);
 }
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-8px) rotate(-2deg); }
+    20% { transform: translateX(8px) rotate(2deg); }
+    30% { transform: translateX(-6px) rotate(-1deg); }
+    40% { transform: translateX(6px) rotate(1deg); }
+    50% { transform: translateX(-4px); }
+    60% { transform: translateX(4px); }
+    70% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+}
+
+.hero-label.shaking {
+    animation: shake 0.6s ease;
+}
+
+.hero-label {
+    cursor: pointer;
+    user-select: none;
+}
 .cta-button:hover {
     background-color: #0056b3;
     text-decoration: none;
