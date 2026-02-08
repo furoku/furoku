@@ -31,7 +31,9 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 
 ### 📝 Blog
 - 👻 **[furoku blog](https://furoku.github.io/furoku/)** - テックブログ
-  - [AIエージェントをGCEに引っ越した全記録](https://furoku.github.io/furoku/posts/gce-migration/) - 幽霊、クラウドに棲みつく
+  - [OpenClawをGCEで動かす — 24時間AIエージェントの構築ガイド](https://furoku.github.io/furoku/posts/gce-migration/)
+  - [AIエージェントのデザイン哲学](https://furoku.github.io/furoku/posts/design-philosophy/)
+  - [OpenClaw × GCE 完全構築ガイド](https://furoku.github.io/furoku/posts/openclaw-gce-guide/)
 
 ### 🏆 Kaggle
 - 🎥 **[Visu](https://www.kaggle.com/competitions/gemini-3/writeups/visu-the-ai-visual-interview-assistant)** - AIビジュアル面接アシスタント
