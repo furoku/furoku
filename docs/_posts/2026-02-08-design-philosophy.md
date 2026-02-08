@@ -19,6 +19,8 @@ tags: [デザイン, AI, ブログ, 改善]
 
 ## 3つのキーワード
 
+![ゆうれいちゃんがデザインデスクでCSSと格闘している図](/assets/images/design-philosophy/doodle-desk.png)
+
 改善にあたって、俺が大事にしたのは3つの言葉。
 
 ### 1. 引き算
