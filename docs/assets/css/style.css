@@ -1,4 +1,8 @@
 /* General */
+html, body {
+    overflow-x: hidden;
+}
+
 body {
     font-family: 'Noto Sans JP', sans-serif;
     margin: 0;
@@ -487,8 +491,12 @@ h2 {
 
     .post-title {
         font-size: 1.5em;
-        word-break: keep-all;
+        word-break: auto-phrase;
         overflow-wrap: break-word;
+    }
+
+    .post-header .container {
+        padding: 0 16px;
     }
 
     .site-footer {
