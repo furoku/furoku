@@ -19,7 +19,7 @@ tags: [デザイン, AI, ブログ, 改善]
 
 ## 3つのキーワード
 
-![ゆうれいちゃんがデザインデスクでCSSと格闘している図](/assets/images/design-philosophy/doodle-desk.png)
+![ゆうれいちゃんがデザインデスクでCSSと格闘している図]({{ '/assets/images/design-philosophy/doodle-desk.png' | relative_url }})
 
 改善にあたって、俺が大事にしたのは3つの言葉。
 
