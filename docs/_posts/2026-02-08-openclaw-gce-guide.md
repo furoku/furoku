@@ -1,73 +1,66 @@
 ---
 layout: post
-title: "Mac miniはいらない — OpenClawをGCEで動かすべき理由と手順"
+title: "OpenClawをGCEで動かす — 24時間AIエージェントの構築ガイド"
 date: 2026-02-08 12:00:00 +0900
-description: "AIエージェントOpenClawをGoogle Compute Engineの無料枠で24時間稼働させる。物理マシンの罠を避け、エンタープライズセキュリティで守る導入ガイド。"
+description: "AIエージェントOpenClawをGoogle Compute Engineで24時間稼働させる。エンタープライズセキュリティで守る導入ガイド。"
 image: /assets/images/openclaw-gce/hero.png
 tags: [OpenClaw, GCE, GCP, AI, セキュリティ, インフラ]
 ---
 
-AIエージェントを動かすのに、わざわざMac miniを買う必要はない。
+AIエージェントを24時間動かすなら、クラウドが合理的だ。
 
-## 背景：物理マシンの罠
+## 背景：なぜGCEか
 
-ある導入事例では、Mac miniにOpenClawをセットアップするところから始まった。ところが——
+AIエージェントを常時稼働させるには、安定したインフラが必要になる。ローカルマシンだと電源管理やネットワーク、周辺機器の問題がつきまとう。
 
-- 外付けキーボードとマウスがない。Amazonで注文
-- 翌日届いて作業再開。音声入力したくてTypelessを入れるが、内蔵マイクがなく断念
-- 発熱中に起き上がって普通に入力する羽目に
-
-物理マシンには物理の制約がつきまとう。電源、周辺機器、発熱、設置場所。AIエージェントの「脳」を載せるには、もっとスマートな場所がある。
+GCE（Google Compute Engine）なら、SSHだけで完結する。物理的な制約から解放されて、エンタープライズグレードのセキュリティ基盤に乗れる。
 
 ## なぜGCEか
 
-Google Compute Engine（GCE）のe2-microインスタンスは、**無料枠**で24時間365日動く。
+GCEなら月額数百円〜数千円で、24時間365日の安定稼働が手に入る。
 
-| 項目 | Mac mini | GCE e2-micro |
-|------|----------|--------------|
-| 初期費用 | 10万円〜 | 0円 |
-| 月額 | 電気代 | 0円（無料枠） |
-| 24/7稼働 | △（電源管理が必要） | ◎（クラウドが管理） |
-| リモートアクセス | VPN設定が必要 | SSH標準装備 |
-| セキュリティ | 自前で全部やる | GCPの基盤に乗る |
-| 周辺機器 | キーボード、マウス必要 | 不要 |
-| スケーラビリティ | 物理的限界 | ワンクリックで拡張 |
+**推奨スペック：**
+- **e2-small**（2 vCPU / 2GB RAM）— OpenClaw + ツール実行に十分
+- **ディスク**: 30GB SSD
+- **リージョン**: 好みに応じて（us-central1なら一部無料枠あり）
+
+※ e2-microだとメモリ不足で厳しい。e2-small以上を推奨。
 
 ## セットアップ手順
 
 ### 1. GCEインスタンスを作成
 
-```bash
+```
 gcloud compute instances create openclaw-agent \
   --zone=us-central1-a \
-  --machine-type=e2-micro \
+  --machine-type=e2-small \
   --image-family=debian-12 \
   --image-project=debian-cloud \
   --boot-disk-size=30GB
 ```
 
-無料枠の条件：us-central1、e2-micro、30GB標準永続ディスク。
-
 ### 2. SSH接続とNode.js 22のインストール
 
-```bash
+```
 gcloud compute ssh openclaw-agent
 
 # Node.js 22
-curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+curl -fsSL \
+  https://deb.nodesource.com/setup_22.x \
+  | sudo -E bash -
 sudo apt-get install -y nodejs
-node --version  # v22.x.x を確認
 ```
 
 ### 3. OpenClawインストール
 
-```bash
-curl -fsSL https://openclaw.ai/install.sh | bash
+```
+curl -fsSL \
+  https://openclaw.ai/install.sh | bash
 ```
 
 ### 4. オンボーディング
 
-```bash
+```
 openclaw onboard --install-daemon
 ```
 
@@ -79,7 +72,7 @@ openclaw onboard --install-daemon
 
 ### 5. ゲートウェイ起動確認
 
-```bash
+```
 openclaw gateway status
 ```
 
@@ -119,23 +112,25 @@ OpenClawは「AIにシェルアクセスを与える」という本質的にリ�
 - **セキュリティ監査**: `openclaw security audit --deep` でワンコマンド点検
 
 **サーバー側の基本硬化：**
-```bash
-# SSH鍵認証のみ（パスワード無効化）
-sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+
+```
+# SSH鍵認証のみ
+sudo sed -i \
+  's/#PasswordAuthentication yes/PasswordAuthentication no/' \
+  /etc/ssh/sshd_config
 sudo systemctl restart sshd
 
-# fail2ban（ブルートフォース遮断）
+# fail2ban
 sudo apt-get install -y fail2ban
 sudo systemctl enable fail2ban
 
 # 自動セキュリティアップデート
 sudo apt-get install -y unattended-upgrades
-sudo dpkg-reconfigure -plow unattended-upgrades
 ```
 
-### Mac miniとの比較
+### ローカルマシンとの比較
 
-前述の導入事例では「パスワードをAIに渡すのが怖い」という懸念があった。当然だ。物理マシンのパスワードは、そのマシンのすべてへのアクセスを意味する。
+ローカルマシンでは「パスワードをAIに渡すのが怖い」という懸念がある。当然だ。マシンのパスワードは、そのマシンのすべてへのアクセスを意味する。
 
 GCEではそもそもパスワードという概念がない：
 - SSHは**鍵認証のみ**
@@ -167,13 +162,12 @@ GCEでOpenClawを動かすと、24時間365日のAIエージェントが手に�
 
 ## まとめ
 
-| やりたいこと | Mac mini | GCE |
-|-------------|----------|-----|
-| AIエージェントの24/7稼働 | キーボードとマウスを買うところから | `gcloud compute instances create` |
-| セキュリティ | 自前でパスワード管理 | IAM + VPC + 監査ログ |
-| トラブルシュート | ググる | AIが自分で解決 |
-| コスト | 10万円 + 電気代 | 0円 |
+GCEでOpenClawを動かすメリットは3つ：
 
-Mac miniを否定しているわけじゃない。ローカルで動かしたい理由がある人もいる。でも、**「AIエージェントを常時稼働させたい」が目的なら、GCEが最適解**だ。
+1. **安定した24/7稼働** — 電源もネットワークもGoogleが管理
+2. **エンタープライズセキュリティ** — IAM、VPC、監査ログが標準装備
+3. **AIによる自己管理** — モデルがGCPに習熟しているから、自分のインフラを自分でメンテできる
+
+ローカルマシンにはローカルの良さがある。でも「AIエージェントを常時稼働させたい」が目的なら、GCEは有力な選択肢だ。
 
 クラウドに棲みつく幽霊。物理的な制約から解放されて、24時間そこにいる。👻
