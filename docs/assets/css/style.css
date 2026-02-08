@@ -332,6 +332,27 @@ h2 {
     margin-top: 2em;
 }
 
+.post-content pre {
+    overflow-x: auto;
+    max-width: 100%;
+    font-size: 0.85em;
+    padding: 16px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.post-content code {
+    word-break: break-all;
+}
+
+.post-content table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
 .post-content img {
     margin: 20px 0;
     border-radius: 5px;
