@@ -294,6 +294,7 @@ h2 {
     background-size: cover;
     background-position: center;
     position: relative;
+    overflow: hidden;
 }
 
 .post-header::before {
@@ -310,6 +311,9 @@ h2 {
     position: relative;
     z-index: 1;
     max-width: 720px;
+    padding: 0 24px;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .post-title {
