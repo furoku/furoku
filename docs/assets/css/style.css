@@ -37,6 +37,11 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+}
+
+.hamburger {
+    display: none;
 }
 
 .site-title {
@@ -66,7 +71,7 @@ img {
 .hero-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.55);
 }
 
 .hero-content {
@@ -160,14 +165,14 @@ img {
 
 /* AI Notice */
 .ai-notice {
-    background: #fff3cd;
-    color: #856404;
+    background: #f0f2f5;
+    color: #555;
     text-align: center;
     padding: 14px 20px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-top: 2px solid #ffc107;
-    border-bottom: 2px solid #ffc107;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 .cta-button:hover {
     background-color: #0056b3;
@@ -176,7 +181,7 @@ img {
 
 /* Post Cards */
 .featured-post, .post-list {
-    margin: 40px 0;
+    margin: 60px 0;
 }
 
 h2 {
@@ -207,7 +212,7 @@ h2 {
 
 .post-card-large .post-card-content {
     width: 50%;
-    padding: 30px;
+    padding: 40px;
 }
 
 .post-card-title {
@@ -342,6 +347,41 @@ h2 {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .site-nav {
+        display: none;
+    }
+
+    .hamburger {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #333;
+        padding: 8px;
+    }
+
+    .site-nav.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 15px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        padding: 10px 0;
+        z-index: 100;
+    }
+
+    .site-nav.open a {
+        margin: 0;
+        padding: 12px 24px;
+        display: block;
+        min-height: 44px;
+        line-height: 44px;
+    }
+
     .post-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -355,6 +395,10 @@ h2 {
         width: 100%;
     }
 
+    .post-card-large .post-card-image {
+        height: 200px;
+    }
+
     .post-title {
         font-size: 1.8em;
     }
@@ -362,6 +406,12 @@ h2 {
     .post-header {
         height: 40vh;
         padding-top: 50px;
+    }
+
+    .hero-label {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
     }
 }
 

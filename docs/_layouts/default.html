@@ -43,6 +43,7 @@
     <header class="site-header">
         <div class="container">
             <a href="{{ '/' | relative_url }}" class="site-title">{{ site.title }}</a>
+            <button class="hamburger" aria-label="Menu" onclick="document.querySelector('.site-nav').classList.toggle('open')">☰</button>
             <nav class="site-nav">
                 <a href="{{ '/' | relative_url }}">Home</a>
                 <a href="https://github.com/furoku">About</a>
