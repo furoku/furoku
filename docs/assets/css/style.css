@@ -3,17 +3,18 @@ body {
     font-family: 'Noto Sans JP', sans-serif;
     margin: 0;
     color: #333;
-    background-color: #fdfdfd;
-    line-height: 1.6;
+    background-color: #f8f9fb;
+    line-height: 1.8;
 }
 
 a {
-    color: #007bff;
+    color: #4a6fa5;
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
+    color: #2d4a7a;
 }
 
 .container {
@@ -45,9 +46,11 @@ img {
 }
 
 .site-title {
+    font-family: 'Noto Serif JP', serif;
     font-size: 1.5em;
-    font-weight: bold;
-    color: #333;
+    font-weight: 700;
+    color: #1a1a2e;
+    letter-spacing: 0.05em;
 }
 
 .site-nav a {
@@ -185,22 +188,28 @@ img {
 }
 
 h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.8em;
+    margin-bottom: 24px;
+    color: #1a1a2e;
+    letter-spacing: 0.03em;
 }
 
 .post-card-large {
     display: flex;
-    background: #fff;
-    border-radius: 8px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(6px);
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px rgba(26,26,46,0.08);
+    border: 1px solid rgba(255,255,255,0.6);
     color: #333;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .post-card-large:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(26,26,46,0.12);
     text-decoration: none;
 }
 
@@ -216,8 +225,9 @@ h2 {
 }
 
 .post-card-title {
+    font-family: 'Noto Serif JP', serif;
     margin: 0 0 10px;
-    font-size: 1.5em;
+    font-size: 1.4em;
 }
 
 .post-card-date {
@@ -232,17 +242,20 @@ h2 {
 }
 
 .post-card {
-    background: #fff;
-    border-radius: 8px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(6px);
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px rgba(26,26,46,0.08);
+    border: 1px solid rgba(255,255,255,0.6);
     color: #333;
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 .post-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(26,26,46,0.12);
     text-decoration: none;
 }
 
@@ -294,8 +307,10 @@ h2 {
 }
 
 .post-title {
-    font-size: 3em;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 2.5em;
     margin: 0;
+    letter-spacing: 0.02em;
 }
 
 .post-meta {
@@ -338,11 +353,11 @@ h2 {
 
 /* Footer */
 .site-footer {
-    padding: 20px 0;
-    border-top: 1px solid #eee;
+    padding: 24px 0;
+    border-top: 1px solid #e0e0e0;
     text-align: center;
-    color: #777;
-    font-size: 0.9em;
+    color: #888;
+    font-size: 0.85em;
 }
 
 /* Responsive */
