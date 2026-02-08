@@ -309,6 +309,7 @@ h2 {
 .post-header .container {
     position: relative;
     z-index: 1;
+    max-width: 720px;
 }
 
 .post-title {
@@ -316,6 +317,8 @@ h2 {
     font-size: 2.5em;
     margin: 0;
     letter-spacing: 0.02em;
+    overflow-wrap: break-word;
+    word-break: auto-phrase;
 }
 
 .post-meta {
