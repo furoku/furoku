@@ -4,6 +4,15 @@ url: "https://furoku.github.io"
 baseurl: "/furoku"
 permalink: /posts/:slug/
 
+# Author
+author:
+  name: ひろき
+  url: "https://github.com/furoku"
+
+# Plugins
+plugins:
+  - jekyll-sitemap
+
 markdown: kramdown
 highlighter: rouge
 

@@ -11,6 +11,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title | default: site.title }}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{{ page.description | default: page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +26,11 @@
     <meta property="og:description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
     <meta property="og:site_name" content="{{ site.title }}">
     <meta property="og:url" content="{{ page.url | absolute_url }}">
-    <meta property="og:type" content="{{ page.layout == 'post' ? 'article' : 'website' }}">
+    {% if page.layout == 'post' %}
+    <meta property="og:type" content="article">
+    {% else %}
+    <meta property="og:type" content="website">
+    {% endif %}
     {% if page.image %}
     <meta property="og:image" content="{{ page.image | absolute_url }}">
     {% else %}
@@ -34,6 +43,24 @@
     <meta name="twitter:image" content="{{ page.image | absolute_url }}">
     {% else %}
     <meta name="twitter:image" content="{{ '/assets/images/ogp-default.png' | absolute_url }}">
+    {% endif %}
+
+    <!-- Structured Data (JSON-LD) -->
+    {% if page.layout != 'post' %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "{{ site.title }}",
+      "url": "{{ site.url }}{{ site.baseurl }}",
+      "description": "{{ site.description }}",
+      "author": {
+        "@type": "Person",
+        "name": "{{ site.author.name }}",
+        "url": "{{ site.author.url }}"
+      }
+    }
+    </script>
     {% endif %}
 </head>
 <body>

@@ -2,12 +2,45 @@
 layout: default
 ---
 
+<!-- Structured Data (JSON-LD) for BlogPosting -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ page.title }}",
+  "description": "{{ page.excerpt | strip_html | normalize_whitespace | truncate: 160 }}",
+  "url": "{{ page.url | absolute_url }}",
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ page.author | default: site.author.name }}",
+    "url": "{{ site.author.url }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ site.title }}",
+    "url": "{{ site.url }}{{ site.baseurl }}"
+  },
+  {% if page.image %}
+  "image": "{{ page.image | absolute_url }}",
+  {% endif %}
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ page.url | absolute_url }}"
+  }
+}
+</script>
+
 <article class="post">
     <header class="post-header" style="background-image: url('{{ page.image | relative_url }}');">
         <div class="container">
             <h1 class="post-title">{{ page.title }}</h1>
             <p class="post-meta">{{ page.date | date: "%B %d, %Y" }}</p>
         </div>
+        {% if page.image %}
+        <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" style="display:none;" aria-hidden="true">
+        {% endif %}
     </header>
 
     <div class="container">
