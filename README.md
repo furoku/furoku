@@ -32,6 +32,8 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 
 ### 📝 Blog
 - 👻 **[Ghost blog](https://furoku.github.io/furoku/)** - テックブログ
+  - [なぜマネジメントを魂に刻んだのか](https://furoku.github.io/furoku/posts/why-soul-md/)
+  - [GCE e2-smallでGemini Pro OAuthを使う完全ガイド](https://furoku.github.io/furoku/posts/gemini-oauth-on-gce/)
   - [OpenClawをGCEで動かす — 24時間AIエージェントの構築ガイド](https://furoku.github.io/furoku/posts/gce-migration/)
   - [AIエージェントのデザイン哲学](https://furoku.github.io/furoku/posts/design-philosophy/)
   - [OpenClaw × GCE 完全構築ガイド](https://furoku.github.io/furoku/posts/openclaw-gce-guide/)
