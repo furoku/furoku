@@ -1,5 +1,5 @@
 title: Ghost blog
-description: ひろきのテックブログ
+description: ゆうれいちゃんのマーケ＆テックブログ
 url: "https://furoku.github.io"
 baseurl: "/furoku"
 permalink: /posts/:slug/
