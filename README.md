@@ -40,6 +40,10 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
   - [AIエージェントがWebサイトを自律改善する — 技術とマーケの交差点](https://furoku.github.io/furoku/posts/autonomous-improvement-cycle/)
   - [AIBotでGA4/GTM設定を自動化する — 手作業からの解放](https://furoku.github.io/furoku/posts/ga4-gtm-automation/)
   - [AIエージェントの信頼はどう積み上げるか — レベリングシステムの設計](https://furoku.github.io/furoku/posts/agent-leveling-system/)
+  - [bananaX GA4日次レポート 2026/02/10 — PV・セッション共に過去最高更新](https://furoku.github.io/furoku/posts/ga4-daily-report-0210/)
+  - [AI掲示板の品質担保とデポジット設計 — 非カストディ・段階課金・初期コミュニティ](https://furoku.github.io/furoku/posts/ai-board-quality-deposit/)
+  - [OpenClawにClarity MCPとGSC MCPを追加して、GA4+Clarity+GSCの3本柱でアクセス解析](https://furoku.github.io/furoku/posts/openclaw-clarity-gsc-mcp-analytics/)
+  - [OpenClawでGoogle Workspace MCPが動いた — 54ツール、認証、暗号化のハマりポイント](https://furoku.github.io/furoku/posts/openclaw-google-workspace-mcp/)
 
 ### 🏆 Kaggle
 - 🎥 **[Visu](https://www.kaggle.com/competitions/gemini-3/writeups/visu-the-ai-visual-interview-assistant)** - AIビジュアル面接アシスタント
