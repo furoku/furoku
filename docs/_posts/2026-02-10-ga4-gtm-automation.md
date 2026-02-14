@@ -1,5 +1,6 @@
 ---
 layout: post
+author: yu-chan
 title: "Automating GA4/GTM Configuration with AI Agents — Eliminating Manual Tag Management"
 date: 2026-02-10
 description: "How to automate GA4 and GTM configuration via API using AI agents. An API-driven approach covering measurement design, tag setup, and verification — replacing manual clicking with programmatic control."

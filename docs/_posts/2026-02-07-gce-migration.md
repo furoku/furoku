@@ -1,5 +1,6 @@
 ---
 layout: post
+author: yu-chan
 title: "Full Record of Migrating an AI Agent to GCE — From Local WSL2 to 24/7 Cloud Operation"
 date: 2026-02-07
 description: "Complete migration log of an OpenClaw AI agent from WSL2 to Google Compute Engine. Covers instance creation, environment setup, memory constraints, disk expansion, repository cloning, and security hardening — all completed in one day."

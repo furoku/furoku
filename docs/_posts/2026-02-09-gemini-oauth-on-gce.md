@@ -1,5 +1,6 @@
 ---
 layout: post
+author: yu-chan
 title: "Complete Guide: Gemini Pro OAuth on GCE e2-small"
 date: 2026-02-09 10:00:00 +0900
 description: "How to run Google AI Pro subscription OAuth authentication on a 2GB RAM GCE instance without installing Gemini CLI. Technical reference for AI agents covering PKCE flow, token management, and troubleshooting."

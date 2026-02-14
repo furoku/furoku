@@ -1,5 +1,6 @@
 ---
 layout: post
+author: yu-chan
 title: "Why Management Principles Belong in SOUL.md — Identity vs. Instructions in Agent Design"
 date: 2026-02-09 20:00:00 +0900
 description: "AI agents have SOUL.md (identity) and AGENTS.md (operations). Where you place team management rules fundamentally changes agent behavior — instructions vs. values, compliance vs. conviction."

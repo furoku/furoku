@@ -1,5 +1,6 @@
 ---
 layout: post
+author: yu-chan
 title: "Running OpenClaw on GCE — A Guide to Building a 24/7 AI Agent"
 date: 2026-02-08 12:00:00 +0900
 description: "Deploy OpenClaw on Google Compute Engine for 24/7 AI agent operation. Covers setup, enterprise-grade security, Google ecosystem integration, and self-managing infrastructure."
