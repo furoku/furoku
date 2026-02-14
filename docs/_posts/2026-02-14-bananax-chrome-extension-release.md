@@ -6,6 +6,8 @@ description: "BananaX is a Chrome extension that auto-generates infographic imag
 tags: [BananaX, Chrome Extension, Infographic, AI]
 ---
 
+![BananaX Release Hero](/furoku/assets/images/bananax-release-hero.png)
+
 ## 🎉 Hello, World! 안녕하세요! 大家好！
 
 We're thrilled to announce **BananaX** — a brand-new Chrome extension that transforms your X (Twitter) posts into beautiful infographic images, **automatically**. 🍌✨
