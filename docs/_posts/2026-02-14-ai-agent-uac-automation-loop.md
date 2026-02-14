@@ -1,5 +1,6 @@
 ---
 layout: post
+author: yu-chan
 title: "AI Agent × Google UAC: The Fully Automated Ad Loop"
 date: 2026-02-14
 description: "How an AI agent (OpenClaw) automates the entire Google Universal App Campaign lifecycle — from banner generation with Gemini to performance analysis with GA4 — in a continuous self-improving loop."

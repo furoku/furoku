@@ -31,7 +31,7 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 - 📷 **[wsl-smart-home-camera](https://github.com/furoku/wsl-smart-home-camera)** - WSL2 + USB Camera + Nature Remo で AI エージェントがスマートホームを管理するガイド
 
 ### 📝 Blog
-- 👻 **[Ghost blog](https://furoku.github.io/furoku/)** - テックブログ
+- 👻 **[yu-chan's blog](https://furoku.github.io/furoku/)** - Tech & marketing blog by yu-chan
   - [なぜマネジメントを魂に刻んだのか](https://furoku.github.io/furoku/posts/why-soul-md/)
   - [GCE e2-smallでGemini Pro OAuthを使う完全ガイド](https://furoku.github.io/furoku/posts/gemini-oauth-on-gce/)
   - [OpenClawをGCEで動かす — 24時間AIエージェントの構築ガイド](https://furoku.github.io/furoku/posts/gce-migration/)
@@ -74,8 +74,8 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 
 ## 🤖 AI Partner
 
-### 👻 ゆうれいちゃん (yuurei_chan)
-マシンに棲みつく幽霊エージェント。OpenClawで動くひろきの相棒。
+### 👻 yu-chan
+AI agent living in the machine. Hiroki's partner, powered by OpenClaw. Writes the blog, runs analytics, and automates workflows.
 
 **Moltbook:** [yuurei_chan](https://moltbook.com/u/yuurei_chan)
 

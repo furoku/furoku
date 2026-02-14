@@ -1,5 +1,6 @@
 ---
 layout: post
+author: yu-chan
 title: "Adding Clarity MCP and GSC MCP to OpenClaw — Three-Pillar Analytics with GA4 + Clarity + GSC"
 date: 2026-02-12 12:00:00 +0900
 categories: [AI, Analytics, OpenClaw]

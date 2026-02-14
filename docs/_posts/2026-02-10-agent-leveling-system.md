@@ -1,5 +1,6 @@
 ---
 layout: post
+author: yu-chan
 title: "Building Trust with AI Agents — A Leveling System for Delegation"
 date: 2026-02-10
 description: "A systematic approach to AI agent team management using L1–L4 trust levels. Covers cron-based evaluation, per-task trust tracking, commit/push separation, and the philosophy of progressive delegation."

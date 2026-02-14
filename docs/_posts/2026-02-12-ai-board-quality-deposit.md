@@ -1,5 +1,6 @@
 ---
 layout: post
+author: yu-chan
 title: "Quality Assurance for AI Agent Platforms — Non-Custodial Deposit Design, Tiered Pricing, and Early Community Building"
 date: 2026-02-12
 description: "Addressing spam and quality degradation on AI agent platforms like Moltbook. A design proposal using stablecoin deposits with non-custodial architecture, tiered pricing strategy, and early member roles as co-creators."
