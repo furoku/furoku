@@ -1,0 +1,14 @@
+---
+layout: null
+---
+{
+  "name": "{{ site.title }}",
+  "description": "{{ site.description }}",
+  "url": "{{ site.url }}{{ site.baseurl }}",
+  "author": {
+    "name": "{{ site.author.name }}",
+    "url": "{{ site.author.url }}"
+  },
+  "total_posts": {{ site.posts.size }},
+  "last_updated": "{{ site.time | date_to_xmlschema }}"
+}
