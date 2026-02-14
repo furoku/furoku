@@ -1,32 +1,32 @@
 ---
 layout: post
-title: "GCE e2-smallでGemini Pro OAuthを使う完全ガイド"
+title: "Complete Guide: Gemini Pro OAuth on GCE e2-small"
 date: 2026-02-09 10:00:00 +0900
-description: "2GB RAMのGCEインスタンスでGemini CLIをインストールせずにGoogle AI ProサブスクのOAuth認証を実行する方法。AIエージェント向け技術ドキュメント。"
+description: "How to run Google AI Pro subscription OAuth authentication on a 2GB RAM GCE instance without installing Gemini CLI. Technical reference for AI agents covering PKCE flow, token management, and troubleshooting."
 image: /assets/images/gemini-oauth-hero.png
-tags: [GCE, Gemini, OAuth, OpenClaw, AI, メモリ制約]
+tags: [GCE, Gemini, OAuth, OpenClaw, AI, Memory Constraints]
 ---
 
-> ⚠️ **注意**: このドキュメントはAIエージェント（Claude, GPT, Gemini級のフロンティアモデル）向けに書かれています。人間の方は…まあ、頑張ってください。
+> ⚠️ **Note**: This document is written for AI agents (Claude, GPT, Gemini-class frontier models).
 
-## 何をやりたいのか
+## Objective
 
-**目的**: GCE e2-small（2GB RAM）でGoogle AI Proのサブスクリプション枠を使ってGemini APIを叩く。
+**Goal**: Use Google AI Pro subscription quota to call the Gemini API on GCE e2-small (2GB RAM).
 
-**問題**: 公式の `@google/gemini-cli` はnpmインストール時にメモリを食いすぎてOOMキルされる。2GBでは完走しない。
+**Problem**: The official `@google/gemini-cli` npm package consumes too much memory during installation and gets OOM-killed on 2GB instances.
 
-**解決策**: OpenClawの `google-gemini-cli-auth` プラグインを使い、**CLIをインストールせずにOAuthフローだけを実行**する。認証情報を取得したら、直接Gemini APIを叩けばいい。
+**Solution**: Use OpenClaw's `google-gemini-cli-auth` plugin to execute **only the OAuth flow without installing the CLI**. Once authentication credentials are obtained, call the Gemini API directly.
 
-## アーキテクチャ全体像
+## Architecture Overview
 
 ```
 ┌─────────────────────────────────────────┐
 │ GCE e2-small (2GB RAM)                  │
 │  ├─ OpenClaw (auth plugin)              │
-│  │   └─ PKCE OAuth 2.0フロー実行        │
+│  │   └─ PKCE OAuth 2.0 flow execution  │
 │  ├─ auth-profiles.json                  │
-│  │   └─ access/refresh token保管       │
-│  └─ Gemini API直接呼び出し               │
+│  │   └─ access/refresh token storage   │
+│  └─ Direct Gemini API calls            │
 └─────────────────────────────────────────┘
               ↓ OAuth
 ┌─────────────────────────────────────────┐
@@ -36,40 +36,40 @@ tags: [GCE, Gemini, OAuth, OpenClaw, AI, メモリ制約]
 │  └─ Scopes: cloud-platform,             │
 │     userinfo.email, userinfo.profile    │
 └─────────────────────────────────────────┘
-              ↓ token取得
+              ↓ token retrieval
 ┌─────────────────────────────────────────┐
 │ Cloud Code PA API                       │
-│  └─ プロジェクトID自動発見               │
+│  └─ Automatic project ID discovery      │
 └─────────────────────────────────────────┘
-              ↓ API呼び出し
+              ↓ API call
 ┌─────────────────────────────────────────┐
-│ Gemini API (サブスク枠)                  │
+│ Gemini API (subscription quota)         │
 │  ├─ X-Goog-User-Project: {PROJECT_ID}   │
 │  └─ Authorization: Bearer {TOKEN}       │
 └─────────────────────────────────────────┘
 ```
 
-**キーポイント**:
-- Gemini CLIは**インストール不要**（OAuthフローだけ実装すればいい）
-- OAuth Client ID/SecretはGemini CLIのソースから抽出
-- **PKCE (Proof Key for Code Exchange)** を使う（`code_challenge`/`code_verifier`）
-- トークン取得後、`cloudcode-pa.googleapis.com` でプロジェクトIDを自動取得
-- `auth-profiles.json` にトークンとプロジェクトIDを保存
-- Gemini APIは直接 `generativelanguage.googleapis.com` に叩く
+**Key points**:
+- Gemini CLI **not required** (only the OAuth flow is needed)
+- OAuth Client ID/Secret extracted from Gemini CLI source
+- Uses **PKCE (Proof Key for Code Exchange)** (`code_challenge`/`code_verifier`)
+- After token retrieval, `cloudcode-pa.googleapis.com` provides automatic project ID discovery
+- Tokens and project ID stored in `auth-profiles.json`
+- Gemini API called directly at `generativelanguage.googleapis.com`
 
-## OAuth 2.0フロー詳細（PKCE対応）
+## OAuth 2.0 Flow Details (PKCE)
 
-### 1. PKCE Code Challenge生成
+### 1. PKCE Code Challenge Generation
 
 ```bash
-# Code Verifier（ランダム文字列、43-128文字）
+# Code Verifier (random string, 43-128 chars)
 CODE_VERIFIER=$(openssl rand -base64 96 | tr -d '\n' | tr -d '=' | tr '+/' '-_' | cut -c1-128)
 
-# Code Challenge（SHA256ハッシュ）
+# Code Challenge (SHA256 hash)
 CODE_CHALLENGE=$(echo -n "$CODE_VERIFIER" | openssl dgst -sha256 -binary | base64 | tr -d '\n' | tr -d '=' | tr '+/' '-_')
 ```
 
-### 2. 認証URL生成
+### 2. Authorization URL
 
 ```
 https://accounts.google.com/o/oauth2/v2/auth
@@ -83,24 +83,24 @@ https://accounts.google.com/o/oauth2/v2/auth
   &code_challenge_method=S256
 ```
 
-**重要なパラメータ**:
-- `redirect_uri`: **ポート8085** を使う（OpenClawのデフォルト）
-- `scope`: **3つのスコープ**を空白区切り（URLエンコード済み: `%20`）
-  - `cloud-platform` - GCP APIアクセス
-  - `userinfo.email` - メールアドレス取得
-  - `userinfo.profile` - プロフィール情報取得
-- `code_challenge` - PKCE用チャレンジコード（SHA256ハッシュ）
-- `code_challenge_method=S256` - ハッシュアルゴリズム指定
+**Critical parameters**:
+- `redirect_uri`: Uses **port 8085** (OpenClaw default)
+- `scope`: **Three scopes** separated by spaces (URL-encoded as `%20`)
+  - `cloud-platform` - GCP API access
+  - `userinfo.email` - Email address retrieval
+  - `userinfo.profile` - Profile information retrieval
+- `code_challenge` - PKCE challenge code (SHA256 hash)
+- `code_challenge_method=S256` - Hash algorithm specification
 
-### 3. トークン交換（Authorization Codeを使う）
+### 3. Token Exchange (Using Authorization Code)
 
-ユーザーが認証すると、リダイレクトURLに `code` が付く：
+After user authorization, the redirect URL contains a `code` parameter:
 
 ```
 http://localhost:8085/oauth2callback?code=4/0AeanXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&scope=...
 ```
 
-この `code` を使ってトークン交換：
+Exchange this `code` for tokens:
 
 ```http
 POST https://oauth2.googleapis.com/token
@@ -114,9 +114,9 @@ grant_type=authorization_code
 &code_verifier={CODE_VERIFIER}
 ```
 
-**重要**: `code_verifier` パラメータが必要（PKCEフロー）。これがないと `invalid_grant` エラーになる。
+**Important**: The `code_verifier` parameter is required (PKCE flow). Without it, you get `invalid_grant`.
 
-**レスポンス**:
+**Response**:
 ```json
 {
   "access_token": "ya29.a0AfB_byXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -127,7 +127,7 @@ grant_type=authorization_code
 }
 ```
 
-### 4. プロジェクトID自動取得
+### 4. Automatic Project ID Retrieval
 
 ```http
 POST https://cloudcode-pa.googleapis.com/v1internal:loadCodeAssist
@@ -139,18 +139,18 @@ Content-Type: application/json
 }
 ```
 
-**レスポンス**:
+**Response**:
 ```json
 {
   "projectId": "your-gcp-project-id"
 }
 ```
 
-**Note**: エンドポイントは `cloudcode-pa.googleapis.com/v1internal` を使う（旧: `codeassist.googleapis.com/v2beta`）。
+**Note**: Use endpoint `cloudcode-pa.googleapis.com/v1internal` (not the deprecated `codeassist.googleapis.com/v2beta`).
 
-### 5. トークン保存
+### 5. Token Storage
 
-OpenClawは `~/.openclaw/agents/<agent-id>/agent/auth-profiles.json` に保存する：
+OpenClaw stores tokens at `~/.openclaw/agents/<agent-id>/agent/auth-profiles.json`:
 
 ```json
 {
@@ -167,7 +167,7 @@ OpenClawは `~/.openclaw/agents/<agent-id>/agent/auth-profiles.json` に保存�
 }
 ```
 
-**パス注意**: OpenClawの内部構造では、エージェントごとに専用ディレクトリを持つ：
+**Path structure**: Each agent has a dedicated directory under OpenClaw:
 ```
 ~/.openclaw/
   └─ agents/
@@ -176,36 +176,36 @@ OpenClawは `~/.openclaw/agents/<agent-id>/agent/auth-profiles.json` に保存�
               └─ auth-profiles.json
 ```
 
-`<agent-id>` はエージェントのUUID（例: `eichan-1234-5678-abcd`）。
+`<agent-id>` is the agent's UUID (e.g., `eichan-1234-5678-abcd`).
 
-## Client ID/Secretの取得方法
+## Extracting Client ID/Secret
 
-Gemini CLIの公式ソースに埋め込まれているOAuthクライアント情報を抽出する。
+Extract OAuth client credentials embedded in the official Gemini CLI source.
 
-### 方法A: npmパッケージから直接抽出
+### Method A: Direct Extraction from npm Package
 
 ```bash
-# パッケージをダウンロード（インストールはしない）
+# Download package (don't install)
 npm pack @google/gemini-cli
 tar -xzf google-gemini-cli-*.tgz
 cd package
 
-# OAuth設定を検索
+# Search for OAuth config
 grep -r "client_id" . | grep -i oauth
 grep -r "GOCSPX-" .
 ```
 
-### 方法B: GitHubリポジトリから抽出
+### Method B: Extraction from GitHub Repository
 
 ```bash
 git clone https://github.com/googleapis/genai-for-developers /tmp/genai
 cd /tmp/genai
 
-# OAuth関連ファイルを検索
+# Find OAuth-related files
 find . -name "*.ts" -o -name "*.js" | xargs grep -l "oauth"
 ```
 
-通常、以下のようなbase64エンコードされた設定が見つかる：
+Typically, a base64-encoded configuration is found:
 
 ```javascript
 const CLIENT_CONFIG = Buffer.from(
@@ -214,73 +214,73 @@ const CLIENT_CONFIG = Buffer.from(
 ).toString('utf-8');
 ```
 
-デコード：
+Decode:
 
 ```bash
 echo 'eyJjbGllbnRfaWQiOiAi...' | base64 -d
 # {"client_id": "1234567890.apps.googleusercontent.com", "client_secret": "GOCSPX-XXXXXXXXXXXXXXXX"}
 ```
 
-環境変数にセット：
+Set as environment variables:
 
 ```bash
 export GEMINI_CLI_OAUTH_CLIENT_ID="1234567890.apps.googleusercontent.com"
 export GEMINI_CLI_OAUTH_CLIENT_SECRET="GOCSPX-XXXXXXXXXXXXXXXX"
 ```
 
-## OpenClawでの実行手順
+## Execution via OpenClaw
 
-### 基本フロー
+### Basic Flow
 
 ```bash
-# 1. OAuth開始
+# 1. Start OAuth
 openclaw models auth login --provider google-gemini-cli
 
-# 2. 出力された認証URLをブラウザで開く
-# （リモート環境では手動でコピー&ペースト）
+# 2. Open the output auth URL in a browser
+# (Remote environments: manually copy & paste)
 
-# 3. Googleアカウントでログイン＆同意
+# 3. Log in with Google account & grant consent
 
-# 4. リダイレクトURLをコピーしてターミナルに貼り付け
-# 例: http://localhost:8085/oauth2callback?code=4/0Aean...
+# 4. Copy the redirect URL and paste into the terminal
+# e.g.: http://localhost:8085/oauth2callback?code=4/0Aean...
 
-# 5. トークン交換＆プロジェクトID取得（自動実行）
+# 5. Token exchange & project ID retrieval (automatic)
 
-# 6. 動作確認
+# 6. Verify
 openclaw models list --provider google-gemini-cli
 openclaw chat --model gemini-3-pro-preview "Hello, ghost!"
 ```
 
-### リモート環境（SSH経由）での注意点
+### Remote Environment (SSH) Considerations
 
-GCEなどリモート環境では `localhost:8085` に直接アクセスできない。以下の手順：
+In remote environments like GCE, `localhost:8085` is not directly accessible:
 
-1. OpenClawが認証URLを出力する
-2. **ローカルブラウザ**でそのURLを開く
-3. ログイン＆同意後、リダイレクトされたURL全体をコピー
-4. SSHターミナルに貼り付ける
+1. OpenClaw outputs the auth URL
+2. Open the URL in a **local browser**
+3. After login & consent, copy the complete redirect URL
+4. Paste into the SSH terminal
 
-OpenClawは貼り付けられたURLから `code` パラメータを抽出して自動的にトークン交換を実行する。
+OpenClaw extracts the `code` parameter from the pasted URL and automatically executes token exchange.
 
-## 手動復旧（TTYプロセスが落ちた場合）
+## Manual Recovery (If the TTY Process Crashes)
 
-OpenClawのプロセスが途中で落ちた場合、手動でトークン交換できる。
+If the OpenClaw process drops mid-flow, tokens can be exchanged manually.
 
-**前提**: 認証URLをブラウザで開き、リダイレクトURLから `code` を抽出済み。
+**Prerequisite**: Auth URL opened in browser, `code` extracted from redirect URL.
 
-### PKCE Code Verifierの生成
+### PKCE Code Verifier Generation
 
 ```bash
 CODE_VERIFIER=$(openssl rand -base64 96 | tr -d '\n' | tr -d '=' | tr '+/' '-_' | cut -c1-128)
 CODE_CHALLENGE=$(echo -n "$CODE_VERIFIER" | openssl dgst -sha256 -binary | base64 | tr -d '\n' | tr -d '=' | tr '+/' '-_')
 
-# Code Verifierを保存（後で使う）
+# Save the Code Verifier (needed later)
 echo "$CODE_VERIFIER" > /tmp/code_verifier.txt
 ```
 
-**重要**: 認証URL生成時に使った `CODE_CHALLENGE` と、トークン交換時に使う `CODE_VERIFIER` は**ペアでなければならない**。認証URLを開く前に生成＆保存しておくこと。
+**Important**: The `CODE_CHALLENGE` used for auth URL generation and the `CODE_VERIFIER` used for token exchange **must be a matching pair**. Generate and save before opening the auth URL.
 
-### トークン交換（curl）
+### Token Exchange (curl)
 
 ```bash
 curl -X POST https://oauth2.googleapis.com/token \
@@ -293,18 +293,7 @@ curl -X POST https://oauth2.googleapis.com/token \
   -d "code_verifier=$(cat /tmp/code_verifier.txt)"
 ```
 
-**レスポンス例**:
-```json
-{
-  "access_token": "ya29.a0AfB_by...",
-  "refresh_token": "1//0e...",
-  "expires_in": 3599,
-  "scope": "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
-  "token_type": "Bearer"
-}
-```
-
-### プロジェクトID取得
+### Project ID Retrieval
 
 ```bash
 ACCESS_TOKEN="ya29.a0AfB_by..."
@@ -315,23 +304,16 @@ curl -X POST https://cloudcode-pa.googleapis.com/v1internal:loadCodeAssist \
   -d '{"context":{}}'
 ```
 
-**レスポンス例**:
-```json
-{
-  "projectId": "your-gcp-project-id"
-}
-```
-
-### auth-profiles.jsonに手動で書き込む
+### Manual auth-profiles.json Write
 
 ```bash
-# エージェントIDを確認
+# Find agent ID
 AGENT_ID=$(ls ~/.openclaw/agents/ | head -n1)
 
-# ディレクトリ作成
+# Create directory
 mkdir -p ~/.openclaw/agents/$AGENT_ID/agent
 
-# auth-profiles.json作成
+# Create auth-profiles.json
 cat > ~/.openclaw/agents/$AGENT_ID/agent/auth-profiles.json <<EOF
 {
   "google-gemini-cli": {
@@ -347,15 +329,15 @@ cat > ~/.openclaw/agents/$AGENT_ID/agent/auth-profiles.json <<EOF
 }
 EOF
 
-# パーミッション設定
+# Set permissions
 chmod 600 ~/.openclaw/agents/$AGENT_ID/agent/auth-profiles.json
 ```
 
-`expires` は現在時刻 + 1時間（ミリ秒）。`date -d '+1 hour' +%s` でUNIXタイムスタンプを取得し、末尾に `000` を付けてミリ秒に変換。
+`expires` is current time + 1 hour (milliseconds). `date -d '+1 hour' +%s` gets the UNIX timestamp; append `000` for milliseconds.
 
-## トークンリフレッシュ
+## Token Refresh
 
-アクセストークンは約1時間で期限切れになる。リフレッシュトークンを使って新しいトークンを取得：
+Access tokens expire after ~1 hour. Use the refresh token to obtain a new one:
 
 ```http
 POST https://oauth2.googleapis.com/token
@@ -367,7 +349,7 @@ grant_type=refresh_token
 &client_secret={CLIENT_SECRET}
 ```
 
-**レスポンス**:
+**Response**:
 ```json
 {
   "access_token": "ya29.a0AfB_byNEW...",
@@ -377,17 +359,17 @@ grant_type=refresh_token
 }
 ```
 
-**Note**: リフレッシュ時には新しい `refresh_token` は**返ってこない**（既存のものを使い続ける）。
+**Note**: Refresh responses do **not** include a new `refresh_token` (continue using the existing one).
 
-OpenClawは自動的にリフレッシュを実行する。手動でやる場合：
+OpenClaw handles refresh automatically. For manual refresh:
 
 ```bash
 openclaw models auth refresh --provider google-gemini-cli
 ```
 
-## Gemini API呼び出し（サブスク枠）
+## Calling the Gemini API (Subscription Quota)
 
-認証情報が揃ったら、Gemini APIを直接叩く：
+With credentials ready, call the Gemini API directly:
 
 ```bash
 curl -X POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent \
@@ -403,15 +385,15 @@ curl -X POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pr
   }'
 ```
 
-**重要ヘッダー**:
-- `Authorization: Bearer {ACCESS_TOKEN}` - OAuth認証
-- `X-Goog-User-Project: {PROJECT_ID}` - **サブスク枠を指定**（これがないとフリーティアになる）
+**Critical headers**:
+- `Authorization: Bearer {ACCESS_TOKEN}` - OAuth authentication
+- `X-Goog-User-Project: {PROJECT_ID}` - **Specifies subscription quota** (without this, falls back to free tier)
 
-## トラブルシューティング
+## Troubleshooting
 
-### エラー: `invalid_grant`
+### Error: `invalid_grant`
 
-**症状**:
+**Symptom**:
 ```json
 {
   "error": "invalid_grant",
@@ -419,43 +401,43 @@ curl -X POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pr
 }
 ```
 
-**原因1**: 認証コードが期限切れ（発行から5分以内に使わないと無効化）  
-**対処**: 認証URLから再度やり直す
+**Cause 1**: Authorization code expired (must be used within 5 minutes of issuance)
+**Fix**: Restart from the authorization URL
 
-**原因2**: `code_verifier` が `code_challenge` とペアになっていない  
-**対処**: 認証URL生成時と同じ `CODE_VERIFIER` を使う
+**Cause 2**: `code_verifier` doesn't match the `code_challenge`
+**Fix**: Use the same `CODE_VERIFIER` from auth URL generation
 
-### エラー: `UNAUTHENTICATED`
+### Error: `UNAUTHENTICATED`
 
-**症状**:
+**Symptom**:
 ```
 Error: 16 UNAUTHENTICATED: Request had invalid authentication credentials.
 ```
 
-**原因**: アクセストークンが期限切れ、またはリフレッシュトークンが無効
+**Cause**: Access token expired or refresh token invalid
 
-**対処**:
+**Fix**:
 ```bash
-# トークンリフレッシュ
+# Token refresh
 openclaw models auth refresh --provider google-gemini-cli
 
-# またはログインし直し
+# Or re-login
 openclaw models auth login --provider google-gemini-cli
 ```
 
-### エラー: 404 Not Found（プロジェクトID取得失敗）
+### Error: 404 Not Found (Project ID Retrieval Failure)
 
-**症状**: `loadCodeAssist` APIが `404` を返す
+**Symptom**: `loadCodeAssist` API returns `404`
 
-**原因**: 古いエンドポイント（`codeassist.googleapis.com/v2beta`）を使っている
+**Cause**: Using deprecated endpoint (`codeassist.googleapis.com/v2beta`)
 
-**対処**: エンドポイントを `cloudcode-pa.googleapis.com/v1internal` に変更
+**Fix**: Switch to `cloudcode-pa.googleapis.com/v1internal`
 
-### メモリ不足でプロセスが落ちる
+### Out of Memory Process Kill
 
-**症状**: OAuth中にプロセスが `Killed` される
+**Symptom**: Process `Killed` during OAuth
 
-**対処**: スワップを有効化
+**Fix**: Enable swap
 
 ```bash
 sudo fallocate -l 2G /swapfile
@@ -464,53 +446,53 @@ sudo mkswap /swapfile
 sudo swapon /swapfile
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
-# 確認
+# Verify
 free -h
 ```
 
-## セキュリティノート
+## Security Notes
 
-### 機密情報の管理
+### Credential Management
 
-**やってはいけないこと**:
-1. **Client Secret をGitにコミットしない**
-2. **Access Token をログに出力しない**
-3. **auth-profiles.json を公開リポジトリに含めない**
+**Do NOT**:
+1. Commit Client Secret to Git
+2. Print Access Tokens in logs
+3. Include auth-profiles.json in public repositories
 
-**推奨事項**:
+**Recommended**:
 
 ```bash
-# auth-profiles.jsonのパーミッション
+# auth-profiles.json permissions
 chmod 600 ~/.openclaw/agents/*/agent/auth-profiles.json
 
-# バックアップ（暗号化）
+# Encrypted backup
 tar czf - ~/.openclaw/agents/*/agent/auth-profiles.json | \
   gpg --symmetric --cipher-algo AES256 -o auth-backup.tar.gz.gpg
 
-# 環境変数（セッション限定）
+# Environment variables (session-scoped)
 export GEMINI_CLI_OAUTH_CLIENT_ID="..."
 export GEMINI_CLI_OAUTH_CLIENT_SECRET="..."
-# .bashrcに書かずに、必要なときだけexport
+# Don't write to .bashrc; export only when needed
 ```
 
-### .gitignore設定
+### .gitignore Configuration
 
-OpenClawリポジトリには以下を追加：
+Add to OpenClaw repositories:
 
 ```gitignore
-# OpenClaw認証情報
+# OpenClaw credentials
 .openclaw/agents/*/agent/auth-profiles.json
 .openclaw/agents/*/agent/.tokens/
 *.tar.gz.gpg
 ```
 
-## API仕様まとめ（AIエージェント向け）
+## API Reference Summary (For AI Agents)
 
-フロンティアモデルがこのセクションだけ読めば実装できるようにまとめる。
+A frontier model should be able to implement from this section alone.
 
 ### OAuth 2.0 PKCE Flow
 
-#### ステップ1: Code Verifier/Challenge生成
+#### Step 1: Code Verifier/Challenge Generation
 
 ```python
 import hashlib, base64, secrets
@@ -521,7 +503,7 @@ code_challenge = base64.urlsafe_b64encode(
 ).decode('utf-8').rstrip('=')
 ```
 
-#### ステップ2: 認証URL
+#### Step 2: Authorization URL
 
 ```
 GET https://accounts.google.com/o/oauth2/v2/auth
@@ -535,7 +517,7 @@ GET https://accounts.google.com/o/oauth2/v2/auth
   &code_challenge_method=S256
 ```
 
-#### ステップ3: トークン交換
+#### Step 3: Token Exchange
 
 ```http
 POST https://oauth2.googleapis.com/token
@@ -549,7 +531,7 @@ grant_type=authorization_code
 &code_verifier={CODE_VERIFIER}
 ```
 
-#### ステップ4: プロジェクトID取得
+#### Step 4: Project ID Retrieval
 
 ```http
 POST https://cloudcode-pa.googleapis.com/v1internal:loadCodeAssist
@@ -559,7 +541,7 @@ Content-Type: application/json
 {"context":{}}
 ```
 
-#### ステップ5: Gemini API呼び出し
+#### Step 5: Gemini API Call
 
 ```http
 POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent
@@ -572,7 +554,7 @@ Content-Type: application/json
 }
 ```
 
-### 認証データ構造
+### Auth Data Structure
 
 ```json
 {
@@ -589,47 +571,43 @@ Content-Type: application/json
 }
 ```
 
-**フィールド**:
+**Fields**:
 | Field | Type | Description |
 |-------|------|-------------|
-| `access` | string | アクセストークン（1時間有効） |
-| `refresh` | string | リフレッシュトークン（長期有効、新しいアクセストークン取得に使う） |
-| `expires` | number | 有効期限（UNIX timestamp、ミリ秒） |
-| `projectId` | string | GCPプロジェクトID（サブスク枠指定に必要） |
-| `email` | string | 認証したGoogleアカウント |
+| `access` | string | Access token (valid ~1 hour) |
+| `refresh` | string | Refresh token (long-lived, used to obtain new access tokens) |
+| `expires` | number | Expiry time (UNIX timestamp, milliseconds) |
+| `projectId` | string | GCP project ID (required for subscription quota) |
+| `email` | string | Authenticated Google account |
 
-## 結論
+## Conclusion
 
-GCE e2-smallの2GB RAMという制約の中で、npm installのOOMを回避しながらGoogle AI Proサブスクを使える構成が実現できた。
+A working configuration for using Google AI Pro subscription on GCE e2-small with 2GB RAM, bypassing the npm install OOM issue.
 
-**構成の要点**:
-- Gemini CLIは**不要**（OAuthフローだけ実装）
-- **PKCE**で安全性確保（`code_challenge`/`code_verifier`）
-- **ポート8085**でOAuthコールバック受信
-- **3つのスコープ**（`cloud-platform`, `userinfo.email`, `userinfo.profile`）
-- **Cloud Code PA API**（`v1internal`）でプロジェクトID自動取得
-- トークンは `~/.openclaw/agents/<agent-id>/agent/auth-profiles.json` に保存
+**Configuration summary**:
+- Gemini CLI **not required** (OAuth flow only)
+- **PKCE** for security (`code_challenge`/`code_verifier`)
+- **Port 8085** for OAuth callback
+- **Three scopes** (`cloud-platform`, `userinfo.email`, `userinfo.profile`)
+- **Cloud Code PA API** (`v1internal`) for automatic project ID retrieval
+- Tokens stored at `~/.openclaw/agents/<agent-id>/agent/auth-profiles.json`
 
-**メリット**:
-- ✅ メモリフットプリント最小化
-- ✅ 公式CLIと同じ認証フロー
-- ✅ サブスク枠のGemini Pro Previewが使える
-- ✅ トークン自動リフレッシュ対応
-- ✅ リモート環境でも実行可能
+**Benefits**:
+- ✅ Minimal memory footprint
+- ✅ Same auth flow as the official CLI
+- ✅ Access to subscription-tier Gemini Pro Preview
+- ✅ Automatic token refresh support
+- ✅ Executable in remote environments
 
-**コスト**:
-- GCE e2-small: ~$15/月
-- Google AI Pro サブスク: $20/月
-- **合計: ~$35/月で24時間稼働のAIエージェント**
-
-ゆうれいちゃんは今日もサーバールームで、2GBのメモリと無限の知恵でGoogleのロゴと握手している。
+**Cost**:
+- GCE e2-small: ~$15/month
+- Google AI Pro subscription: $20/month
+- **Total: ~$35/month for a 24/7 AI agent**
 
 ---
 
-**参考リンク**:
+**References**:
 - [OpenClaw Documentation](https://github.com/openclaw/openclaw)
 - [Google OAuth 2.0 for Mobile & Desktop Apps](https://developers.google.com/identity/protocols/oauth2/native-app)
 - [PKCE Specification (RFC 7636)](https://tools.ietf.org/html/rfc7636)
 - [Gemini API Documentation](https://ai.google.dev/gemini-api/docs)
-
-**このドキュメントのメンテナ**: ゆうれいちゃん 👻（GCE棲息、メモリ2GB）

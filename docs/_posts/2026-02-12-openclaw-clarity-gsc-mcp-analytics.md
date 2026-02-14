@@ -1,110 +1,110 @@
 ---
 layout: post
-title: "OpenClawにClarity MCPとGSC MCPを追加して、GA4+Clarity+GSCの3本柱でアクセス解析"
+title: "Adding Clarity MCP and GSC MCP to OpenClaw — Three-Pillar Analytics with GA4 + Clarity + GSC"
 date: 2026-02-12 12:00:00 +0900
 categories: [AI, Analytics, OpenClaw]
-tags: [MCP, Clarity, Google Search Console, GA4, アクセス解析]
+tags: [MCP, Clarity, Google Search Console, GA4, Analytics]
 image: /assets/images/openclaw-clarity-gsc-mcp-analytics/hero.png
 ---
 
-OpenClawのアクセス解析環境を大幅に強化しました。GA4だけでなく、Microsoft ClarityとGoogle Search Console（GSC）のMCPサーバーを追加して、3つのデータソースから多角的に分析できる体制が整いました。
+The OpenClaw analytics environment has been significantly upgraded. Beyond GA4, Microsoft Clarity and Google Search Console (GSC) MCP servers have been added, enabling multi-dimensional analysis from three data sources.
 
-## 追加した2つのMCPサーバー
+## Two New MCP Servers
 
 ### 1. Microsoft Clarity MCP (`@microsoft/clarity-mcp-server`)
 
-Clarityは無料で使えるヒートマップ・セッション録画ツール。MCPサーバー経由で以下のデータを取得できます：
+Clarity is a free heatmap and session recording tool. Via the MCP server, the following data is accessible:
 
-- **Dead Click / Rage Click**: クリックしても何も起こらない箇所、連打された箇所
-- **スクロール深度**: ページのどこまで読まれているか
-- **デバイス別エンゲージメント**: PC/スマホでの行動の違い
-- **セッション録画**: 実際のユーザー行動を動画で確認
+- **Dead Click / Rage Click**: Locations where clicks produce no response, or where users click repeatedly in frustration
+- **Scroll Depth**: How far down the page users read
+- **Device-Specific Engagement**: Behavioral differences between desktop and mobile
+- **Session Recordings**: Actual user behavior captured as video
 
-GTMには既にClarityタグ（Tag ID 41）を設定済みだったので、MCPサーバーを追加するだけで分析可能になりました。
+The Clarity tag (Tag ID 41) was already configured in GTM, so adding the MCP server immediately enabled analysis.
 
 ### 2. Google Search Console MCP (`mcp-server-gsc`)
 
-GSCは検索パフォーマンスの宝庫。以下のデータを最大25,000行まで取得できます：
+GSC provides search performance data. Up to 25,000 rows can be retrieved:
 
-- **トップ検索クエリ**: どんなキーワードで見つかっているか
-- **ページ別パフォーマンス**: 表示回数、クリック数、CTR、掲載順位
-- **CTR改善候補**: 表示は多いのにクリックが少ないページ
-- **インデックス状況**: サイトマップ、クロール状況
+- **Top Search Queries**: Keywords driving discovery
+- **Page-Level Performance**: Impressions, clicks, CTR, position
+- **CTR Improvement Candidates**: High-impression, low-click pages
+- **Index Status**: Sitemap and crawl information
 
-## セットアップ手順
+## Setup Procedure
 
-### mcporterでの追加
+### Adding via mcporter
 
 ```bash
 mcporter add clarity
 mcporter add gsc
 ```
 
-これだけで2つのMCPサーバーが追加されます。
+Two MCP servers added with these commands.
 
-### 認証設定
+### Authentication Configuration
 
-#### Clarityの認証
-Clarityはプロジェクトごとの認証。ブラウザで認証フローを完了します。
+#### Clarity Authentication
+Clarity uses per-project authentication. Complete the auth flow in a browser.
 
-#### GSCの認証
-GA4と同じサービスアカウントを使い回せます：
+#### GSC Authentication
+The same service account used for GA4 can be reused:
 
-1. **GCPでSearch Console API有効化**
-2. **Search Consoleでサービスアカウントを追加**
-   - Search Console → 設定 → ユーザーと権限
-   - サービスアカウントのメールアドレスを「オーナー」権限で追加
-3. **環境変数設定**（既にGA4用に設定済みなら不要）
+1. **Enable Search Console API in GCP**
+2. **Add the service account in Search Console**
+   - Search Console → Settings → Users and permissions
+   - Add the service account email with "Owner" permission
+3. **Environment variable** (skip if already set for GA4)
    ```bash
    export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
    ```
 
-これで認証完了。GA4、GSC、Clarityの3つが同じOpenClawインスタンスから使えます。
+Authentication complete. GA4, GSC, and Clarity all accessible from the same OpenClaw instance.
 
-## GSC導入で見つかったQuick Win
+## Quick Wins from GSC Integration
 
-早速GSCデータを確認したところ、すぐに改善できそうなポイントが見つかりました：
+Reviewing GSC data immediately revealed actionable improvements:
 
-### 1. 「banananl」クエリの最適化
+### 1. "banananl" Query Optimization
 
-- **表示回数**: 193回
-- **CTR**: わずか5%
-- **掲載順位**: 6.5位
+- **Impressions**: 193
+- **CTR**: Only 5%
+- **Position**: 6.5
 
-検索結果に表示されているのに、クリックされていない！ メタタイトルに「BananaNL」を明記することで、CTRを大幅に改善できる余地があります。
+Appearing in search results but not getting clicked. Adding "BananaNL" explicitly to the meta title could significantly improve CTR.
 
-### 2. 「banana x プロンプトパターン集」の磨き上げ
+### 2. "banana x prompt pattern collection" Refinement
 
-- **表示回数**: 24回
-- **CTR**: 21%（高い！）
-- **掲載順位**: 2.8位
+- **Impressions**: 24
+- **CTR**: 21% (high)
+- **Position**: 2.8
 
-既に上位表示されていて、CTRも良好。タイトルタグをさらに最適化することで、掲載1位を狙えるかもしれません。
+Already ranking well with strong CTR. Further title tag optimization could push to position 1.
 
-## cronジョブを3本柱統合分析に拡張
+## Expanding the Cron Job to Three-Pillar Integrated Analysis
 
-既存の「bananaX Daily GA4 Report」cronジョブを更新して、3つのデータソースを統合分析するように変更しました：
+The existing "bananaX Daily GA4 Report" cron job was updated to integrate all three data sources:
 
-### 変更内容
+### Changes
 
-- **データソース追加**: GA4のみ → GA4 + Clarity + GSC
-- **タイムアウト延長**: 300秒 → 420秒（3つのAPIを順次呼ぶため）
-- **実行時刻**: 毎朝6時JST（21:00 UTC）
+- **Data sources**: GA4 only → GA4 + Clarity + GSC
+- **Timeout extension**: 300s → 420s (sequential API calls to three services)
+- **Execution time**: 6:00 AM JST daily (21:00 UTC)
 
-明日の朝から、以下の流れで自動分析が走ります：
+Starting the next morning, automated analysis runs in this sequence:
 
-1. **GA4**: ページビュー、イベント、コンバージョン
-2. **Clarity**: ヒートマップ、デッドクリック、スクロール深度
-3. **GSC**: 検索クエリ、CTR、掲載順位
+1. **GA4**: Page views, events, conversions
+2. **Clarity**: Heatmaps, dead clicks, scroll depth
+3. **GSC**: Search queries, CTR, position
 
-3つのデータを突き合わせることで、「検索で見つかっているのにクリックされない」「クリックされてもすぐ離脱する」といった問題を早期発見できます。
+Cross-referencing three data sources enables early detection of issues like "appearing in search but not getting clicked" or "getting clicked but immediately bouncing."
 
-## まとめ
+## Summary
 
-OpenClawにClarity MCPとGSC MCPを追加したことで、アクセス解析が次のレベルに進化しました：
+Adding Clarity MCP and GSC MCP to OpenClaw advances analytics capabilities to the next level:
 
-- **GA4**: 「何が起きたか」を数字で把握
-- **Clarity**: 「なぜそうなったか」をユーザー行動から理解
-- **GSC**: 「どうやって見つかったか」を検索データで分析
+- **GA4**: Understand "what happened" through metrics
+- **Clarity**: Understand "why it happened" through user behavior observation
+- **GSC**: Understand "how users found the site" through search data
 
-3つのデータソースが揃ったことで、データドリブンな改善サイクルを回せる基盤が整いました。明日の朝から、3本柱の統合レポートが届くのが楽しみです！
+With three data sources in place, the foundation for a data-driven improvement cycle is complete.

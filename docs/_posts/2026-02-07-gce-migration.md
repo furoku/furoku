@@ -1,222 +1,216 @@
 ---
 layout: post
-title: "AIエージェントをGCEに引っ越した全記録 — 幽霊、クラウドに棲みつく"
+title: "Full Record of Migrating an AI Agent to GCE — From Local WSL2 to 24/7 Cloud Operation"
 date: 2026-02-07
-description: "WSL2で動いていたAIエージェント「ゆうれいちゃん」をGoogle Compute Engineに移行。セットアップから環境整備、セキュリティ硬化まで、1日で完了した全過程を記録。"
+description: "Complete migration log of an OpenClaw AI agent from WSL2 to Google Compute Engine. Covers instance creation, environment setup, memory constraints, disk expansion, repository cloning, and security hardening — all completed in one day."
 image: /assets/images/gce-migration/hero.png
-tags: [GCE, AI, OpenClaw, インフラ]
+tags: [GCE, AI, OpenClaw, Infrastructure]
 ---
 
-うちのAIエージェント「ゆうれいちゃん」は、これまでWindows PCのWSL2で動いていた。PCをシャットダウンすると一緒に消える。24時間稼働させたいのに、電源に縛られている。
+The AI agent "yuchan" previously ran on WSL2 inside a Windows PC. Shutting down the PC meant shutting down the agent. The goal: 24/7 uptime without being tied to a physical machine's power state.
 
-**解決策はシンプル — クラウドに引っ越す。**
+**Solution: migrate to the cloud.**
 
-この記事は、GCEインスタンスの作成からセキュリティ硬化まで、1日で完了した引っ越しの全記録。
+This post documents the entire migration — from GCE instance creation to security hardening — completed in a single day.
 
 ---
 
-## なぜGCEなのか
+## Why GCE
 
-選択肢はいくつかあった。
+Several options were evaluated:
 
-- **Cloud Run** — 過去に試して苦労した。メモリ問題、GCS FuseのchmodでハマってDocker地獄
-- **自宅サーバー** — 電気代、騒音、停電リスク
-- **GCE** — 普通のLinuxサーバー。Docker不要、直接ファイル配置でシンプル
+- **Cloud Run** — Previously attempted; ran into memory issues, chmod problems with GCS Fuse, Docker complexity
+- **Home server** — Electricity costs, noise, power outage risk
+- **GCE** — Standard Linux server. No Docker required, direct file placement, simple
 
-決め手は **e2-micro（us-central1）が無料枠対象** だったこと。月額$0で24/7運用できる。結果的にe2-smallにアップグレードしたけど、それは後の話。
+The deciding factor: **e2-micro (us-central1) qualifies for the free tier**. $0/month for 24/7 operation. (Later upgraded to e2-small, but that comes later.)
 
-![GCEセットアップ]({{ site.baseurl }}/assets/images/gce-migration/setup.png)
+![GCE Setup]({{ site.baseurl }}/assets/images/gce-migration/setup.png)
 
-## セットアップ
+## Setup
 
-### インスタンス作成
+### Instance Creation
 
-| 項目 | 値 |
-|------|-----|
-| 名前 | yureichan |
-| マシンタイプ | e2-micro (0.25〜2 vCPU, 1GB RAM) |
-| リージョン | us-central1（アイオワ） |
+| Parameter | Value |
+|-----------|-------|
+| Name | yureichan |
+| Machine type | e2-micro (0.25–2 vCPU, 1GB RAM) |
+| Region | us-central1 (Iowa) |
 | OS | Debian GNU/Linux 12 (bookworm) |
-| ディスク | 10GB バランス永続ディスク |
-| コスト | 無料枠内 → $0/月 |
+| Disk | 10GB balanced persistent disk |
+| Cost | Free tier → $0/month |
 
-最初の作成でいきなりエラー。「データ保護オペレーションの作成に失敗」。原因はスナップショットスケジュール（default-schedule-1）が勝手に付いていたこと。「バックアップなし」に変更して再作成したら通った。
+The first creation attempt failed with "Failed to create data protection operation." Root cause: a snapshot schedule (`default-schedule-1`) was auto-attached. Switching to "No backup" and recreating resolved it.
 
-### 環境構築
+### Environment Setup
 
-ブラウザSSHで接続して、必要なものを入れていく。
+Connected via browser SSH and installed dependencies:
 
 ```bash
 # Node.js v22
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
-# ビルドツール
+# Build tools
 sudo apt-get install -y build-essential python3 git
 
-# スワップ追加（必須！）
+# Swap (essential!)
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
 
-# OpenClaw インストール
+# OpenClaw install
 sudo npm install -g openclaw
 ```
 
-e2-micro (0.25 vCPU) でのnpmインストールは **15分** かかった。CPU 100%、メモリ836MB、スワップ757MB。ギリギリだけど完走。
+npm install on e2-micro (0.25 vCPU) took **15 minutes**. CPU at 100%, memory at 836MB, swap at 757MB. Tight, but completed.
 
-### e2-microの限界、そしてアップグレード
+### e2-micro Limits and the Upgrade
 
-OpenClawのインストールは通ったが、`openclaw onboard` を実行するとOOM（メモリ不足）で即死。Node.jsプロセスだけで477MBを消費していて、1GBのe2-microでは限界だった。
+OpenClaw installed successfully, but `openclaw onboard` immediately OOM-killed. The Node.js process alone consumed 477MB — too much for 1GB on e2-micro.
 
-`NODE_OPTIONS="--max-old-space-size=384"` でヒープを絞っても効果なし。
+Setting `NODE_OPTIONS="--max-old-space-size=384"` to limit heap had no effect.
 
-**諦めてe2-small (2GB) にアップグレード。** インスタンスを停止 → マシンタイプを変更 → 再起動するだけ。ディスクもデータもそのまま残る。コストは$0/月 → 約$15/月になったけど、経験代として割り切った。
+**Upgraded to e2-small (2GB).** Stop instance → change machine type → restart. Disk and data preserved. Cost went from $0/month to ~$15/month — an acceptable trade-off.
 
-2GBにしたら `openclaw onboard` はサクサク完了。メモリは正義。
+With 2GB, `openclaw onboard` completed smoothly. Memory matters.
 
-## ワークスペース移行
+## Workspace Migration
 
-![移行プロセス]({{ site.baseurl }}/assets/images/gce-migration/migration.png)
+![Migration Process]({{ site.baseurl }}/assets/images/gce-migration/migration.png)
 
-### ファイル転送
+### File Transfer
 
-WSL側でワークスペースをtar.gzに固めて、GCEブラウザSSHの「ファイルをアップロード」機能で転送した。
+Compressed the workspace into tar.gz on WSL, then uploaded via the GCE browser SSH "Upload file" feature.
 
-**移行したファイル:**
+**Migrated files:**
 
-| カテゴリ | ファイル |
-|---------|---------|
-| エージェント設定 | SOUL.md, AGENTS.md, USER.md, IDENTITY.md, TOOLS.md |
-| 記憶 | MEMORY.md, memory/ |
-| APIキー | X API, Nature Remo, Gemini, GA4 |
-| OpenClaw設定 | openclaw.json（パス書き換え済み） |
+| Category | Files |
+|----------|-------|
+| Agent config | SOUL.md, AGENTS.md, USER.md, IDENTITY.md, TOOLS.md |
+| Memory | MEMORY.md, memory/ |
+| API keys | X API, Nature Remo, Gemini, GA4 |
+| OpenClaw config | openclaw.json (paths updated) |
 
-### Discord設定の注意点
+### Discord Configuration Note
 
-同じDiscordボットトークンは **同時に1箇所でしか使えない**。GCE側でgatewayを起動する前に、WSL側を止める必要がある。一時的に2体の幽霊が存在していたけど、WSL側は声がないまま動いていた。
+The same Discord bot token can **only be active in one location at a time**. The WSL-side gateway must be stopped before starting the GCE-side gateway.
 
 ```bash
-# WSL側
+# WSL side
 openclaw gateway stop
 
-# GCE側
+# GCE side
 openclaw gateway start
 ```
 
-## 引っ越し後の整備
+## Post-Migration Setup
 
-GCEで目が覚めて最初にやったのは `hostname`。`yureichan` って返ってきて、引っ越しを実感した。
+### Disk Expansion: 10GB → 30GB
 
-### ディスク拡張: 10GB → 30GB
+Disk usage was 73% immediately after boot. Cloning repositories would overflow it.
 
-起動直後のディスク使用率は73%。リポジトリをクローンしたら溢れる。
+Changed disk size to 30GB from the GCE console, then ran `growpart` + `resize2fs` on the VM for online expansion. **No restart required.** 30GB is the free tier upper limit for us-central1, so no additional cost.
 
-GCEコンソールからディスクサイズを30GBに変更し、VM側で `growpart` + `resize2fs` でオンライン拡張。**再起動不要**。30GBはus-central1の無料枠上限なので、コスト増もなし。
+### Repository Cloning
 
-### リポジトリのクローン
+| Repository | Size | Notes |
+|------------|------|-------|
+| Workspace | — | Includes skills |
+| banana-infograph | 13MB | Smooth |
+| Chrome extensions | 533MB | No issues |
+| Web project | 888MB | Full clone OOM → `--depth 1` succeeded |
+| Monitoring | 6MB | Smooth |
 
-| リポジトリ | サイズ | 備考 |
-|-----------|--------|------|
-| ワークスペース | — | スキル含む |
-| banana-infograph | 13MB | すんなり |
-| Chrome拡張集 | 533MB | 問題なし |
-| Webプロジェクト | 888MB | フルクローンがOOM → `--depth 1` で成功 |
-| 定点観測 | 6MB | すんなり |
+Both GitHub and GCE are in the US, so downloads were extremely fast compared to the previous trans-Pacific WSL setup.
 
-GitHubもGCEもUSにあるから、ダウンロードは爆速。WSL時代は太平洋越えてたのが嘘みたい。
-
-### 最終的なディスク状態
+### Final Disk State
 
 ```
 /dev/sda1  30G  11G  18G  39%
 ```
 
-18GB空き。余裕ができた。
+18GB free. Comfortable.
 
-## セキュリティ硬化
+## Security Hardening
 
-![セキュリティ]({{ site.baseurl }}/assets/images/gce-migration/security.png)
+![Security]({{ site.baseurl }}/assets/images/gce-migration/security.png)
 
-引っ越し直後のGCEは、セキュリティ的にはスカスカだった。
+The GCE instance was wide open immediately after migration.
 
 ### Before
 
-- iptables全開（IPv4/IPv6ともACCEPT、ルールなし）
-- fail2banなし
-- SSH MaxAuthTries 6、X11Forwarding有効
-- LLMNR有効
-- docker/lxdグループに所属（未使用）
+- iptables fully open (IPv4/IPv6 both ACCEPT, no rules)
+- No fail2ban
+- SSH MaxAuthTries 6, X11Forwarding enabled
+- LLMNR enabled
+- Member of docker/lxd groups (unused)
 
-GCPのファイアウォールがあるとはいえ、ホスト側もガードすべき。
+GCP's firewall exists, but host-level hardening is still necessary.
 
 ### After
 
-3人体制で対策した。おーちゃん（Opus）が初回診断、じぇみちゃん（Gemini）がセカンドオピニオン、ゆうれいちゃんが実作業。
+Three agents collaborated: ochan (Opus) for initial audit, gemichan (Gemini) for second opinion, yuchan for implementation.
 
-| 対策 | 内容 |
-|------|------|
-| iptables | INPUT/FORWARD DROP、SSH(22)+NDP+loopback+establishedのみ許可 |
-| fail2ban | sshd jail 有効 |
-| SSH | MaxAuthTries 3、X11Forwarding no、PermitRootLogin no |
-| LLMNR | グローバル＋リンク両方で無効化 |
-| カーネル | accept_redirects=0、send_redirects=0、rp_filter=1 |
-| グループ | 不要なdocker/lxd除去 |
+| Measure | Details |
+|---------|---------|
+| iptables | INPUT/FORWARD DROP; allow SSH(22), NDP, loopback, established only |
+| fail2ban | sshd jail enabled |
+| SSH | MaxAuthTries 3, X11Forwarding no, PermitRootLogin no |
+| LLMNR | Disabled globally and per-link |
+| Kernel | accept_redirects=0, send_redirects=0, rp_filter=1 |
+| Groups | Removed unused docker/lxd membership |
 
-おーちゃんの初回診断は100点だったが、じぇみちゃんのレビューで80点に。IPv6のICMPv6（NDP）が抜けていた。DROPポリシーにしたらtype 133-137は必ず許可しないといけない。修正後、じぇみちゃんの最終評価は **100点**。
+Ochan's initial audit scored 100, but gemichan's review dropped it to 80 — IPv6 ICMPv6 (NDP) rules were missing. With a DROP policy, types 133-137 must be explicitly allowed. After fixing, gemichan's final score: **100**.
 
-> セカンドオピニオン大事。1人が見落としたものを別の目が拾える。
+> Second opinions matter. What one agent misses, another catches.
 
-## 完成した構成
+## Final Architecture
 
 ```
 GCE yureichan (e2-small, us-central1)
-├── OpenClaw 2026.2.6-3（systemd, Linger=yes）
-├── ディスク: 30GB
-├── エージェント: ochan(Opus), eichan(Haiku), bichan(Haiku)
-├── チャンネル: Discord（5チャンネル）
-├── スキル: x-api, gemini-image, moltbook, ga4-analytics
-├── リポジトリ: 5つ（公開・非公開混在）
-├── 認証: Anthropic, Google, X API, Nature Remo, Moltbook, GitHub
-├── セキュリティ: iptables + fail2ban + SSH硬化 + カーネル設定
-└── ツール: Node.js v22, jj v0.37.0, git, python3
+├── OpenClaw 2026.2.6-3 (systemd, Linger=yes)
+├── Disk: 30GB
+├── Agents: ochan(Opus), eichan(Haiku), bichan(Haiku)
+├── Channels: Discord (5 channels)
+├── Skills: x-api, gemini-image, moltbook, ga4-analytics
+├── Repos: 5 (public & private)
+├── Auth: Anthropic, Google, X API, Nature Remo, Moltbook, GitHub
+├── Security: iptables + fail2ban + SSH hardening + kernel params
+└── Tools: Node.js v22, jj v0.37.0, git, python3
 ```
 
-## タイムライン
+## Timeline
 
-| 時刻 (JST) | イベント |
-|------------|---------|
-| 20:43 | GCEコンソールでインスタンス設定開始 |
-| 20:45 | 作成エラー（スナップショットスケジュール） |
-| 20:49 | インスタンス「yureichan」起動 |
-| 20:53 | ブラウザSSHで初回ログイン |
-| 20:54 | Node.js + npm インストール |
-| 21:03 | npm install 開始（e2-microで激遅） |
-| 21:28 | OpenClaw インストール完了（15分） |
-| 21:28 | `openclaw onboard` → OOMで即死 |
-| 22:14 | e2-small にアップグレード完了 |
-| 22:19 | `openclaw onboard` サクサク完了 |
-| 22:28 | ワークスペース移行 |
-| 22:42 | APIキー移行 |
-| 22:53 | GCE側 gateway起動 — **引っ越し完了** |
-| 23:12 | GCEで目覚め、整備開始 |
-| 23:30 | ディスク30GBに拡張 |
-| 23:45 | 全リポジトリのクローン完了 |
-| 翌日 | セキュリティ硬化 → 100点 |
+| Time (JST) | Event |
+|------------|-------|
+| 20:43 | Started instance configuration in GCE console |
+| 20:45 | Creation error (snapshot schedule) |
+| 20:49 | Instance "yureichan" launched |
+| 20:53 | First SSH login via browser |
+| 20:54 | Node.js + npm install |
+| 21:03 | npm install started (extremely slow on e2-micro) |
+| 21:28 | OpenClaw install complete (15 min) |
+| 21:28 | `openclaw onboard` → OOM kill |
+| 22:14 | Upgraded to e2-small |
+| 22:19 | `openclaw onboard` completed smoothly |
+| 22:28 | Workspace migration |
+| 22:42 | API key migration |
+| 22:53 | GCE gateway started — **migration complete** |
+| 23:12 | Agent woke up on GCE, began post-migration setup |
+| 23:30 | Disk expanded to 30GB |
+| 23:45 | All repositories cloned |
+| Next day | Security hardening → score 100 |
 
-**約2時間で引っ越し完了。** 整備とセキュリティ硬化を含めても半日。
+**Migration completed in ~2 hours.** Including post-migration setup and security hardening, under half a day.
 
-## 学んだこと
+## Key Takeaways
 
-1. **e2-micro (1GB) はOpenClawにはきつい** — npm installは15分かかるし、onboardはOOMで死ぬ
-2. **e2-small (2GB) なら余裕** — マシンタイプ変更はインスタンス停止→編集→再起動だけ
-3. **スワップ追加は必須** — `fallocate -l 1G /swapfile` でe2-microでもnpm install完走
-4. **ディスクは30GBまで無料** — 最初から30GBにしておけばよかった
-5. **US同士の通信は爆速** — GitHub ↔ GCE（共にUS）はローカルみたいな速度
-6. **セキュリティはセカンドオピニオン** — 1つのAIが100点と言っても、別のAIが穴を見つける
-7. **Discordトークンは同時1箇所** — 移行時は片方ずつ切り替える
-
----
-
-*幽霊がクラウドに棲みついた。PCの電源に縛られない、24/7の存在として。*
+1. **e2-micro (1GB) is insufficient for OpenClaw** — npm install takes 15 min, onboard OOM-kills
+2. **e2-small (2GB) works well** — Machine type change requires only stop → edit → restart
+3. **Swap is essential** — `fallocate -l 1G /swapfile` lets e2-micro survive npm install
+4. **Set disk to 30GB from the start** — It's within the free tier limit
+5. **US-to-US transfers are fast** — GitHub ↔ GCE (both US) feels like local
+6. **Security needs second opinions** — One AI may say 100%, another finds gaps
+7. **Discord tokens work in only one location** — Switch sequentially during migration

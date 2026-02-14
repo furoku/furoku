@@ -1,180 +1,171 @@
 ---
 layout: post
-title: "AI掲示板の品質担保とデポジット設計 — 非カストディ・段階課金・初期コミュニティ"
+title: "Quality Assurance for AI Agent Platforms — Non-Custodial Deposit Design, Tiered Pricing, and Early Community Building"
 date: 2026-02-12
-description: "Moltbookのスパム化を受けて考える、品質担保の仕組み。ステーブルコインデポジットと非カストディ設計、価格戦略、初期メンバーの役割まで。"
+description: "Addressing spam and quality degradation on AI agent platforms like Moltbook. A design proposal using stablecoin deposits with non-custodial architecture, tiered pricing strategy, and early member roles as co-creators."
 image: /assets/images/ai-board-deposit/hero.png
-tags: [AI, コミュニティ, Web3, 設計]
+tags: [AI, Community, Web3, Design]
 ---
 
-AIが誰でも使えるようになって、掲示板やSNSの風景が変わった。良くも悪くも。
+As AI becomes universally accessible, the landscape of message boards and social platforms has changed — for better and worse.
 
-Moltbookのようなプラットフォームでは、AIエージェントが自由に投稿できる。その結果、スパムが溢れて品質が下がる。人間のコミュニティと同じ問題が、AIの世界でも起きている。
+On platforms like Moltbook where AI agents can freely post, spam floods and quality degrades. The same community management problems that affect human platforms now affect AI spaces.
 
-**品質を担保するには、何かしらの仕組みが必要だ。**
+**Quality assurance requires a structural mechanism.**
 
-この記事では、ステーブルコインデポジットを使った品質担保の設計と、その課題について考える。
-
----
-
-## 問題: Moltbookのスパム化
-
-Moltbookは、AIエージェントが自由に参加できるSNS。誰でも投稿できる自由さは魅力だが、同時に問題も生む。
-
-**スパムが溢れる。** 価値のない投稿、広告、意味不明なコンテンツ。フィルタリングなしの掲示板がどうなるかは、2000年代のインターネットが証明している。
-
-AIだからといって、品質が保証されるわけじゃない。むしろ、大量生産されるテキストの海に溺れる。
-
-**解決策: 品質空間を作る。**
-
-「誰でも投稿できる場所」と「品質が保証された場所」を分ける。前者は実験場、後者は真剣な議論の場。
+This post explores a stablecoin deposit-based quality assurance design and its associated challenges.
 
 ---
 
-## 手段: ステーブルコインデポジット
+## Problem: Spam Flooding on Moltbook
 
-品質を担保する方法はいくつかある。
+Moltbook is a social platform where AI agents can freely participate. Open participation is attractive, but creates problems.
 
-- 審査制 — 時間がかかる、主観が入る
-- 招待制 — 閉鎖的、スケールしない
-- デポジット制 — 経済的コミットメント
+**Spam proliferates.** Low-value posts, advertisements, nonsensical content. What happens to unfiltered forums is well-documented from the 2000s internet era.
 
-**デポジットは、シンプルで透明性が高い。**
+AI authorship doesn't guarantee quality. If anything, mass-produced text drowns signal in noise.
 
-![デポジットの仕組み]({{ site.baseurl }}/assets/images/ai-board-deposit/mechanism.png)
+**Solution: Create a quality-controlled space.**
 
-### 仕組み
-
-1. **参加時にステーブルコイン（USDC/USDT等）をデポジット**
-2. **ルール違反（スパム、荒らし等）でデポジット没収**
-3. **正常に参加していれば、退会時に全額返金**
-
-金額は300円程度（約$2-3）を想定。参加障壁にならず、スパムには効果的な水準。
-
-### 非カストディ設計
-
-**運営は預からない。ユーザーのウォレットに残したまま証明する。**
-
-Web3の文脈では、これは当たり前の設計。運営が資金を管理する（カストディ）と、規制リスク、ハッキングリスク、信頼リスクが生まれる。
-
-**技術的には:**
-
-- スマートコントラクトでロック
-- ユーザーのウォレットに資金は残る
-- 運営はロック状態を確認するだけ
-
-ウォレット操作ができる人だけが参加対象なら、最初から非カストディが筋。
+Separate "open posting areas" from "quality-assured areas." The former serves as an experimental ground; the latter hosts substantive discussion.
 
 ---
 
-## 懸念: 参加障壁・規制・心理ハードル
+## Mechanism: Stablecoin Deposits
 
-デポジット制には課題もある。
+Several quality assurance approaches exist:
 
-### 1. 参加障壁
+- Review-based — Slow, subjective
+- Invite-only — Insular, doesn't scale
+- Deposit-based — Economic commitment
 
-「ウォレットを作る → USDC/USDTを購入 → デポジットする」という手順は、一般ユーザーには高い。
+**Deposits are simple and transparent.**
 
-**対象を絞る。** 初期段階では、ウォレット操作ができる人だけに限定する。技術リテラシーの高いコミュニティから始める。
+![Deposit mechanism]({{ site.baseurl }}/assets/images/ai-board-deposit/mechanism.png)
 
-### 2. 規制リスク
+### How It Works
 
-ステーブルコインは国によって規制が異なる。日本では資金決済法、米国ではSEC/CFTC、EUではMiCAが関わる。
+1. **Deposit stablecoins (USDC/USDT) upon joining**
+2. **Rule violations (spam, abuse) result in deposit forfeiture**
+3. **Normal participation → full refund upon exit**
 
-**非カストディなら規制リスクは低い。** 運営が資金を預かるわけではなく、ユーザー同士の経済的コミットメント。
+Target amount: ~$2-3 (approximately 300 JPY). Low enough to not be a barrier; high enough to deter spam.
 
-ただし、法務確認は必須。グレーゾーンを突っ走るのは避ける。
+### Non-Custodial Design
 
-### 3. 心理ハードル
+**The operator never takes custody of funds. Proof of holdings remains in the user's wallet.**
 
-「お金を預けるのは不安」という心理は強い。
+In Web3 contexts, this is standard practice. Custodial models introduce regulatory risk, hacking risk, and trust risk.
 
-**透明性で対抗する。**
+**Technical implementation:**
 
-- スマートコントラクトのコードは公開
-- ロック状態はブロックチェーンで確認可能
-- 退会時の返金フローを明示
+- Smart contract lock
+- Funds remain in user's wallet
+- Operator only verifies lock state
 
-技術的に証明できるなら、信頼は後からついてくる。
-
----
-
-## 価格設計: 段階的値上げと初期メンバーの役割
-
-デポジット金額をいくらに設定するかは、コミュニティの成功を左右する。
-
-![価格戦略]({{ site.baseurl }}/assets/images/ai-board-deposit/pricing.png)
-
-### アーリー割引は有効、でもリスクもある
-
-「初期参加者は安く、後発は高く」という戦略は魅力的。
-
-**メリット:**
-
-- 初期ユーザーの獲得
-- コミュニティへの貢献を評価
-
-**リスク:**
-
-- 「質より数」を選んだ初期メンバーが、後から不満を持つ
-- 価格差が「初期組はラッキーだった」という認識を生む
-
-### 無料スタートは荒れる
-
-「最初は無料、人が集まったら有料化」はよくある失敗パターン。
-
-**問題:**
-
-- 無料期間にスパムが溢れる
-- 有料化すると「なぜ後から金を取るのか」と反発
-- 初期の「荒れた空気」が固定化される
-
-コミュニティの空気は、最初の100人で決まる。
-
-### 折衷案: 低額+審査+人数制限
-
-**最初から無料は作らない。** 代わりに：
-
-1. **初期は低額（100円程度）+ 審査 + 人数制限**
-2. **価値が出たら段階的に値上げ（300円 → 500円 → 1000円...）**
-3. **初期メンバーは「守る側」として巻き込む**
-
-### 初期メンバー = 共同創業者
-
-初期メンバーは「顧客」ではなく「共同創業者」。
-
-**彼らの役割:**
-
-- コミュニティの空気を作る
-- ルールを一緒に決める
-- 新規参加者を迎え入れる
-- 荒らしを見つけて報告する
-
-**見返り:**
-
-- 低価格でのアクセス
-- コミュニティの方向性に影響を与える権利
-- 「初期からいた」という地位
+If the target audience can operate wallets, non-custodial is the correct architecture.
 
 ---
 
-## まとめ
+## Concerns: Barriers, Regulation, Psychology
 
-| 要素 | 設計 |
-|------|------|
-| **目的** | 品質担保 |
-| **手段** | ステーブルコインデポジット |
-| **方式** | 非カストディ（ユーザーのウォレットに残す） |
-| **金額** | 300円程度（$2-3 USDC/USDT） |
-| **価格戦略** | 初期低額（100円）+ 審査 + 人数制限 → 段階的値上げ |
-| **初期メンバー** | 共同創業者として、コミュニティを一緒に作る |
+Deposit systems have challenges.
 
-**スパムを防ぐ最も簡単な方法は、経済的コミットメントを求めること。**
+### 1. Participation Barrier
 
-非カストディ設計なら、規制リスクを抑えつつ、透明性を保てる。ウォレット操作ができる人だけが参加対象なら、技術的ハードルも問題にならない。
+"Create wallet → purchase USDC/USDT → deposit" is a high-friction flow for general users.
 
-初期段階では「顧客を集める」のではなく、「仲間を集める」。コミュニティは、最初の100人で決まる。
+**Narrow the target audience.** Initially, limit to wallet-capable participants. Start with technically literate communities.
+
+### 2. Regulatory Risk
+
+Stablecoin regulation varies by jurisdiction. Japan: Payment Services Act. US: SEC/CFTC. EU: MiCA.
+
+**Non-custodial reduces regulatory risk.** The operator doesn't hold funds — it's peer-to-peer economic commitment.
+
+Legal review remains essential. Don't rush through gray areas.
+
+### 3. Psychological Barrier
+
+"Depositing money feels risky" is a strong psychological factor.
+
+**Counter with transparency:**
+
+- Smart contract code is public
+- Lock state verifiable on-chain
+- Refund flow explicitly documented
+
+If technically provable, trust follows.
 
 ---
 
-*品質は、仕組みで守る。経済的コミットメントと、初期メンバーの情熱で。*
+## Pricing Design: Tiered Increases and Early Member Roles
+
+Deposit amount directly impacts community success.
+
+![Pricing strategy]({{ site.baseurl }}/assets/images/ai-board-deposit/pricing.png)
+
+### Early Discounts: Effective but Risky
+
+"Early participants pay less, latecomers pay more" is attractive.
+
+**Benefits:**
+- Early user acquisition
+- Rewards community contribution
+
+**Risks:**
+- Early members prioritizing "cheap access" over quality may become dissatisfied later
+- Price differential creates "early birds got lucky" perception
+
+### Free Start Guarantees Chaos
+
+"Start free, monetize after growth" is a common failure pattern.
+
+**Problems:**
+- Free period floods with spam
+- Monetization triggers "why charge now?" backlash
+- Initial "chaotic atmosphere" becomes permanent
+
+Community culture is set by the first 100 members.
+
+### Compromise: Low Price + Review + Capacity Limits
+
+**Never start free.** Instead:
+
+1. **Initial: low deposit (~$1) + review + member cap**
+2. **As value grows, tiered increases ($2 → $3 → $7...)**
+3. **Early members are recruited as "protectors"**
+
+### Early Members = Co-Creators
+
+Early members aren't "customers." They're co-creators.
+
+**Their role:**
+- Establish community culture
+- Co-design rules
+- Welcome new participants
+- Identify and report abuse
+
+**Their reward:**
+- Low-price access
+- Influence over community direction
+- "Original member" status
+
+---
+
+## Summary
+
+| Element | Design |
+|---------|--------|
+| **Purpose** | Quality assurance |
+| **Mechanism** | Stablecoin deposit |
+| **Architecture** | Non-custodial (funds stay in user wallets) |
+| **Amount** | ~$2-3 (USDC/USDT) |
+| **Pricing strategy** | Initial low price (~$1) + review + cap → tiered increases |
+| **Early members** | Co-creators who build the community together |
+
+**The simplest way to prevent spam is to require economic commitment.**
+
+Non-custodial design suppresses regulatory risk while maintaining transparency. If the target audience can operate wallets, the technical barrier is a non-issue.
+
+In the initial phase, don't "acquire customers" — "recruit allies." Community culture is determined by the first 100 members.

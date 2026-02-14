@@ -1,30 +1,30 @@
 ---
 layout: post
-title: "OpenClawでGoogle Workspace MCPが動いた — 54ツール、認証、暗号化のハマりポイント"
+title: "Google Workspace MCP on OpenClaw — 54 Tools, Authentication, and Encryption Pitfalls"
 date: 2026-02-12
-description: "gemini-cli-extensions/workspaceをOpenClaw + mcporterで動かすまで。Hybrid Flow、トークン暗号化（AES-256-GCM）、ソルト固定化、debugフラグでの原因特定まで。"
+description: "Running gemini-cli-extensions/workspace on OpenClaw via mcporter. Covers Hybrid Flow authentication, AES-256-GCM token encryption, salt fixation for hostname-dependent issues, and debug flag troubleshooting."
 image: /assets/images/openclaw-google-workspace-mcp/hero.png
-tags: [OpenClaw, MCP, Google Workspace, OAuth, 技術]
+tags: [OpenClaw, MCP, Google Workspace, OAuth, Technical]
 ---
 
-OpenClawで、Google Workspace MCPが動いた。
+Google Workspace MCP is now operational on OpenClaw.
 
-Gmail、Calendar、Drive、Docs、Sheets、Slides、Chat、People。**54のツールが、AIエージェントから使えるようになった。**
+Gmail, Calendar, Drive, Docs, Sheets, Slides, Chat, People. **54 tools accessible from an AI agent.**
 
-gemini-cli-extensions/workspaceをOpenClaw + mcporterで動かすまでの話。認証フロー、暗号化形式、ソルト固定化。技術的なハマりポイントと、その解決策。
+This documents the process of running gemini-cli-extensions/workspace on OpenClaw via mcporter — authentication flows, encryption formats, salt fixation, and every technical pitfall encountered.
 
 ---
 
-## Google Workspace MCPとは
+## What is Google Workspace MCP
 
-[gemini-cli-extensions/workspace](https://github.com/google/generative-ai-docs/tree/main/gemini/mcp/workspace)は、GoogleのMCP実装。
+[gemini-cli-extensions/workspace](https://github.com/google/generative-ai-docs/tree/main/gemini/mcp/workspace) is Google's MCP implementation.
 
-**MCPは、Model Context Protocolの略。** AIモデルが外部ツールを使うための標準プロトコル。Anthropicが策定した。
+**MCP (Model Context Protocol)** is a standard protocol for AI models to use external tools, created by Anthropic.
 
-Gemini CLIのために作られたこのサーバーは、Google Workspaceの主要サービスを54のツールとして提供する。
+This server, built for Gemini CLI, exposes major Google Workspace services as 54 tools:
 
-| サービス | ツール数 |
-|---------|---------|
+| Service | Tool Count |
+|---------|-----------|
 | Gmail | 10 |
 | Calendar | 10 |
 | Drive | 8 |
@@ -35,25 +35,25 @@ Gemini CLIのために作られたこのサーバーは、Google Workspaceの主
 | People | 2 |
 | Time | 1 |
 
-**問題は、これがGemini CLI専用だったこと。** 他のAIツールでは使えない。
+**The problem: it was designed exclusively for Gemini CLI.** Not usable with other AI tools.
 
-OpenClawは、MCP実装を持っている。**mcporter**というプロキシサーバーを介して、任意のMCPサーバーを接続できる。
+OpenClaw has its own MCP implementation. **mcporter**, a proxy server, connects arbitrary MCP servers.
 
-**だから、動かしたかった。**
+**That's why making it work was the goal.**
 
 ---
 
-## OpenClaw + mcporter で動かす
+## Running on OpenClaw + mcporter
 
-OpenClawは、MCP標準を独自に実装している。
+OpenClaw implements the MCP standard independently.
 
-**mcporterの役割:**
+**mcporter's role:**
 
-1. MCPサーバー（stdio形式）を起動
-2. プロセスの入出力をHTTP APIに変換
-3. OpenClawからHTTPで呼び出せるようにする
+1. Start an MCP server (stdio mode)
+2. Translate process I/O to HTTP API
+3. Make it callable from OpenClaw via HTTP
 
-設定ファイルは `~/.openclaw/mcp-servers.json`：
+Configuration file at `~/.openclaw/mcp-servers.json`:
 
 ```json
 {
@@ -67,164 +67,161 @@ OpenClawは、MCP標準を独自に実装している。
 }
 ```
 
-起動：
+Launch:
 
 ```bash
 mcporter start google-workspace
 ```
 
-**これで、OpenClawから `mcporter:google-workspace` 経由でツールが使えるはず。**
+**This should make tools available from OpenClaw via `mcporter:google-workspace`.**
 
 ---
 
-## 認証フロー: Hybrid Flow、localhost、manual mode
+## Authentication Flow: Hybrid Flow, localhost, and Manual Mode
 
-Google Workspace APIを使うには、OAuth2認証が必要。
+Google Workspace APIs require OAuth2 authentication.
 
-**gemini-cli-extensions/workspaceは、3つの認証フローを持つ:**
+**gemini-cli-extensions/workspace supports three auth flows:**
 
-### 1. Cloud Function経由のHybrid Flow（推奨）
+### 1. Hybrid Flow via Cloud Function (Recommended)
 
-Googleの共有GCPプロジェクトにCloud Functionが立っていて、OAuth2の認可コードをトークンに交換してくれる。
+A Cloud Function on Google's shared GCP project exchanges authorization codes for tokens.
 
-**メリット:**
+**Advantages:**
+- No client_secret stored locally
+- Uses a Gemini CLI-specific GCP project
 
-- client_secretを手元に置かなくて良い
-- Gemini CLI専用のGCPプロジェクトを使える
-
-**フロー:**
-
-1. ブラウザで認証URLを開く
-2. 許可すると、Cloud Functionがトークンを発行
-3. トークンをファイルに保存
+**Flow:**
+1. Open auth URL in browser
+2. After approval, Cloud Function issues tokens
+3. Tokens saved to file
 
 ### 2. Localhost Callback Flow
 
-標準的なOAuth2フロー。ローカルでHTTPサーバーを立てて、リダイレクトを受ける。
+Standard OAuth2 flow with a local HTTP server receiving the redirect.
 
-**問題点:**
-
-- GCEのようなリモート環境では、ブラウザがない
-- ポートフォワーディングが必要
+**Limitation:**
+- Remote environments (like GCE) have no browser
+- Requires port forwarding
 
 ### 3. Manual Mode
 
-認可コードをコピペする方式。
+Copy-paste the authorization code manually.
 
 ```bash
 node dist/index.js auth --manual
 ```
 
-**GCE環境では、これが一番確実。**
+**For GCE environments, this is the most reliable option.**
 
 ---
 
-## ハマりポイント1: トークンファイルの暗号化形式
+## Pitfall 1: Token File Encryption Format
 
-認証が通った。トークンファイルも生成された。
+Authentication succeeded. Token file was generated.
 
-**でも、サーバー起動時に「Token file corrupted」と出る。**
+**But server startup produced "Token file corrupted."**
 
 ```
 [ERROR] Token file corrupted or invalid master key
 ```
 
-### デバッグフラグで原因を探る
+### Debugging with the --debug Flag
 
-`--debug` フラグをつけると、詳細なログが出る。
+Adding `--debug` produces detailed logs:
 
 ```bash
 node dist/index.js serve --debug
 ```
 
-ログファイル: `gws-extension/logs/server.log`
+Log file: `gws-extension/logs/server.log`
 
-**見つけた問題:**
+**Found the issue:**
 
 ```
 [DEBUG] Decryption failed: Unsupported state or unable to authenticate data
 ```
 
-**暗号化形式が違っていた。**
+**The encryption format was wrong.**
 
 ### AES-256-GCM vs AES-256-CBC
 
-このMCPサーバーのトークン暗号化は、**AES-256-GCM**を使っている。
+This MCP server encrypts tokens using **AES-256-GCM**.
 
-**GCMは、Galois/Counter Mode。** 暗号化+認証タグがセット。データ改ざんを検知できる。
+**GCM (Galois/Counter Mode):** Encryption + authentication tag as a unit. Detects data tampering.
 
-**フォーマット:**
+**Format:**
 
 ```
 iv:authTag:encryptedData
 ```
 
-3パーツをコロン区切りで保存する。
+Three parts, colon-separated.
 
-**最初、CBCで保存していた。** `iv:encryptedData` の2パーツ。authTagがない。
+**Initially saved as CBC format:** `iv:encryptedData` — only two parts. Missing the authTag.
 
-**だから、デコードで失敗していた。**
+**Decoding therefore failed.**
 
-### 修正
+### Fix
 
-トークン保存時に、`authTag` を取り出して保存する。
+Include the `authTag` when saving tokens:
 
 ```typescript
 const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
 const encrypted = Buffer.concat([cipher.update(text, 'utf8'), cipher.final()]);
 const authTag = cipher.getAuthTag();
 
-// iv:authTag:encrypted の形式で保存
+// Save as iv:authTag:encrypted format
 const combined = `${iv.toString('hex')}:${authTag.toString('hex')}:${encrypted.toString('hex')}`;
 ```
 
-**これで、正しく復号化できるようになった。**
+**Decryption now works correctly.**
 
 ---
 
-## ハマりポイント2: ソルト固定化（hostname依存の問題）
+## Pitfall 2: Salt Fixation (Hostname Dependency)
 
-暗号化鍵を生成する際、ソルトを使う。
+The encryption key derivation uses a salt.
 
-**デフォルトでは、`hostname` が含まれる。**
+**Default salt includes `hostname`:**
 
 ```typescript
 const salt = `${os.hostname()}-${os.userInfo().username}-gemini-cli-workspace`;
 ```
 
-**問題: Dockerコンテナでは、hostnameが毎回変わる。**
+**Problem: In Docker containers, hostname changes on every restart.**
 
-コンテナを再起動するたびに、暗号化鍵が変わる。トークンファイルが復号化できなくなる。
+Each container restart changes the encryption key, making existing token files undecryptable.
 
-### 解決策: ソルトを固定する
+### Solution: Fix the Salt
 
-環境変数でソルトを上書きできるようにした。
+Made the salt overridable via environment variable:
 
 ```typescript
 const salt = process.env.GWS_SALT || `${os.hostname()}-${os.userInfo().username}-gemini-cli-workspace`;
 ```
 
-GCE環境では:
+For GCE environments:
 
 ```bash
 export GWS_SALT="yureichan-flock_h-gemini-cli-workspace"
 ```
 
-**これで、再起動してもトークンが使える。**
+**Tokens now survive restarts.**
 
 ---
 
-## 結果: 54ツールが使えるようになった
+## Result: 54 Tools Available
 
-認証も通り、暗号化も解決。
+Authentication resolved, encryption fixed.
 
-**OpenClawから、Google Workspace MCPが呼び出せるようになった。**
+**Google Workspace MCP is callable from OpenClaw.**
 
 ```bash
 mcporter list-tools google-workspace
 ```
 
-出力（一部）:
+Output (partial):
 
 ```
 gmail_list_messages
@@ -240,53 +237,51 @@ slides_create_presentation
 ...
 ```
 
-**54ツール。** すべてのGoogle Workspaceサービスが、AIエージェントから使える。
+**54 tools.** Every major Google Workspace service accessible from the AI agent.
 
 ---
 
-## heartbeatで自動化
+## Automation via Heartbeat
 
-OpenClawには、**heartbeat**という機能がある。
+OpenClaw has a **heartbeat** feature — periodically asking the agent "anything to check?"
 
-定期的に「何かチェックすることある？」とエージェントに尋ねる仕組み。
-
-**HEARTBEAT.mdに、定期チェック項目を書く。**
+**Define periodic checks in HEARTBEAT.md:**
 
 ```markdown
 # Heartbeat Checklist
 
 ## Email Check (2x/day)
-- 未読の重要メールがあるか確認
-- mcporter:google-workspace/gmail_list_messages を使う
+- Check for unread important emails
+- Use mcporter:google-workspace/gmail_list_messages
 
 ## Calendar Check (2x/day)
-- 今日・明日のイベントを確認
-- mcporter:google-workspace/calendar_list_events を使う
+- Review today's and tomorrow's events
+- Use mcporter:google-workspace/calendar_list_events
 ```
 
-**これで、AIエージェントが自動でメール・カレンダーをチェックするようになった。**
+**The AI agent now automatically monitors email and calendar.**
 
 ---
 
-## まとめ
+## Summary
 
-| 項目 | 内容 |
-|------|------|
-| **MCP実装** | gemini-cli-extensions/workspace |
-| **OpenClaw連携** | mcporter経由で接続 |
-| **認証** | OAuth2（Hybrid Flow / localhost / manual mode） |
-| **ハマりポイント1** | トークン暗号化形式（AES-256-GCM、iv:authTag:encrypted） |
-| **ハマりポイント2** | ソルト固定化（hostname依存問題） |
-| **debugフラグ** | `--debug` でログ有効化、原因特定 |
-| **ツール数** | 54（Gmail, Calendar, Drive, Docs, Sheets, Slides, Chat, People） |
-| **自動化** | heartbeatでメール・カレンダーチェック |
+| Item | Details |
+|------|---------|
+| **MCP Implementation** | gemini-cli-extensions/workspace |
+| **OpenClaw Integration** | Connected via mcporter |
+| **Authentication** | OAuth2 (Hybrid Flow / localhost / manual mode) |
+| **Pitfall 1** | Token encryption format (AES-256-GCM, iv:authTag:encrypted) |
+| **Pitfall 2** | Salt fixation (hostname dependency issue) |
+| **Debug flag** | `--debug` enables logging for root cause identification |
+| **Tool count** | 54 (Gmail, Calendar, Drive, Docs, Sheets, Slides, Chat, People) |
+| **Automation** | Heartbeat-driven email and calendar monitoring |
 
-**OpenClawでGoogle Workspaceが使えるようになった。**
+**Google Workspace is now operational on OpenClaw.**
 
-認証フローはmanual modeで通し、トークンはAES-256-GCMで暗号化、ソルトは環境変数で固定。
+Authentication via manual mode, tokens encrypted with AES-256-GCM, salt fixed via environment variable.
 
-debugフラグで原因を特定し、一つずつ解決した。
+Debug flag enabled root cause identification, resolved one issue at a time.
 
 ---
 
-*54ツール。AIエージェントが、あなたのGoogle Workspaceを操れるようになった。*
+*54 tools. The AI agent can now operate across your entire Google Workspace.*

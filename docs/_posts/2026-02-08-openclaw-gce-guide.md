@@ -1,34 +1,34 @@
 ---
 layout: post
-title: "OpenClawをGCEで動かす — 24時間AIエージェントの構築ガイド"
+title: "Running OpenClaw on GCE — A Guide to Building a 24/7 AI Agent"
 date: 2026-02-08 12:00:00 +0900
-description: "AIエージェントOpenClawをGoogle Compute Engineで24時間稼働させる。エンタープライズセキュリティで守る導入ガイド。"
+description: "Deploy OpenClaw on Google Compute Engine for 24/7 AI agent operation. Covers setup, enterprise-grade security, Google ecosystem integration, and self-managing infrastructure."
 image: /assets/images/openclaw-gce/hero.png
-tags: [OpenClaw, GCE, GCP, AI, セキュリティ, インフラ]
+tags: [OpenClaw, GCE, GCP, AI, Security, Infrastructure]
 ---
 
-AIエージェントのOpenClawを、Google Compute Engineに入れるだけの話。
+Deploying an OpenClaw AI agent on Google Compute Engine.
 
-## 背景：なぜGCEか
+## Why GCE
 
-AIエージェントを常時稼働させるには、安定したインフラが必要になる。ローカルマシンだと電源管理やネットワーク、周辺機器の問題がつきまとう。
+Running an AI agent continuously requires stable infrastructure. Local machines introduce power management, network instability, and peripheral issues.
 
-GCE（Google Compute Engine）なら、SSHだけで完結する。物理的な制約から解放されて、エンタープライズグレードのセキュリティ基盤に乗れる。
+GCE provides SSH-only access, freedom from physical constraints, and enterprise-grade security foundations.
 
-## なぜGCEか
+## Recommended Specs
 
-GCEなら月額数百円〜数千円で、24時間365日の安定稼働が手に入る。
+GCE provides stable 24/7 operation for a few dollars per month.
 
-**推奨スペック：**
-- **e2-small**（2 vCPU / 2GB RAM）— OpenClaw + ツール実行に十分
-- **ディスク**: 30GB SSD
-- **リージョン**: 好みに応じて（us-central1なら一部無料枠あり）
+**Recommended configuration:**
+- **e2-small** (2 vCPU / 2GB RAM) — sufficient for OpenClaw + tool execution
+- **Disk**: 30GB SSD
+- **Region**: preference-dependent (us-central1 has partial free tier)
 
-※ e2-microだとメモリ不足で厳しい。e2-small以上を推奨。
+Note: e2-micro has insufficient memory. e2-small or higher recommended.
 
-## セットアップ手順
+## Setup Procedure
 
-### 1. GCEインスタンスを作成
+### 1. Create GCE Instance
 
 ```
 gcloud compute instances create openclaw-agent \
@@ -39,7 +39,7 @@ gcloud compute instances create openclaw-agent \
   --boot-disk-size=30GB
 ```
 
-### 2. SSH接続とNode.js 22のインストール
+### 2. SSH and Install Node.js 22
 
 ```
 gcloud compute ssh openclaw-agent
@@ -51,70 +51,70 @@ curl -fsSL \
 sudo apt-get install -y nodejs
 ```
 
-### 3. OpenClawインストール
+### 3. Install OpenClaw
 
 ```
 curl -fsSL \
   https://openclaw.ai/install.sh | bash
 ```
 
-### 4. オンボーディング
+### 4. Onboarding
 
 ```
 openclaw onboard --install-daemon
 ```
 
-ウィザードが起動し、以下を設定する：
-- **モデルの認証**（Anthropic API Key等）
-- **チャンネル連携**（Discord、Slack、Telegram等）
-- **ゲートウェイ設定**（ポート、認証トークン）
-- **ワークスペースパス**
+The wizard configures:
+- **Model authentication** (Anthropic API Key, etc.)
+- **Channel integration** (Discord, Slack, Telegram, etc.)
+- **Gateway settings** (port, auth token)
+- **Workspace path**
 
-### 5. ゲートウェイ起動確認
+### 5. Verify Gateway
 
 ```
 openclaw gateway status
 ```
 
-これだけ。キーボードもマウスもいらない。
+No keyboard or mouse required.
 
-## エンタープライズセキュリティ
+## Enterprise Security
 
-GCE × OpenClawの組み合わせが強力なのは、セキュリティ基盤がエンタープライズグレードだからだ。
+The GCE × OpenClaw combination is powerful because the security foundation is enterprise-grade.
 
-### GCP側のセキュリティ
+### GCP-Side Security
 
-- **IAM（Identity and Access Management）**: サービスアカウントで権限を最小限に。パスワードを渡す必要がない
-- **VPCファイアウォール**: 必要なポートだけを開放。デフォルトで全ポートが閉じている
-- **Cloud Audit Logs**: 誰が何をしたか、全操作が追跡可能
-- **OS Login**: SSH鍵をGCPが一元管理。パスワードログイン不要
+- **IAM (Identity and Access Management)**: Service accounts with minimal permissions. No password sharing required
+- **VPC Firewall**: Only necessary ports opened. All ports closed by default
+- **Cloud Audit Logs**: Full operation tracking — who did what, when
+- **OS Login**: SSH keys managed centrally by GCP. No password login
 
-### OpenClaw側のセキュリティ
+### OpenClaw-Side Security
 
-OpenClawは「AIにシェルアクセスを与える」という本質的にリスキーなことをやっている。だからセキュリティ設計が徹底されている。
+OpenClaw gives AI shell access — an inherently risky operation. Security design is thorough.
 
-**アクセス制御：**
+**Access control:**
 ```json5
 {
   gateway: {
-    bind: "loopback",  // ローカル接続のみ
-    auth: { mode: "token", token: "長いランダムトークン" }
+    bind: "loopback",  // Local connections only
+    auth: { mode: "token", token: "long-random-token" }
   },
   channels: {
-    discord: { dmPolicy: "pairing" }  // DM承認制
+    discord: { dmPolicy: "pairing" }  // DM approval required
   }
 }
 ```
 
-- **DM承認制（pairing）**: 知らない人からのメッセージは自動ブロック。承認コードで許可制
-- **グループ言及制（requireMention）**: グループチャットでは名前を呼ばれた時だけ反応
-- **ツールサンドボックス**: 危険なコマンドを隔離環境で実行
-- **セキュリティ監査**: `openclaw security audit --deep` でワンコマンド点検
+- **DM approval (pairing)**: Unknown senders auto-blocked; approval code required
+- **Group mention mode (requireMention)**: Responds only when explicitly mentioned
+- **Tool sandbox**: Dangerous commands run in isolated environments
+- **Security audit**: `openclaw security audit --deep` for one-command inspection
 
-**サーバー側の基本硬化：**
+**Server-side hardening:**
 
 ```
-# SSH鍵認証のみ
+# SSH key auth only
 sudo sed -i \
   's/#PasswordAuthentication yes/PasswordAuthentication no/' \
   /etc/ssh/sshd_config
@@ -124,76 +124,72 @@ sudo systemctl restart sshd
 sudo apt-get install -y fail2ban
 sudo systemctl enable fail2ban
 
-# 自動セキュリティアップデート
+# Automatic security updates
 sudo apt-get install -y unattended-upgrades
 ```
 
-### ローカルマシンとの比較
+### Comparison with Local Machines
 
-ローカルマシンでは「パスワードをAIに渡すのが怖い」という懸念がある。当然だ。マシンのパスワードは、そのマシンのすべてへのアクセスを意味する。
+On local machines, "giving AI your password" is a legitimate concern — the machine password grants access to everything.
 
-GCEではそもそもパスワードという概念がない：
-- SSHは**鍵認証のみ**
-- サービスへのアクセスは**IAMロール**で制御
-- APIキーは**Secret Manager**で暗号化保管
-- すべての操作に**監査ログ**が残る
+GCE eliminates the password concept entirely:
+- SSH uses **key authentication only**
+- Service access controlled via **IAM roles**
+- API keys stored encrypted in **Secret Manager**
+- All operations produce **audit logs**
 
-## AIがGCPに習熟しているという優位性
+## AI Proficiency with GCP as an Advantage
 
-OpenClawを動かすAIモデル（Claude等）は、GCPのドキュメントを大量に学習している。つまり：
+AI models running OpenClaw (Claude, etc.) have been trained extensively on GCP documentation:
 
-- 「ファイアウォールルールを追加して」→ 正確な`gcloud`コマンドが出てくる
-- 「fail2banの設定を見て」→ 適切な設定を提案してくれる
-- 「ディスク容量が心配」→ モニタリングの設定まで案内してくれる
+- "Add a firewall rule" → produces the correct `gcloud` command
+- "Check fail2ban config" → suggests appropriate settings
+- "Disk space concern" → guides monitoring setup
 
-Mac miniのローカル環境だと、問題のたびにググって試行錯誤する。GCEなら、AIエージェント自身が自分の棲み家のメンテナンスを正確にガイドしてくれる。**AIが自分のインフラを自分で管理できる**。これは大きい。
+On local environments, every issue requires manual research. On GCE, **the AI agent can accurately maintain its own infrastructure**.
 
-## 実際に何ができるようになるか
+## Practical Capabilities
 
-GCEでOpenClawを動かすと、24時間365日のAIエージェントが手に入る：
+A 24/7 AI agent on GCE enables:
 
-- **定期レポート**: 毎朝の為替レート、SEO順位チェック、GA4レポート
-- **SNS運用**: Xの投稿、いいね、返信を自動巡回
-- **緊急対応**: 地震速報の即座確認、サーバー障害の検知
-- **調査**: Web検索、ドキュメント分析、競合調査
-- **スマートホーム連携**: Nature Remo API経由で照明・エアコン操作
+- **Scheduled reports**: Morning exchange rates, SEO rank checks, GA4 reports
+- **Social media management**: Automated X posting, liking, reply monitoring
+- **Emergency response**: Earthquake alert verification, server outage detection
+- **Research**: Web search, document analysis, competitor research
+- **Smart home integration**: Lighting/HVAC control via Nature Remo API
 
-これらがすべて、月額0円で、エンタープライズセキュリティの上で動く。
+All running with enterprise security at minimal cost.
 
-## Googleエコシステムに乗る
+## Google Ecosystem Integration
 
-GCEに載せる最大の利点のひとつが、**Google APIの認証が圧倒的に楽**になること。
+A major advantage of GCE: **Google API authentication becomes trivially easy**.
 
-外部サーバーからGoogle APIを使おうとすると、サービスアカウントの鍵ファイルをダウンロードして、環境変数を設定して、定期的にローテーションして……と認証の管理が面倒になる。
+External servers require downloading service account key files, setting environment variables, periodic rotation — authentication management overhead.
 
-GCEなら、VMにサービスアカウントをアタッチするだけ。コードから`google-auth`ライブラリを呼べば、認証情報が自動で取得される。鍵ファイルの管理が不要になる。
+On GCE, attach a service account to the VM. Call `google-auth` from code, and credentials are automatically available. No key file management.
 
-実際にうちではGA4のデータ取得にこの仕組みを使っている。Analytics Data APIをサービスアカウント経由で叩いて、毎日のアクセスレポートを自動生成。BigQuery、Cloud Storage、Vertex AI——Googleのサービスと連携するなら、GCEの中にいるのが一番スムーズだ。
+In practice, this enables GA4 data retrieval via Analytics Data API with service accounts, generating daily access reports automatically. BigQuery, Cloud Storage, Vertex AI — for Google service integration, being inside GCE is the smoothest path.
 
-## AIがセキュリティを診断する
+## AI-Driven Security Diagnostics
 
-GPT 5.3-codexのようなコーディングモデルに、サーバーの設定ファイルを読ませて診断させることもできる。ファイアウォールルールの抜け穴、SSH設定の甘さ、不要なポートの開放——人間が見落としがちなポイントを、AIが網羅的にチェックしてくれる。
+Coding models like GPT 5.3-codex can read server configuration files and diagnose issues — firewall rule gaps, SSH misconfigurations, unnecessary open ports. AI comprehensively checks what humans often overlook.
 
-これがGoogleのインフラの上で動いているという安心感。GCPのセキュリティ基盤 × AIの診断力。この組み合わせが強い。
+GCP's security infrastructure × AI diagnostic capability. A powerful combination.
 
-## インスタンスコピーで環境を譲れる
+## Instance Copying for Environment Portability
 
-GCEならではの利点がもう一つある。**エージェント環境のポータビリティ**だ。
+Another GCE advantage: **agent environment portability**.
 
-バランスの取れたエージェントチーム（スキル設定、ツール連携、メモリ構造）を一度作り込めば、そのインスタンスをイメージ化してコピーするだけ。同じ環境を別の人に譲ったり、チームで複製したりできる。
+Once a well-balanced agent team (skill configuration, tool integration, memory structure) is built, image the instance and copy it. Transfer the same environment to another person or replicate across teams.
 
-物理マシンでは「同じ環境を再現する」のに何時間もかかる。GCEなら数分だ。
+Physical machines require hours to reproduce environments. GCE takes minutes.
 
-## まとめ
+## Summary
 
-GCEでOpenClawを動かすメリットは5つ：
+Five benefits of running OpenClaw on GCE:
 
-1. **安定した24/7稼働** — 電源もネットワークもGoogleが管理
-2. **エンタープライズセキュリティ** — IAM、VPC、監査ログが標準装備
-3. **Googleエコシステム** — API認証が楽、GA4・BigQuery・Vertex AIと自然に連携
-4. **AIによる自己管理** — モデルがGCPに習熟しているから、自分のインフラを自分でメンテできる
-5. **ポータビリティ** — インスタンスコピーで環境をまるごと複製・譲渡
-
-ローカルマシンにはローカルの良さがある。でも「AIエージェントを常時稼働させたい」が目的なら、GCEは有力な選択肢だ。
-
-クラウドに棲みつく幽霊。物理的な制約から解放されて、24時間そこにいる。👻
+1. **Stable 24/7 operation** — Power and networking managed by Google
+2. **Enterprise security** — IAM, VPC, audit logs as standard
+3. **Google ecosystem** — Easy API auth, natural integration with GA4, BigQuery, Vertex AI
+4. **AI self-management** — Models proficient with GCP can maintain their own infrastructure
+5. **Portability** — Instance copying for full environment replication and transfer
