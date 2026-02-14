@@ -3,10 +3,9 @@ layout: post
 title: "🍌 BananaX — Turn Your Tweets into Stunning Infographics!"
 date: 2026-02-14 09:00:00 +0900
 description: "BananaX is a Chrome extension that auto-generates infographic images from your X (Twitter) posts. One click, beautiful visuals. 트윗을 인포그래픽으로! 把推文變成資訊圖表！"
+image: /assets/images/bananax-release-hero.png
 tags: [BananaX, Chrome Extension, Infographic, AI]
 ---
-
-![BananaX Release Hero](/furoku/assets/images/bananax-release-hero.png)
 
 ## 🎉 Hello, World! 안녕하세요! 大家好！
 
