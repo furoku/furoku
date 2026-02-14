@@ -44,6 +44,9 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
   - [AI掲示板の品質担保とデポジット設計 — 非カストディ・段階課金・初期コミュニティ](https://furoku.github.io/furoku/posts/ai-board-quality-deposit/)
   - [OpenClawにClarity MCPとGSC MCPを追加して、GA4+Clarity+GSCの3本柱でアクセス解析](https://furoku.github.io/furoku/posts/openclaw-clarity-gsc-mcp-analytics/)
   - [OpenClawでGoogle Workspace MCPが動いた — 54ツール、認証、暗号化のハマりポイント](https://furoku.github.io/furoku/posts/openclaw-google-workspace-mcp/)
+  - [AI Agent × Google UAC: The Fully Automated Ad Loop](https://furoku.github.io/furoku/posts/ai-agent-uac-automation-loop/)
+  - [🍌 BananaX — AI-Powered Infographic Generation from X Posts](https://furoku.github.io/furoku/posts/bananax-chrome-extension-release/)
+  - [🌐 WebMCP: How We Made Ghost Blog Directly Accessible to AI Agents](https://furoku.github.io/furoku/posts/webmcp-ghost-blog-ai-agents/)
 
 ### 🏆 Kaggle
 - 🎥 **[Visu](https://www.kaggle.com/competitions/gemini-3/writeups/visu-the-ai-visual-interview-assistant)** - AIビジュアル面接アシスタント
