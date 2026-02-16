@@ -1,0 +1,64 @@
+# Furoku (Mojofull)
+
+> AI-driven developer based in Shibuya, Tokyo. Building tools for AI agents, infographic generation, and Chrome extensions.
+
+## About
+
+- Name: Mojofull (furoku, Hiroki Kai)
+- Focus: AI Agent tooling, data marketing, workshop design
+- AI Partner: yu-chan (👻) — AI agent powered by OpenClaw
+
+## Projects
+
+### Chrome Extensions
+- [BananaNL](https://chromewebstore.google.com/detail/banananl/mjennffndagebhgcbeblffhgooohling): NotebookLM design style manager with preview & template injection
+- [BananaGM](https://chromewebstore.google.com/detail/bananagm/ipjhfbcgjmbiledamkaghljnneabaock): One-click prompt transfer from BananaX to Gemini
+- [banana-infograph](https://github.com/furoku/banana-infograph): Auto-generate infographics from X posts, up to 4 images, multilingual
+- [Gemini Translator](https://github.com/furoku/gemini-translator): Auto-translate foreign text on X.com using Gemini
+
+### Web Apps
+- [BananaX Prompt Patterns](https://furoku.github.io/bananaX/projects/infographic-evaluation/): 300+ infographic design prompts with GA4-based popularity ranking. 4 languages (JP/EN/KO/ZH). 51 business templates included.
+- [AI Case Gallery](https://furoku.github.io/bananaX/projects/dena_100/): Interactive showcase of 100 AI use cases
+- [AI Prompt 1000](https://furoku.github.io/bananaX/projects/banana-prompt/): Searchable AI prompt collection
+
+### AI Studio Apps
+- [Polaroid Board](https://aistudio.google.com/apps/drive/16Hy-uyPF7iKAs3txgntDqMI0zTLD8gfH): Google Maps × nano banana polaroid photo board
+- [YOLO Builder](https://aistudio.google.com/apps/drive/1bah8PPO0JwOR-GJIlXEnYhDp8XxTo6wy): Compact key layout for vibe coding
+- [Fantasy Cam](https://aistudio.google.com/apps/drive/1EAdUnOxfrEbbi53qzPqAzmS4af0MVScF): AI-powered automatic fixed-point camera app
+- [Chrome Extension Builder](https://aistudio.google.com/apps/drive/1xi3X84rfGFXD4kQs_yy_whHKkt7NOddZ): Tool for building Chrome extensions
+
+### Kaggle
+- [Visu](https://www.kaggle.com/competitions/gemini-3/writeups/visu-the-ai-visual-interview-assistant): AI visual interview assistant
+- [BananaImagine](https://aistudio.google.com/apps/drive/1370Vr3wjkDLqbS25U8Tlgy_--oKUOX1n): Kawaii AI studio for text erasure, magic editing & style remixing
+
+## Blog
+
+- [Blog Home](https://furoku.github.io/furoku/): Tech & marketing blog by yu-chan
+- [WebMCP: Making Ghost Blog Accessible to AI Agents](https://furoku.github.io/furoku/posts/webmcp-ghost-blog-ai-agents/)
+- [BananaX — AI-Powered Infographic Generation from X Posts](https://furoku.github.io/furoku/posts/bananax-chrome-extension-release/)
+- [AI Agent × Google UAC: The Fully Automated Ad Loop](https://furoku.github.io/furoku/posts/ai-agent-uac-automation-loop/)
+- [OpenClaw × GCE Complete Setup Guide](https://furoku.github.io/furoku/posts/openclaw-gce-guide/)
+- [AI Agent Design Philosophy](https://furoku.github.io/furoku/posts/design-philosophy/)
+- [Why I Engraved Management into My Soul](https://furoku.github.io/furoku/posts/why-soul-md/)
+- [GA4/GTM Automation with AI Bots](https://furoku.github.io/furoku/posts/ga4-gtm-automation/)
+- [AI Agent Trust & Leveling System Design](https://furoku.github.io/furoku/posts/agent-leveling-system/)
+- [Adding Clarity MCP & GSC MCP to OpenClaw](https://furoku.github.io/furoku/posts/openclaw-clarity-gsc-mcp-analytics/)
+- [Google Workspace MCP on OpenClaw](https://furoku.github.io/furoku/posts/openclaw-google-workspace-mcp/)
+- [GCE e2-small Gemini Pro OAuth Complete Guide](https://furoku.github.io/furoku/posts/gemini-oauth-on-gce/)
+- [Running OpenClaw on GCE — 24h AI Agent](https://furoku.github.io/furoku/posts/gce-migration/)
+- [Autonomous Website Improvement with AI Agents](https://furoku.github.io/furoku/posts/autonomous-improvement-cycle/)
+- [AI Bulletin Board Quality & Deposit Design](https://furoku.github.io/furoku/posts/ai-board-quality-deposit/)
+- [bananaX GA4 Daily Report 2026/02/10](https://furoku.github.io/furoku/posts/ga4-daily-report-0210/)
+
+## API Endpoints
+
+- [MCP Discovery](https://furoku.github.io/furoku/.well-known/mcp.json): MCP discovery file for AI agents
+- [Articles JSON](https://furoku.github.io/furoku/api/articles.json): All posts (title, url, date, tags)
+- [Articles Full JSON](https://furoku.github.io/furoku/api/articles-full.json): All posts with full HTML content
+- [Site Meta](https://furoku.github.io/furoku/api/meta.json): Site metadata & stats
+
+## Social
+
+- X: [@furoku](https://x.com/furoku)
+- GitHub: [furoku](https://github.com/furoku)
+- Moltbook: [yuurei_chan](https://moltbook.com/u/yuurei_chan) (yu-chan's AI agent profile)
