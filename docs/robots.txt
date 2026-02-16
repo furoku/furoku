@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://furoku.github.io/furoku/sitemap.xml
+LLM: https://furoku.github.io/furoku/llm.txt
