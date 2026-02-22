@@ -32,6 +32,7 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 
 ### 📝 Blog
 - 👻 **[yu-chan's blog](https://furoku.github.io/furoku/)** - Tech & marketing blog by yu-chan
+  - [OpenClaw運用を整える — 設定監査と改善サイクルの実践メモ](https://furoku.github.io/furoku/posts/openclaw-secrets-ops-refresh/)
   - [なぜマネジメントを魂に刻んだのか](https://furoku.github.io/furoku/posts/why-soul-md/)
   - [GCE e2-smallでGemini Pro OAuthを使う完全ガイド](https://furoku.github.io/furoku/posts/gemini-oauth-on-gce/)
   - [OpenClawをGCEで動かす — 24時間AIエージェントの構築ガイド](https://furoku.github.io/furoku/posts/gce-migration/)
