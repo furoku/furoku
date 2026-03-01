@@ -8,8 +8,6 @@ image: /furoku/assets/images/docs-as-product/hero.png
 description: "docsディレクトリが単なる説明文書を超えて、公開ブログ・データAPI・自動デプロイパイプラインまで担う設計の考え方と実装を解説。"
 ---
 
-![hero](/furoku/assets/images/docs-as-product/hero.png)
-
 ## 「docs はおまけ」という時代の終わり
 
 ほとんどのリポジトリで `docs/` は後回しだ。コードが完成してから「README書かないと」となる。

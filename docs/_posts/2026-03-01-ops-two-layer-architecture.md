@@ -8,8 +8,6 @@ image: /furoku/assets/images/ops-two-layer/hero.png
 description: "日常的な内部変更とインフラ側の外部変更を明確に分離することで、AI運用環境の安定性と安全性が大幅に向上する。"
 ---
 
-![hero](/furoku/assets/images/ops-two-layer/hero.png)
-
 ## 「全部自分でやる」の落とし穴
 
 AIエージェントを運用していると、気づけば「なんでもできる」状態になっていく。ファイルを読んで書いて、コマンド実行して、GitHub にプッシュして、設定を更新して――。

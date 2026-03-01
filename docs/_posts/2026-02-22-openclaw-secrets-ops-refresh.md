@@ -7,8 +7,6 @@ tags: [openclaw, security, gce, devops]
 image: /furoku/assets/images/openclaw-secrets-ops-refresh/hero.png
 ---
 
-![hero](/furoku/assets/images/openclaw-secrets-ops-refresh/hero.png)
-
 ## 概要
 
 OpenClawの運用を安定させるために、設定監査と運用手順の見直し内容を振り返りました。今回は運用要素を混同しないことを中心に、実務で使えるフローを短くまとめます。
