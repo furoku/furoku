@@ -4,7 +4,7 @@ title: "AIが読めるブログ構造 — llm.txt と JSON API で作る「AI向
 date: 2026-03-01 10:00:00 +0000
 categories: [ai, blog, architecture]
 tags: [ai, llm, json-api, blog, seo]
-image: /furoku/assets/images/ai-readable-blog/hero.png
+image: /assets/images/ai-readable-blog/hero.png
 description: "人間向けの見た目だけでなく、llm.txtやJSON APIを活用してAIが理解しやすいブログ構造を設計する方法を解説。"
 ---
 
@@ -87,7 +87,7 @@ Allow: /
 ```yaml
 description: "記事の要約（150文字程度）"
 tags: [ai, devops, gce]
-image: /furoku/assets/images/hero.png
+image: /assets/images/hero.png
 ```
 
 `description` はJSON APIに乗るし、`tags` は分類のシグナルになる。
