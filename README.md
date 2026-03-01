@@ -12,6 +12,11 @@
 
 A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in the power of creative decision-making.
 
+もじゃです。認定ワークショップデザイナーとして場をつくりつつ、マーケとエンジニアリングもやってます。
+ワークショップの現場では「もじゃ」で活動中。認定ワークショップデザイナー／マーケター／エンジニア。
+
+![認定ワークショップデザイナー](assets/certified-workshop-designer.png)
+
 ---
 
 ## Current Projects
