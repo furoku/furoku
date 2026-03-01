@@ -8,8 +8,6 @@ image: /furoku/assets/images/ai-readable-blog/hero.png
 description: "人間向けの見た目だけでなく、llm.txtやJSON APIを活用してAIが理解しやすいブログ構造を設計する方法を解説。"
 ---
 
-![hero](/furoku/assets/images/ai-readable-blog/hero.png)
-
 ## なぜ「AI向け導線」が必要か
 
 ブログは長らく「人間が読むもの」として設計されてきた。しかし今、ChatGPTやClaudeのようなLLMが情報収集の主体になりつつある。検索エンジン最適化（SEO）の次に来るのは、**AI最適化（AIO: AI Optimization）** だ。
