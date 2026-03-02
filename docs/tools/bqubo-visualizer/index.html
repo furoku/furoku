@@ -14,8 +14,8 @@ layout: null
   --text:#e0e0e0;--text2:#a0a0b0;--border:#2a2a3e;
   --green:#00e676;--orange:#ffab40;--red:#ff5252;
 }
-html{font-size:16px}
-body{font-family:'Segoe UI','Hiragino Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+html{font-size:16px;overflow-x:hidden}
+body{font-family:'Segoe UI','Hiragino Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;max-width:100vw}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 
@@ -23,30 +23,30 @@ a:hover{text-decoration:underline}
 .hero h1{font-size:2.2rem;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
 .hero p{color:var(--text2);max-width:700px;margin:0 auto;font-size:.95rem}
 
-.container{max-width:1200px;margin:0 auto;padding:1.5rem 1rem}
+.container{max-width:1200px;margin:0 auto;padding:1.5rem 1rem;overflow-x:hidden}
 .tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
 .tab{padding:.6rem 1.4rem;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text2);cursor:pointer;transition:.2s;font-size:.9rem}
 .tab:hover,.tab.active{border-color:var(--accent);color:var(--accent);background:#16213e}
 
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;max-width:100%;overflow-x:hidden}
 .card h2{font-size:1.3rem;margin-bottom:1rem;color:var(--accent)}
 .card h3{font-size:1.1rem;margin-bottom:.8rem;color:var(--accent2)}
 
-.section{display:none}
+.section{display:none;overflow-x:hidden}
 .section.active{display:block}
 
 .explain-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
 @media(max-width:768px){.explain-grid{grid-template-columns:1fr}}
 .explain-grid .card{border-left:3px solid var(--accent)}
 .explain-grid .card:nth-child(2){border-left-color:var(--accent2)}
-.formula{background:#111;border-radius:8px;padding:1rem;margin:.8rem 0;font-family:'Courier New',monospace;color:var(--green);font-size:.9rem;overflow-x:auto}
+.formula{background:#111;border-radius:8px;padding:1rem;margin:.8rem 0;font-family:'Courier New',monospace;color:var(--green);font-size:.9rem;overflow-x:auto;max-width:100%;word-break:break-all}
 
-.problem-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.problem-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;overflow-x:hidden;max-width:100%}
 @media(max-width:900px){.problem-layout{grid-template-columns:1fr}}
 
 .controls{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin-bottom:1rem}
 .controls label{font-size:.85rem;color:var(--text2)}
-.controls input[type=range]{width:120px;accent-color:var(--accent)}
+.controls input[type=range]{width:120px;max-width:40vw;accent-color:var(--accent)}
 .controls input[type=number]{width:70px;background:#111;border:1px solid var(--border);border-radius:4px;color:var(--text);padding:.3rem .4rem;font-size:.85rem}
 .btn{padding:.5rem 1.2rem;border:none;border-radius:8px;font-size:.9rem;cursor:pointer;font-weight:600;transition:.2s}
 .btn-primary{background:linear-gradient(135deg,var(--accent),#0099cc);color:#000}
@@ -55,11 +55,11 @@ a:hover{text-decoration:underline}
 .btn-secondary{background:var(--border);color:var(--text)}
 .btn-secondary:hover{background:#3a3a5e}
 
-.canvas-wrap{position:relative;background:#111;border-radius:8px;overflow:hidden;margin-bottom:1rem}
-.canvas-wrap canvas{display:block;width:100%;height:auto}
+.canvas-wrap{position:relative;background:#111;border-radius:8px;overflow:hidden;margin-bottom:1rem;max-width:100%}
+.canvas-wrap canvas{display:block;width:100%;height:auto;max-width:100%}
 
-.stats{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1rem}
-.stat{background:#111;border-radius:8px;padding:.6rem 1rem;min-width:120px}
+.stats{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}
+.stat{background:#111;border-radius:8px;padding:.5rem .7rem;min-width:0;flex:1 1 calc(50% - .6rem)}
 .stat-label{font-size:.7rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
 .stat-value{font-size:1.4rem;font-weight:700;color:var(--accent)}
 .stat-value.energy{color:var(--green)}
@@ -74,13 +74,33 @@ a:hover{text-decoration:underline}
 .graph-legend{display:flex;gap:1rem;margin:.5rem 0;font-size:.8rem}
 .legend-dot{width:12px;height:12px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:4px}
 
-.temp-chart-wrap{height:120px;position:relative;background:#111;border-radius:8px;overflow:hidden}
+.temp-chart-wrap{height:120px;position:relative;background:#111;border-radius:8px;overflow:hidden;max-width:100%}
 
 .footer{text-align:center;padding:2rem 1rem;color:var(--text2);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}
 
 .progress-bar{height:4px;background:#111;border-radius:2px;overflow:hidden;margin-bottom:1rem}
 .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s;width:0%}
 
+
+@media(max-width:600px){
+  .hero h1{font-size:1.5rem}
+  .hero p{font-size:.85rem}
+  .container{padding:1rem .5rem}
+  .card{padding:1rem}
+  .controls{gap:.5rem}
+  .controls label{font-size:.78rem;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap}
+  .controls input[type=range]{width:100px;max-width:35vw}
+  .controls input[type=number]{width:55px;font-size:.8rem}
+  .btn{padding:.4rem .9rem;font-size:.82rem}
+  .stat-value{font-size:1.1rem}
+  .stat-label{font-size:.65rem}
+  .item-grid{grid-template-columns:repeat(auto-fill,minmax(65px,1fr));gap:.4rem}
+  .item-box{padding:.4rem;font-size:.75rem}
+  .graph-legend{flex-wrap:wrap;gap:.5rem;font-size:.72rem}
+  .canvas-wrap canvas{max-width:100%}
+  .tabs{gap:.3rem}
+  .tab{padding:.5rem .8rem;font-size:.8rem}
+}
 ::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
@@ -385,6 +405,18 @@ function bindRange(id) {
 }
 ['ks-penalty','ks-kt','ks-cl','ks-rpt','mc-density','mc-kt','mc-cl','mc-rpt'].forEach(bindRange);
 
+
+// ===== Canvas Resize Helper =====
+function resizeCanvasToDisplay(canvas) {
+  var rect = canvas.getBoundingClientRect();
+  var dw = Math.round(rect.width);
+  var dh = Math.round(rect.height);
+  if (dw > 0 && dh > 0 && (canvas.width !== dw || canvas.height !== dh)) {
+    canvas.width = dw;
+    canvas.height = dh;
+  }
+}
+
 // ===== Temperature Chart =====
 class TempChart {
   constructor(canvasId) {
@@ -406,6 +438,7 @@ class TempChart {
     if (this.data.length % 2 === 0) this.draw();
   }
   draw() {
+    resizeCanvasToDisplay(this.canvas);
     const c = this.ctx, w = this.canvas.width, h = this.canvas.height;
     c.fillStyle = '#111';
     c.fillRect(0, 0, w, h);
@@ -523,14 +556,15 @@ const KS = {
   },
 
   drawKnapsack(state) {
+    resizeCanvasToDisplay(this.canvas);
     const c = this.canvas.getContext('2d');
     const w = this.canvas.width, h = this.canvas.height;
     const capacity = parseInt(document.getElementById('ks-capacity').value);
     c.fillStyle = '#111';
     c.fillRect(0, 0, w, h);
 
-    // Bag outline
-    const bagX = 30, bagY = 30, bagW = 180, bagH = 280;
+    // Bag outline - scale to canvas
+    const bagX = w * 0.06, bagY = h * 0.09, bagW = w * 0.36, bagH = h * 0.8;
     c.strokeStyle = '#444';
     c.lineWidth = 2;
     c.strokeRect(bagX, bagY, bagW, bagH);
@@ -566,7 +600,7 @@ const KS = {
     });
 
     // Capacity fill bar
-    var barX = bagX + bagW + 20, barW = 20;
+    var barX = bagX + bagW + w * 0.04, barW = w * 0.04;
     c.strokeStyle = '#444';
     c.strokeRect(barX, bagY, barW, bagH);
     var fillH = Math.min(1, usedWeight / capacity) * bagH;
@@ -578,7 +612,7 @@ const KS = {
     c.fillText(usedWeight + '/' + capacity, barX - 2, bagY + bagH + 14);
 
     // Right side: value summary
-    var infoX = 280;
+    var infoX = Math.max(bagX + bagW + 60, w * 0.52);
     c.fillStyle = '#e0e0e0';
     c.font = 'bold 14px sans-serif';
     c.fillText('選択されたアイテム', infoX, 50);
@@ -678,7 +712,8 @@ const MC = {
     var density = parseFloat(document.getElementById('mc-density').value);
     this.nodes = [];
     this.edges = [];
-    var cx = 250, cy = 200, radius = 150;
+    var cw = this.canvas.width, ch = this.canvas.height;
+    var cx = cw / 2, cy = ch / 2, radius = Math.min(cw, ch) * 0.37;
     for (var i = 0; i < n; i++) {
       var angle = (2 * Math.PI * i / n) - Math.PI / 2;
       this.nodes.push({
@@ -729,10 +764,18 @@ const MC = {
   },
 
   drawGraph(state) {
+    resizeCanvasToDisplay(this.canvas);
     var c = this.canvas.getContext('2d');
     var w = this.canvas.width, h = this.canvas.height;
     c.fillStyle = '#111';
     c.fillRect(0, 0, w, h);
+    // Recalculate node positions for current canvas size
+    var cxG = w / 2, cyG = h / 2, radiusG = Math.min(w, h) * 0.37;
+    for (var i = 0; i < this.nodes.length; i++) {
+      var angle = (2 * Math.PI * i / this.nodes.length) - Math.PI / 2;
+      this.nodes[i].x = cxG + radiusG * Math.cos(angle);
+      this.nodes[i].y = cyG + radiusG * Math.sin(angle);
+    }
     // Draw edges
     for (var e = 0; e < this.edges.length; e++) {
       var edge = this.edges[e];
@@ -753,14 +796,14 @@ const MC = {
       var node = this.nodes[i];
       var group = state[node.id] || 0;
       c.beginPath();
-      c.arc(node.x, node.y, 18, 0, Math.PI * 2);
+      c.arc(node.x, node.y, Math.min(18, w * 0.04), 0, Math.PI * 2);
       c.fillStyle = group === 1 ? '#ff6b9d' : '#00d4ff';
       c.fill();
       c.strokeStyle = '#fff';
       c.lineWidth = 2;
       c.stroke();
       c.fillStyle = '#000';
-      c.font = 'bold 12px sans-serif';
+      c.font = 'bold ' + Math.min(12, Math.max(9, w * 0.025)) + 'px sans-serif';
       c.textAlign = 'center';
       c.textBaseline = 'middle';
       c.fillText(node.id, node.x, node.y);
@@ -815,6 +858,21 @@ document.getElementById('mc-reset').addEventListener('click', function() {
 });
 document.getElementById('mc-randomize').addEventListener('click', function() { MC.generateGraph(); });
 MC.generateGraph();
+
+// ===== Responsive Resize Handler =====
+window.addEventListener('resize', function() {
+  // Redraw current visible section
+  var ksSection = document.getElementById('sec-knapsack');
+  var mcSection = document.getElementById('sec-maxcut');
+  if (ksSection && ksSection.classList.contains('active') && !KS.running) {
+    KS.drawKnapsack({});
+    KS.chart.draw();
+  }
+  if (mcSection && mcSection.classList.contains('active') && !MC.running) {
+    MC.drawGraph({});
+    MC.chart.draw();
+  }
+});
 </script>
 </body>
 </html>
