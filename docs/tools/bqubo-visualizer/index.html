@@ -1,0 +1,820 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUBO ビジュアライザー — bqubo インタラクティブ学習ツール</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f1a;--card:#1a1a2e;--accent:#00d4ff;--accent2:#ff6b9d;
+  --text:#e0e0e0;--text2:#a0a0b0;--border:#2a2a3e;
+  --green:#00e676;--orange:#ffab40;--red:#ff5252;
+}
+html{font-size:16px}
+body{font-family:'Segoe UI','Hiragino Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.hero{text-align:center;padding:3rem 1rem 2rem;background:linear-gradient(135deg,#0f0f1a 0%,#1a1a3e 100%);border-bottom:1px solid var(--border)}
+.hero h1{font-size:2.2rem;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
+.hero p{color:var(--text2);max-width:700px;margin:0 auto;font-size:.95rem}
+
+.container{max-width:1200px;margin:0 auto;padding:1.5rem 1rem}
+.tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab{padding:.6rem 1.4rem;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text2);cursor:pointer;transition:.2s;font-size:.9rem}
+.tab:hover,.tab.active{border-color:var(--accent);color:var(--accent);background:#16213e}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.3rem;margin-bottom:1rem;color:var(--accent)}
+.card h3{font-size:1.1rem;margin-bottom:.8rem;color:var(--accent2)}
+
+.section{display:none}
+.section.active{display:block}
+
+.explain-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:768px){.explain-grid{grid-template-columns:1fr}}
+.explain-grid .card{border-left:3px solid var(--accent)}
+.explain-grid .card:nth-child(2){border-left-color:var(--accent2)}
+.formula{background:#111;border-radius:8px;padding:1rem;margin:.8rem 0;font-family:'Courier New',monospace;color:var(--green);font-size:.9rem;overflow-x:auto}
+
+.problem-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:900px){.problem-layout{grid-template-columns:1fr}}
+
+.controls{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin-bottom:1rem}
+.controls label{font-size:.85rem;color:var(--text2)}
+.controls input[type=range]{width:120px;accent-color:var(--accent)}
+.controls input[type=number]{width:70px;background:#111;border:1px solid var(--border);border-radius:4px;color:var(--text);padding:.3rem .4rem;font-size:.85rem}
+.btn{padding:.5rem 1.2rem;border:none;border-radius:8px;font-size:.9rem;cursor:pointer;font-weight:600;transition:.2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#0099cc);color:#000}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(0,212,255,.3)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-secondary{background:var(--border);color:var(--text)}
+.btn-secondary:hover{background:#3a3a5e}
+
+.canvas-wrap{position:relative;background:#111;border-radius:8px;overflow:hidden;margin-bottom:1rem}
+.canvas-wrap canvas{display:block;width:100%;height:auto}
+
+.stats{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1rem}
+.stat{background:#111;border-radius:8px;padding:.6rem 1rem;min-width:120px}
+.stat-label{font-size:.7rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.stat-value{font-size:1.4rem;font-weight:700;color:var(--accent)}
+.stat-value.energy{color:var(--green)}
+.stat-value.temp{color:var(--orange)}
+
+.item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.5rem;margin:1rem 0}
+.item-box{background:#111;border:2px solid var(--border);border-radius:8px;padding:.5rem;text-align:center;transition:.3s;font-size:.8rem}
+.item-box.selected{border-color:var(--green);background:#0a2a0a;box-shadow:0 0 10px rgba(0,230,118,.2)}
+.item-box .item-weight{color:var(--orange);font-size:.75rem}
+.item-box .item-value{color:var(--green);font-size:.75rem}
+
+.graph-legend{display:flex;gap:1rem;margin:.5rem 0;font-size:.8rem}
+.legend-dot{width:12px;height:12px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:4px}
+
+.temp-chart-wrap{height:120px;position:relative;background:#111;border-radius:8px;overflow:hidden}
+
+.footer{text-align:center;padding:2rem 1rem;color:var(--text2);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}
+
+.progress-bar{height:4px;background:#111;border-radius:2px;overflow:hidden;margin-bottom:1rem}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s;width:0%}
+
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🧊 QUBO インタラクティブ ビジュアライザー</h1>
+  <p>ブラウザ上でシミュレーテッドアニーリングが動く様子をリアルタイムで観察しよう。<br>
+  <a href="https://github.com/minatoyuichiro/bqubo" target="_blank">bqubo</a> ライブラリを使った教育用デモです。</p>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" data-tab="explain">📖 解説</div>
+    <div class="tab" data-tab="knapsack">🎒 ナップサック問題</div>
+    <div class="tab" data-tab="maxcut">✂️ 最大カット問題</div>
+  </div>
+
+  <!-- ===== Explanation ===== -->
+  <div class="section active" id="sec-explain">
+    <div class="explain-grid">
+      <div class="card">
+        <h2>📐 QUBO とは？</h2>
+        <p><strong>QUBO（Quadratic Unconstrained Binary Optimization）</strong>は、0 か 1 の変数だけを使って、ある目的関数を最小化する問題です。</p>
+        <div class="formula">
+          最小化: f(x) = Σᵢ qᵢᵢxᵢ + Σᵢ&lt;ⱼ qᵢⱼxᵢxⱼ<br>
+          ただし xᵢ ∈ {0, 1}
+        </div>
+        <p style="margin-top:.8rem">多くの<strong>組み合わせ最適化問題</strong>（ナップサック、グラフカット、スケジューリングなど）をこの形に変換できます。量子コンピュータ（量子アニーリング）でも同じ定式化が使われます。</p>
+        <h3 style="margin-top:1.2rem">💡 ポイント</h3>
+        <ul style="padding-left:1.2rem;color:var(--text2)">
+          <li><strong>線形項</strong> qᵢᵢ: 変数 xᵢ を 1 にしたときのコスト</li>
+          <li><strong>二次項</strong> qᵢⱼ: xᵢ と xⱼ が同時に 1 のときの追加コスト</li>
+          <li>制約条件はペナルティ項として目的関数に組み込む</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>🔥 シミュレーテッドアニーリングとは？</h2>
+        <p>金属の<strong>焼きなまし（アニーリング）</strong>にヒントを得た最適化手法です。高温から徐々に冷却することで、良い解を見つけます。</p>
+        <div class="formula">
+          受理確率: P = exp(-ΔE / kT)<br>
+          温度 kT は時間とともに減少 → kT × cl
+        </div>
+        <h3 style="margin-top:1rem">🌡️ 温度の役割</h3>
+        <ul style="padding-left:1.2rem;color:var(--text2)">
+          <li><strong>高温</strong>: 悪い変化も受け入れる → 広く探索</li>
+          <li><strong>低温</strong>: 良い変化のみ受け入れる → 解を洗練</li>
+          <li>ゆっくり冷やすほど良い解が見つかりやすい</li>
+        </ul>
+        <h3 style="margin-top:1rem">⚙️ bqubo のパラメータ</h3>
+        <ul style="padding-left:1.2rem;color:var(--text2)">
+          <li><strong>kTinit</strong>: 初期温度（大きいほど探索範囲が広い）</li>
+          <li><strong>cl</strong>: 冷却率（1に近いほどゆっくり冷却）</li>
+          <li><strong>rpt</strong>: 各温度でのモンテカルロステップ数</li>
+          <li><strong>kTF</strong>: 終了温度（これ以下で停止）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h2>🎮 このデモの使い方</h2>
+      <p>上のタブから問題を選んで、パラメータを調整し、「▶ 実行」ボタンを押してください。焼きなましの過程がリアルタイムアニメーションで表示されます。</p>
+      <ul style="padding-left:1.2rem;color:var(--text2);margin-top:.5rem">
+        <li>🎒 <strong>ナップサック問題</strong>: 容量制限のあるカバンに、価値の合計が最大になるようにアイテムを詰める</li>
+        <li>✂️ <strong>最大カット問題</strong>: グラフのノードを2グループに分けて、グループ間のエッジ数を最大化する</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== Knapsack ===== -->
+  <div class="section" id="sec-knapsack">
+    <div class="card">
+      <h2>🎒 ナップサック問題</h2>
+      <p>容量 <strong id="ks-cap-display">15</strong> のカバンに、価値の合計が最大になるようにアイテムを選びます。</p>
+    </div>
+    <div class="problem-layout">
+      <div>
+        <div class="card">
+          <h3>⚙️ パラメータ</h3>
+          <div class="controls">
+            <label>容量: <input type="number" id="ks-capacity" value="15" min="5" max="50" style="width:60px"></label>
+            <label>アイテム数: <input type="number" id="ks-items" value="8" min="4" max="16" style="width:60px"></label>
+            <label>ペナルティ強度: <input type="range" id="ks-penalty" min="1" max="20" value="10" step="1"> <span id="ks-penalty-val">10</span></label>
+          </div>
+          <div class="controls">
+            <label>初期温度: <input type="range" id="ks-kt" min="1" max="30" value="10" step="0.5"> <span id="ks-kt-val">10</span></label>
+            <label>冷却率: <input type="range" id="ks-cl" min="0.9" max="0.999" value="0.98" step="0.001"> <span id="ks-cl-val">0.98</span></label>
+            <label>ステップ数: <input type="range" id="ks-rpt" min="500" max="10000" value="3000" step="500"> <span id="ks-rpt-val">3000</span></label>
+          </div>
+          <div class="controls">
+            <button class="btn btn-primary" id="ks-run">▶ 実行</button>
+            <button class="btn btn-secondary" id="ks-reset">🔄 リセット</button>
+            <button class="btn btn-secondary" id="ks-randomize">🎲 アイテム再生成</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>📊 統計</h3>
+          <div class="progress-bar"><div class="progress-bar-fill" id="ks-progress"></div></div>
+          <div class="stats">
+            <div class="stat"><div class="stat-label">温度</div><div class="stat-value temp" id="ks-stat-temp">—</div></div>
+            <div class="stat"><div class="stat-label">エネルギー</div><div class="stat-value energy" id="ks-stat-energy">—</div></div>
+            <div class="stat"><div class="stat-label">価値合計</div><div class="stat-value" id="ks-stat-value">0</div></div>
+            <div class="stat"><div class="stat-label">重さ合計</div><div class="stat-value" id="ks-stat-weight" style="color:var(--orange)">0</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>📦 アイテム一覧</h3>
+          <div class="item-grid" id="ks-item-grid"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>🌡️ 温度変化</h3>
+          <div class="temp-chart-wrap"><canvas id="ks-temp-chart" width="500" height="120"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>🎒 カバンの中身</h3>
+          <div class="canvas-wrap"><canvas id="ks-canvas" width="500" height="350"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Max-Cut ===== -->
+  <div class="section" id="sec-maxcut">
+    <div class="card">
+      <h2>✂️ 最大カット問題</h2>
+      <p>グラフのノードを<span style="color:var(--accent)">■ グループA</span>と<span style="color:var(--accent2)">■ グループB</span>に分けて、グループ間のエッジ（<span style="color:var(--green)">緑の線</span>）の数を最大化します。</p>
+    </div>
+    <div class="problem-layout">
+      <div>
+        <div class="card">
+          <h3>⚙️ パラメータ</h3>
+          <div class="controls">
+            <label>ノード数: <input type="number" id="mc-nodes" value="10" min="4" max="20" style="width:60px"></label>
+            <label>エッジ密度: <input type="range" id="mc-density" min="0.2" max="0.8" value="0.4" step="0.05"> <span id="mc-density-val">0.4</span></label>
+          </div>
+          <div class="controls">
+            <label>初期温度: <input type="range" id="mc-kt" min="1" max="30" value="10" step="0.5"> <span id="mc-kt-val">10</span></label>
+            <label>冷却率: <input type="range" id="mc-cl" min="0.9" max="0.999" value="0.98" step="0.001"> <span id="mc-cl-val">0.98</span></label>
+            <label>ステップ数: <input type="range" id="mc-rpt" min="500" max="10000" value="3000" step="500"> <span id="mc-rpt-val">3000</span></label>
+          </div>
+          <div class="controls">
+            <button class="btn btn-primary" id="mc-run">▶ 実行</button>
+            <button class="btn btn-secondary" id="mc-reset">🔄 リセット</button>
+            <button class="btn btn-secondary" id="mc-randomize">🎲 グラフ再生成</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>📊 統計</h3>
+          <div class="progress-bar"><div class="progress-bar-fill" id="mc-progress"></div></div>
+          <div class="stats">
+            <div class="stat"><div class="stat-label">温度</div><div class="stat-value temp" id="mc-stat-temp">—</div></div>
+            <div class="stat"><div class="stat-label">エネルギー</div><div class="stat-value energy" id="mc-stat-energy">—</div></div>
+            <div class="stat"><div class="stat-label">カット数</div><div class="stat-value" id="mc-stat-cut">0</div></div>
+            <div class="stat"><div class="stat-label">総エッジ</div><div class="stat-value" id="mc-stat-total" style="color:var(--text2)">0</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>📝 QUBO定式化</h3>
+          <p style="font-size:.85rem;color:var(--text2)">各エッジ (i,j) について、カットされる ＝ xᵢ ≠ xⱼ。<br>最大化 → QUBO最小化に変換：</p>
+          <div class="formula">Q[i,j] = +2 (同じグループならペナルティ)<br>Q[i,i] -= degree(i) (各ノードの次数分)</div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>🌡️ 温度変化</h3>
+          <div class="temp-chart-wrap"><canvas id="mc-temp-chart" width="500" height="120"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>🔗 グラフ表示</h3>
+          <div class="canvas-wrap"><canvas id="mc-canvas" width="500" height="400"></canvas></div>
+          <div class="graph-legend">
+            <span><span class="legend-dot" style="background:var(--accent)"></span> グループ A</span>
+            <span><span class="legend-dot" style="background:var(--accent2)"></span> グループ B</span>
+            <span><span class="legend-dot" style="background:var(--green)"></span> カットエッジ</span>
+            <span><span class="legend-dot" style="background:#444"></span> 非カットエッジ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Built with <a href="https://github.com/minatoyuichiro/bqubo" target="_blank">bqubo</a> — Browser-based QUBO Solver<br>
+  <a href="https://yu-chan.exe.xyz">yu-chan.exe.xyz</a>
+</div>
+
+<script>
+// ===== bqubo library (inlined) =====
+class Bqubo {
+  constructor(qubo, params = {}) {
+    this.qubo = qubo;
+    this.params = {
+      kTinit: parseFloat(params.kTinit) || 10.0,
+      cl: parseFloat(params.cl) || 0.995,
+      kTF: parseFloat(params.kTF) || 0.01,
+      rpt: parseInt(params.rpt) || 20000
+    };
+  }
+  async solve(onStep) {
+    const workerCode = `
+      self.onmessage = function(e) {
+        const { n, linear, adjTo, adjWeight, adjCount, offsets, kTinit, cl, kTF, rpt } = e.data;
+        const state = new Uint8Array(n);
+        for(let i=0; i<n; i++) state[i] = Math.random() > 0.5 ? 1 : 0;
+        let kT = kTinit;
+        while(kT > kTF) {
+          for (let r = 0; r < rpt; r++) {
+            const i = (Math.random() * n) | 0;
+            let localField = linear[i];
+            const start = offsets[i];
+            const count = adjCount[i];
+            for (let k = 0; k < count; k++) {
+              const idx = start + k;
+              if (state[adjTo[idx]] === 1) localField += adjWeight[idx];
+            }
+            const deltaE = (state[i] === 0) ? localField : -localField;
+            if (deltaE <= 0 || Math.random() < Math.exp(-deltaE / kT)) state[i] ^= 1;
+          }
+          kT *= cl;
+          self.postMessage({ state: Array.from(state), kT, finished: false });
+        }
+        self.postMessage({ state: Array.from(state), kT, finished: true });
+      };
+    `;
+    const blob = new Blob([workerCode], { type: 'application/javascript' });
+    const worker = new Worker(URL.createObjectURL(blob));
+    const rawNodes = Array.from(new Set(Object.keys(this.qubo).flatMap(k => k.split(',').map(Number)))).sort((a,b)=>a-b);
+    const map = new Map(rawNodes.map((n, i) => [n, i]));
+    const N = rawNodes.length;
+    const linear = new Float64Array(N);
+    const tempAdj = Array.from({ length: N }, () => []);
+    let totalEdges = 0;
+    for (let key in this.qubo) {
+      const parts = key.split(',').map(Number);
+      const w = this.qubo[key];
+      const i = map.get(parts[0]);
+      if (parts.length === 1 || parts[0] === parts[1]) {
+        linear[i] += w;
+      } else {
+        const j = map.get(parts[1]);
+        tempAdj[i].push({to: j, w});
+        tempAdj[j].push({to: i, w});
+        totalEdges += 2;
+      }
+    }
+    const adjTo = new Int32Array(totalEdges);
+    const adjWeight = new Float64Array(totalEdges);
+    const adjCount = new Int32Array(N);
+    const offsets = new Int32Array(N);
+    let currentPos = 0;
+    for (let i = 0; i < N; i++) {
+      offsets[i] = currentPos;
+      adjCount[i] = tempAdj[i].length;
+      for (let edge of tempAdj[i]) {
+        adjTo[currentPos] = edge.to;
+        adjWeight[currentPos] = edge.w;
+        currentPos++;
+      }
+    }
+    return new Promise((resolve) => {
+      worker.postMessage({
+        n: N, linear, adjTo, adjWeight, adjCount, offsets, ...this.params
+      }, [linear.buffer, adjTo.buffer, adjWeight.buffer, adjCount.buffer, offsets.buffer]);
+      worker.onmessage = (e) => {
+        const { state, kT, finished } = e.data;
+        const readableState = {};
+        rawNodes.forEach((node, idx) => readableState[node] = state[idx]);
+        if (onStep) onStep(readableState, kT);
+        if (finished) {
+          worker.terminate();
+          URL.revokeObjectURL(blob);
+          resolve(readableState);
+        }
+      };
+    });
+  }
+}
+</script>
+
+<script>
+// ===== Tab Navigation =====
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('sec-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ===== Utility =====
+function randInt(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+
+function bindRange(id) {
+  const el = document.getElementById(id);
+  const span = document.getElementById(id + '-val');
+  if (el && span) el.addEventListener('input', () => span.textContent = el.value);
+}
+['ks-penalty','ks-kt','ks-cl','ks-rpt','mc-density','mc-kt','mc-cl','mc-rpt'].forEach(bindRange);
+
+// ===== Temperature Chart =====
+class TempChart {
+  constructor(canvasId) {
+    this.canvas = document.getElementById(canvasId);
+    this.ctx = this.canvas.getContext('2d');
+    this.data = [];
+    this.energyData = [];
+    this.maxTemp = 10;
+  }
+  reset(maxTemp) {
+    this.data = [];
+    this.energyData = [];
+    this.maxTemp = maxTemp;
+    this.draw();
+  }
+  add(temp, energy) {
+    this.data.push(temp);
+    this.energyData.push(energy);
+    if (this.data.length % 2 === 0) this.draw();
+  }
+  draw() {
+    const c = this.ctx, w = this.canvas.width, h = this.canvas.height;
+    c.fillStyle = '#111';
+    c.fillRect(0, 0, w, h);
+    if (this.data.length < 2) return;
+    const n = this.data.length;
+    const step = w / (n - 1);
+    // Temperature line
+    c.beginPath();
+    c.strokeStyle = '#ffab40';
+    c.lineWidth = 2;
+    for (let i = 0; i < n; i++) {
+      const x = i * step;
+      const y = h - (this.data[i] / this.maxTemp) * (h - 10) - 5;
+      i === 0 ? c.moveTo(x, y) : c.lineTo(x, y);
+    }
+    c.stroke();
+    // Energy line (normalized)
+    if (this.energyData.length > 1) {
+      let minE = Infinity, maxE = -Infinity;
+      for (const e of this.energyData) { minE = Math.min(minE, e); maxE = Math.max(maxE, e); }
+      const range = maxE - minE || 1;
+      c.beginPath();
+      c.strokeStyle = '#00e676';
+      c.lineWidth = 1.5;
+      c.setLineDash([4, 4]);
+      for (let i = 0; i < this.energyData.length; i++) {
+        const x = i * step;
+        const y = h - ((this.energyData[i] - minE) / range) * (h - 20) - 10;
+        i === 0 ? c.moveTo(x, y) : c.lineTo(x, y);
+      }
+      c.stroke();
+      c.setLineDash([]);
+    }
+    // Labels
+    c.fillStyle = '#ffab40';
+    c.font = '10px sans-serif';
+    c.fillText('温度', 5, 12);
+    c.fillStyle = '#00e676';
+    c.fillText('エネルギー', 40, 12);
+  }
+}
+
+// =============================================
+// ===== KNAPSACK PROBLEM =====
+// =============================================
+const KS = {
+  items: [],
+  running: false,
+  chart: new TempChart('ks-temp-chart'),
+  canvas: document.getElementById('ks-canvas'),
+
+  generateItems() {
+    const count = parseInt(document.getElementById('ks-items').value);
+    this.items = [];
+    for (let i = 0; i < count; i++) {
+      this.items.push({
+        id: i,
+        weight: randInt(1, 8),
+        value: randInt(2, 15),
+        selected: false,
+        emoji: ['📱','💎','📚','🎸','⚽','🎮','💻','🎧','📷','🎨','🧸','🔮','🎁','🧲','🔭','🎯'][i % 16]
+      });
+    }
+    this.renderItems();
+    this.drawKnapsack({});
+  },
+
+  renderItems() {
+    const grid = document.getElementById('ks-item-grid');
+    grid.innerHTML = '';
+    this.items.forEach(item => {
+      const box = document.createElement('div');
+      box.className = 'item-box';
+      box.id = 'ks-item-' + item.id;
+      box.innerHTML = '<div style="font-size:1.4rem">' + item.emoji + '</div>' +
+        '<div class="item-weight">⚖️ ' + item.weight + '</div>' +
+        '<div class="item-value">💰 ' + item.value + '</div>';
+      grid.appendChild(box);
+    });
+  },
+
+  buildQUBO() {
+    const capacity = parseInt(document.getElementById('ks-capacity').value);
+    const penalty = parseFloat(document.getElementById('ks-penalty').value);
+    const qubo = {};
+    const n = this.items.length;
+    // Maximize value -> minimize -value
+    for (let i = 0; i < n; i++) {
+      qubo[String(i)] = -this.items[i].value;
+    }
+    // Capacity constraint: P * (sum wi*xi - C)^2
+    for (let i = 0; i < n; i++) {
+      const wi = this.items[i].weight;
+      const key = String(i);
+      qubo[key] = (qubo[key] || 0) + penalty * (wi * wi - 2 * capacity * wi);
+    }
+    for (let i = 0; i < n; i++) {
+      for (let j = i + 1; j < n; j++) {
+        const key = i + ',' + j;
+        qubo[key] = (qubo[key] || 0) + penalty * 2 * this.items[i].weight * this.items[j].weight;
+      }
+    }
+    return qubo;
+  },
+
+  computeEnergy(state) {
+    let totalValue = 0, totalWeight = 0;
+    for (let i = 0; i < this.items.length; i++) {
+      if (state[i] === 1) {
+        totalValue += this.items[i].value;
+        totalWeight += this.items[i].weight;
+      }
+    }
+    return { totalValue, totalWeight };
+  },
+
+  drawKnapsack(state) {
+    const c = this.canvas.getContext('2d');
+    const w = this.canvas.width, h = this.canvas.height;
+    const capacity = parseInt(document.getElementById('ks-capacity').value);
+    c.fillStyle = '#111';
+    c.fillRect(0, 0, w, h);
+
+    // Bag outline
+    const bagX = 30, bagY = 30, bagW = 180, bagH = 280;
+    c.strokeStyle = '#444';
+    c.lineWidth = 2;
+    c.strokeRect(bagX, bagY, bagW, bagH);
+    c.fillStyle = '#1a1a2e';
+    c.fillRect(bagX + 1, bagY + 1, bagW - 2, bagH - 2);
+    c.fillStyle = '#a0a0b0';
+    c.font = '12px sans-serif';
+    c.fillText('容量: ' + capacity, bagX, bagY - 8);
+
+    // Draw selected items stacked in bag
+    let yPos = bagY + bagH;
+    let usedWeight = 0;
+    const selected = this.items.filter(function(_, i) { return state[i] === 1; });
+
+    selected.forEach(function(item) {
+      const itemH = (item.weight / capacity) * bagH;
+      yPos -= itemH;
+      const overCapacity = (usedWeight + item.weight) > capacity;
+      const gradient = c.createLinearGradient(bagX, yPos, bagX + bagW, yPos);
+      gradient.addColorStop(0, overCapacity ? '#3a1a1a' : '#1a2a1a');
+      gradient.addColorStop(1, overCapacity ? '#4a2020' : '#1a3a2a');
+      c.fillStyle = gradient;
+      c.fillRect(bagX + 2, yPos, bagW - 4, itemH - 1);
+      c.strokeStyle = overCapacity ? '#ff5252' : '#00e676';
+      c.lineWidth = 1;
+      c.strokeRect(bagX + 2, yPos, bagW - 4, itemH - 1);
+      if (itemH > 14) {
+        c.fillStyle = '#e0e0e0';
+        c.font = '11px sans-serif';
+        c.fillText(item.emoji + ' w=' + item.weight + ' v=' + item.value, bagX + 8, yPos + itemH / 2 + 4);
+      }
+      usedWeight += item.weight;
+    });
+
+    // Capacity fill bar
+    var barX = bagX + bagW + 20, barW = 20;
+    c.strokeStyle = '#444';
+    c.strokeRect(barX, bagY, barW, bagH);
+    var fillH = Math.min(1, usedWeight / capacity) * bagH;
+    var fillColor = usedWeight > capacity ? '#ff5252' : usedWeight > capacity * 0.8 ? '#ffab40' : '#00e676';
+    c.fillStyle = fillColor;
+    c.fillRect(barX + 1, bagY + bagH - fillH, barW - 2, fillH);
+    c.fillStyle = '#e0e0e0';
+    c.font = '10px sans-serif';
+    c.fillText(usedWeight + '/' + capacity, barX - 2, bagY + bagH + 14);
+
+    // Right side: value summary
+    var infoX = 280;
+    c.fillStyle = '#e0e0e0';
+    c.font = 'bold 14px sans-serif';
+    c.fillText('選択されたアイテム', infoX, 50);
+    c.font = '12px sans-serif';
+    var iy = 70;
+    if (selected.length === 0) {
+      c.fillStyle = '#666';
+      c.fillText('（実行してください）', infoX, iy);
+    }
+    selected.forEach(function(item) {
+      c.fillStyle = '#e0e0e0';
+      c.fillText(item.emoji + ' 重さ ' + item.weight + '  価値 ' + item.value, infoX, iy);
+      iy += 20;
+    });
+    iy += 15;
+    c.fillStyle = '#00e676';
+    c.font = 'bold 13px sans-serif';
+    var totalV = selected.reduce(function(s, it) { return s + it.value; }, 0);
+    c.fillText('💰 価値合計: ' + totalV, infoX, iy);
+    iy += 20;
+    c.fillStyle = usedWeight > capacity ? '#ff5252' : '#ffab40';
+    c.fillText('⚖️ 重さ合計: ' + usedWeight + (usedWeight > capacity ? ' ⚠️ 超過!' : ''), infoX, iy);
+  },
+
+  async run() {
+    if (this.running) return;
+    this.running = true;
+    document.getElementById('ks-run').disabled = true;
+    var qubo = this.buildQUBO();
+    var kTinit = parseFloat(document.getElementById('ks-kt').value);
+    var cl = parseFloat(document.getElementById('ks-cl').value);
+    var rpt = parseInt(document.getElementById('ks-rpt').value);
+    this.chart.reset(kTinit);
+    var solver = new Bqubo(qubo, { kTinit: kTinit, cl: cl, kTF: 0.01, rpt: rpt });
+    var capacity = parseInt(document.getElementById('ks-capacity').value);
+    var stepCount = 0;
+    var totalSteps = Math.ceil(Math.log(0.01 / kTinit) / Math.log(cl));
+    var self = this;
+    var result = await solver.solve(function(state, kT) {
+      stepCount++;
+      var progress = Math.min(100, (stepCount / totalSteps) * 100);
+      document.getElementById('ks-progress').style.width = progress + '%';
+      var info = self.computeEnergy(state);
+      document.getElementById('ks-stat-temp').textContent = kT.toFixed(3);
+      document.getElementById('ks-stat-value').textContent = info.totalValue;
+      document.getElementById('ks-stat-weight').textContent = info.totalWeight;
+      document.getElementById('ks-stat-weight').style.color = info.totalWeight > capacity ? 'var(--red)' : 'var(--orange)';
+      var energy = 0;
+      for (var key in qubo) {
+        var parts = key.split(',').map(Number);
+        if (parts.length === 1) { energy += qubo[key] * (state[parts[0]] || 0); }
+        else { energy += qubo[key] * (state[parts[0]] || 0) * (state[parts[1]] || 0); }
+      }
+      document.getElementById('ks-stat-energy').textContent = energy.toFixed(1);
+      self.chart.add(kT, energy);
+      self.items.forEach(function(item, i) {
+        var box = document.getElementById('ks-item-' + i);
+        if (box) box.className = 'item-box' + (state[i] === 1 ? ' selected' : '');
+      });
+      self.drawKnapsack(state);
+    });
+    this.running = false;
+    document.getElementById('ks-run').disabled = false;
+    document.getElementById('ks-progress').style.width = '100%';
+  }
+};
+
+document.getElementById('ks-run').addEventListener('click', function() { KS.run(); });
+document.getElementById('ks-reset').addEventListener('click', function() {
+  KS.chart.reset(10);
+  KS.items.forEach(function(it) { it.selected = false; });
+  KS.renderItems();
+  KS.drawKnapsack({});
+  ['ks-stat-temp','ks-stat-energy'].forEach(function(id) { document.getElementById(id).textContent = '—'; });
+  ['ks-stat-value','ks-stat-weight'].forEach(function(id) { document.getElementById(id).textContent = '0'; });
+  document.getElementById('ks-progress').style.width = '0%';
+});
+document.getElementById('ks-randomize').addEventListener('click', function() { KS.generateItems(); });
+document.getElementById('ks-capacity').addEventListener('change', function() {
+  document.getElementById('ks-cap-display').textContent = document.getElementById('ks-capacity').value;
+});
+KS.generateItems();
+
+
+// =============================================
+// ===== MAX-CUT PROBLEM =====
+// =============================================
+const MC = {
+  nodes: [],
+  edges: [],
+  running: false,
+  chart: new TempChart('mc-temp-chart'),
+  canvas: document.getElementById('mc-canvas'),
+
+  generateGraph() {
+    var n = parseInt(document.getElementById('mc-nodes').value);
+    var density = parseFloat(document.getElementById('mc-density').value);
+    this.nodes = [];
+    this.edges = [];
+    var cx = 250, cy = 200, radius = 150;
+    for (var i = 0; i < n; i++) {
+      var angle = (2 * Math.PI * i / n) - Math.PI / 2;
+      this.nodes.push({
+        id: i,
+        x: cx + radius * Math.cos(angle),
+        y: cy + radius * Math.sin(angle),
+        group: 0
+      });
+    }
+    for (var i = 0; i < n; i++) {
+      for (var j = i + 1; j < n; j++) {
+        if (Math.random() < density) {
+          this.edges.push({ from: i, to: j });
+        }
+      }
+    }
+    // Ensure connected
+    for (var i = 1; i < n; i++) {
+      var j = randInt(0, i - 1);
+      var mi = Math.min(i, j), ma = Math.max(i, j);
+      if (!this.edges.some(function(e) { return e.from === mi && e.to === ma; })) {
+        this.edges.push({ from: mi, to: ma });
+      }
+    }
+    document.getElementById('mc-stat-total').textContent = this.edges.length;
+    this.drawGraph({});
+  },
+
+  buildQUBO() {
+    var qubo = {};
+    for (var e = 0; e < this.edges.length; e++) {
+      var edge = this.edges[e];
+      var i = edge.from, j = edge.to;
+      qubo[String(i)] = (qubo[String(i)] || 0) - 1;
+      qubo[String(j)] = (qubo[String(j)] || 0) - 1;
+      qubo[i + ',' + j] = (qubo[i + ',' + j] || 0) + 2;
+    }
+    return qubo;
+  },
+
+  computeCut(state) {
+    var cut = 0;
+    for (var e = 0; e < this.edges.length; e++) {
+      var edge = this.edges[e];
+      if ((state[edge.from] || 0) !== (state[edge.to] || 0)) cut++;
+    }
+    return cut;
+  },
+
+  drawGraph(state) {
+    var c = this.canvas.getContext('2d');
+    var w = this.canvas.width, h = this.canvas.height;
+    c.fillStyle = '#111';
+    c.fillRect(0, 0, w, h);
+    // Draw edges
+    for (var e = 0; e < this.edges.length; e++) {
+      var edge = this.edges[e];
+      var from = this.nodes[edge.from];
+      var to = this.nodes[edge.to];
+      var fromG = state[edge.from] || 0;
+      var toG = state[edge.to] || 0;
+      var isCut = fromG !== toG;
+      c.beginPath();
+      c.moveTo(from.x, from.y);
+      c.lineTo(to.x, to.y);
+      c.strokeStyle = isCut ? '#00e676' : '#333';
+      c.lineWidth = isCut ? 2.5 : 1;
+      c.stroke();
+    }
+    // Draw nodes
+    for (var i = 0; i < this.nodes.length; i++) {
+      var node = this.nodes[i];
+      var group = state[node.id] || 0;
+      c.beginPath();
+      c.arc(node.x, node.y, 18, 0, Math.PI * 2);
+      c.fillStyle = group === 1 ? '#ff6b9d' : '#00d4ff';
+      c.fill();
+      c.strokeStyle = '#fff';
+      c.lineWidth = 2;
+      c.stroke();
+      c.fillStyle = '#000';
+      c.font = 'bold 12px sans-serif';
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      c.fillText(node.id, node.x, node.y);
+    }
+    c.textAlign = 'start';
+    c.textBaseline = 'alphabetic';
+  },
+
+  async run() {
+    if (this.running) return;
+    this.running = true;
+    document.getElementById('mc-run').disabled = true;
+    var qubo = this.buildQUBO();
+    var kTinit = parseFloat(document.getElementById('mc-kt').value);
+    var cl = parseFloat(document.getElementById('mc-cl').value);
+    var rpt = parseInt(document.getElementById('mc-rpt').value);
+    this.chart.reset(kTinit);
+    var solver = new Bqubo(qubo, { kTinit: kTinit, cl: cl, kTF: 0.01, rpt: rpt });
+    var stepCount = 0;
+    var totalSteps = Math.ceil(Math.log(0.01 / kTinit) / Math.log(cl));
+    var self = this;
+    var result = await solver.solve(function(state, kT) {
+      stepCount++;
+      var progress = Math.min(100, (stepCount / totalSteps) * 100);
+      document.getElementById('mc-progress').style.width = progress + '%';
+      var cut = self.computeCut(state);
+      document.getElementById('mc-stat-temp').textContent = kT.toFixed(3);
+      document.getElementById('mc-stat-cut').textContent = cut;
+      var energy = 0;
+      for (var key in qubo) {
+        var parts = key.split(',').map(Number);
+        if (parts.length === 1) { energy += qubo[key] * (state[parts[0]] || 0); }
+        else { energy += qubo[key] * (state[parts[0]] || 0) * (state[parts[1]] || 0); }
+      }
+      document.getElementById('mc-stat-energy').textContent = energy.toFixed(1);
+      self.chart.add(kT, energy);
+      self.drawGraph(state);
+    });
+    this.running = false;
+    document.getElementById('mc-run').disabled = false;
+    document.getElementById('mc-progress').style.width = '100%';
+  }
+};
+
+document.getElementById('mc-run').addEventListener('click', function() { MC.run(); });
+document.getElementById('mc-reset').addEventListener('click', function() {
+  MC.chart.reset(10);
+  MC.drawGraph({});
+  ['mc-stat-temp','mc-stat-energy'].forEach(function(id) { document.getElementById(id).textContent = '—'; });
+  document.getElementById('mc-stat-cut').textContent = '0';
+  document.getElementById('mc-progress').style.width = '0%';
+});
+document.getElementById('mc-randomize').addEventListener('click', function() { MC.generateGraph(); });
+MC.generateGraph();
+</script>
+</body>
+</html>
