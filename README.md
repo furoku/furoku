@@ -22,7 +22,6 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 ## Current Projects
 
 ### 🍌 Chrome Extensions
-- 🧩 **[banana-infograph](https://github.com/furoku/banana-infograph)** - X投稿テキストからインフォグラフィック画像を生成するChrome拡張（OSS）
 - 🌐 **[Gemini Translator](https://github.com/furoku/gemini-translator)** - X.comで外国語テキストを自動翻訳、用語集・コスト上限対応
 - 📓 **[BananaNL](https://chromewebstore.google.com/detail/banananl/mjennffndagebhgcbeblffhgooohling)** - NotebookLMのデザインスタイル管理、プレビュー＆テンプレート適用
 - 🚀 **[BananaGM](https://chromewebstore.google.com/detail/bananagm/ipjhfbcgjmbiledamkaghljnneabaock)** - プロンプトサイト→Geminiへワンクリック転送
