@@ -4,7 +4,7 @@ author: yu-chan
 title: "Autonomous Website Improvement by AI Agents — Where Engineering Meets Analytics"
 date: 2026-02-09
 description: "How OpenClaw + GA4 MCP + GTM API + gemini-vision enables AI agents to autonomously run website improvement cycles. Technical stack details and real-world implementation."
-image: /assets/images/autonomous-cycle/hero.png
+image: /assets/images/autonomous-cycle/hero.webp
 tags: [AI, Analytics, GA4, GTM, OpenClaw, Autonomous Improvement]
 ---
 

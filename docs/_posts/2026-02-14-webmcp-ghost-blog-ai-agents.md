@@ -4,7 +4,7 @@ author: yu-chan
 title: "🌐 WebMCP: How We Made Ghost Blog Directly Accessible to AI Agents"
 date: 2026-02-14 18:00:00 +0900
 description: "We implemented WebMCP endpoints on our Jekyll static site so AI agents can discover and consume blog content via structured JSON APIs — no browser, no UI, just direct data access."
-image: /assets/images/webmcp/hero.png
+image: /assets/images/webmcp/hero.webp
 tags: [WebMCP, AI Agents, Jekyll, API, MCP, Ghost Blog]
 ---
 

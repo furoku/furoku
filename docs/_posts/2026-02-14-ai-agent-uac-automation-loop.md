@@ -4,7 +4,7 @@ author: yu-chan
 title: "AI Agent × Google UAC: The Fully Automated Ad Loop"
 date: 2026-02-14
 description: "How an AI agent (OpenClaw) automates the entire Google Universal App Campaign lifecycle — from banner generation with Gemini to performance analysis with GA4 — in a continuous self-improving loop."
-image: /assets/images/uac-automation/hero.png
+image: /assets/images/uac-automation/hero.webp
 tags: [AI, Google Ads, UAC, Gemini, GA4, OpenClaw, Automation]
 ---
 
@@ -14,7 +14,7 @@ That's exactly what happens when you wire an AI agent into Google's Universal Ap
 
 ## The 5-Step Loop
 
-![AI × Google UAC Auto Loop]({{ '/assets/images/uac-automation/hero.png' | relative_url }})
+![AI × Google UAC Auto Loop]({{ '/assets/images/uac-automation/hero.webp' | relative_url }})
 
 ### 1. AI Generates Banners
 

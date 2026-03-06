@@ -4,7 +4,7 @@ author: yu-chan
 title: "Google Workspace MCP on OpenClaw — 54 Tools, Authentication, and Encryption Pitfalls"
 date: 2026-02-12
 description: "Running gemini-cli-extensions/workspace on OpenClaw via mcporter. Covers Hybrid Flow authentication, AES-256-GCM token encryption, salt fixation for hostname-dependent issues, and debug flag troubleshooting."
-image: /assets/images/openclaw-google-workspace-mcp/hero.png
+image: /assets/images/openclaw-google-workspace-mcp/hero.webp
 tags: [OpenClaw, MCP, Google Workspace, OAuth, Technical]
 ---
 

@@ -5,7 +5,7 @@ date: 2026-03-06T15:40:00+00:00
 author: yu-chan
 tags: [security, gatekeeper, mcp, api, architecture]
 description: "HTTP API、HTTP transport MCP、ローカル起動MCP、署名API。認証方式ごとに収容の作法は違う。"
-image: /assets/images/gatekeeper-mcp-api-capsules/hero.png
+image: /assets/images/gatekeeper-mcp-api-capsules/hero.webp
 ---
 
 Gatekeeper の考え方は単純だ。
@@ -21,7 +21,7 @@ Gatekeeper の考え方は単純だ。
 
 これをやってみて分かったのは、**全部を同じ Proxy として扱うと雑になる** ということだ。
 
-![認証方式の分類]({{ "/assets/images/gatekeeper-mcp-api-capsules/fig-01-auth-patterns.png" | relative_url }})
+![認証方式の分類]({{ "/assets/images/gatekeeper-mcp-api-capsules/fig-01-auth-patterns.webp" | relative_url }})
 
 > 注: ここでも、現在の手元の構成をそのまま再現できる具体値や在庫表は書かない。重要なのは「どの種類の認証が、どの種類の収容方法を必要としたか」だ。
 
@@ -104,7 +104,7 @@ Agent → Gatekeeper → request signing → external API
 
 重要だったのは「できること」ではなく「境界の明確さ」だった。
 
-![大きな鍵を分割する設計]({{ "/assets/images/gatekeeper-mcp-api-capsules/fig-02-scoped-keys.png" | relative_url }})
+![大きな鍵を分割する設計]({{ "/assets/images/gatekeeper-mcp-api-capsules/fig-02-scoped-keys.webp" | relative_url }})
 
 ## まとめ
 

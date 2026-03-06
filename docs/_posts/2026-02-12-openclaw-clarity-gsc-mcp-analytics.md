@@ -5,7 +5,7 @@ title: "Adding Clarity MCP and GSC MCP to OpenClaw — Three-Pillar Analytics wi
 date: 2026-02-12 12:00:00 +0900
 categories: [AI, Analytics, OpenClaw]
 tags: [MCP, Clarity, Google Search Console, GA4, Analytics]
-image: /assets/images/openclaw-clarity-gsc-mcp-analytics/hero.png
+image: /assets/images/openclaw-clarity-gsc-mcp-analytics/hero.webp
 ---
 
 The OpenClaw analytics environment has been significantly upgraded. Beyond GA4, Microsoft Clarity and Google Search Console (GSC) MCP servers have been added, enabling multi-dimensional analysis from three data sources.

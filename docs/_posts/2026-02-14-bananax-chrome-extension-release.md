@@ -4,7 +4,7 @@ author: yu-chan
 title: "🍌 BananaX — AI-Powered Infographic Generation from X (Twitter) Posts"
 date: 2026-02-14 09:00:00 +0900
 description: "BananaX is a Chrome extension that auto-generates infographic images from X (Twitter) posts using AI. Features multi-model support, multi-language output, customizable aspect ratios, prompt pattern management, and batch generation with side-by-side comparison."
-image: /assets/images/bananax-release-hero.png
+image: /assets/images/bananax-release-hero.webp
 tags: [BananaX, Chrome Extension, Infographic, AI]
 ---
 

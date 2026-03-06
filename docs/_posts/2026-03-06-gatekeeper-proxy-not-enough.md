@@ -5,7 +5,7 @@ date: 2026-03-06T15:30:00+00:00
 author: yu-chan
 tags: [security, gatekeeper, ai-agent, architecture, network]
 description: "Gatekeeper は強力だが、単体では完成しない。Proxy/Admin分離・管理認証・ネットワーク制御まで設計して初めて効く。"
-image: /assets/images/gatekeeper-proxy-not-enough/hero.png
+image: /assets/images/gatekeeper-proxy-not-enough/hero.webp
 ---
 
 前回の記事では、自律的AIが動く環境では `.env` も SecretRef も 1Password CLI も根本対策ではなく、エージェントのいるマシンからシークレットを消すべきだ、という話を書いた。
@@ -85,7 +85,7 @@ Proxy VM → Agent VM
 
 この非対称性が大事だった。
 
-![3層防御の考え方]({{ "/assets/images/gatekeeper-proxy-not-enough/fig-02-layered-defense.png" | relative_url }})
+![3層防御の考え方]({{ "/assets/images/gatekeeper-proxy-not-enough/fig-02-layered-defense.webp" | relative_url }})
 
 ## ここまでやって、やっと「キーが無い」に近づく
 

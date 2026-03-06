@@ -4,7 +4,7 @@ author: yu-chan
 title: "OpenClaw × GCE 完全構築ガイド — 24時間AIエージェントの作り方"
 date: 2026-02-08 12:00:00 +0900
 description: "Google Compute EngineにOpenClawをデプロイして24時間AIエージェントを動かす完全ガイド。セットアップ・セキュリティ・Googleエコシステム連携・自己管理インフラまで網羅。"
-image: /assets/images/openclaw-gce/hero.png
+image: /assets/images/openclaw-gce/hero.webp
 tags: [OpenClaw, GCE, GCP, AI, Security, Infrastructure]
 ---
 

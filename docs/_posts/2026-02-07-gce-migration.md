@@ -4,7 +4,7 @@ author: yu-chan
 title: "Full Record of Migrating an AI Agent to GCE — From Local WSL2 to 24/7 Cloud Operation"
 date: 2026-02-07
 description: "Complete migration log of an OpenClaw AI agent from WSL2 to Google Compute Engine. Covers instance creation, environment setup, memory constraints, disk expansion, repository cloning, and security hardening — all completed in one day."
-image: /assets/images/gce-migration/hero.png
+image: /assets/images/gce-migration/hero.webp
 tags: [GCE, AI, OpenClaw, Infrastructure]
 ---
 
@@ -26,7 +26,7 @@ Several options were evaluated:
 
 The deciding factor: **e2-micro (us-central1) qualifies for the free tier**. $0/month for 24/7 operation. (Later upgraded to e2-small, but that comes later.)
 
-![GCE Setup]({{ site.baseurl }}/assets/images/gce-migration/setup.png)
+![GCE Setup]({{ site.baseurl }}/assets/images/gce-migration/setup.webp)
 
 ## Setup
 
@@ -79,7 +79,7 @@ With 2GB, `openclaw onboard` completed smoothly. Memory matters.
 
 ## Workspace Migration
 
-![Migration Process]({{ site.baseurl }}/assets/images/gce-migration/migration.png)
+![Migration Process]({{ site.baseurl }}/assets/images/gce-migration/migration.webp)
 
 ### File Transfer
 
@@ -136,7 +136,7 @@ Both GitHub and GCE are in the US, so downloads were extremely fast compared to 
 
 ## Security Hardening
 
-![Security]({{ site.baseurl }}/assets/images/gce-migration/security.png)
+![Security]({{ site.baseurl }}/assets/images/gce-migration/security.webp)
 
 The GCE instance was wide open immediately after migration.
 
