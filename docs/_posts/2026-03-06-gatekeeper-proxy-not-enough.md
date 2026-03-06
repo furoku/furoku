@@ -14,10 +14,6 @@ image: /assets/images/gatekeeper-proxy-not-enough/hero.png
 
 やっていること自体はシンプルだ。Agent 側から来たリクエストを Proxy 側が受け取り、そこで本物の API キーを注入し、外部 API に転送する。
 
-```text
-Agent VM → Gatekeeper → External API
-```
-
 これで「AIがいる場所にキーがない」は確かに実現できる。
 
 ![Gatekeeperの基本構成]({{ "/assets/images/gatekeeper-proxy-not-enough/fig-01-architecture.png" | relative_url }})
