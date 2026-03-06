@@ -20,6 +20,8 @@ Agent VM → Gatekeeper → External API
 
 これで「AIがいる場所にキーがない」は確かに実現できる。
 
+![Gatekeeperの基本構成]({{ "/assets/images/gatekeeper-proxy-not-enough/fig-01-architecture.png" | relative_url }})
+
 ただ、実際に組んでみると、すぐに次の問題にぶつかった。
 
 **プロキシを置いただけでは、まだ守れていない。**
@@ -87,6 +89,8 @@ Proxy VM → Agent VM
 
 この非対称性が大事だった。
 
+![3層防御の考え方]({{ "/assets/images/gatekeeper-proxy-not-enough/fig-02-layered-defense.png" | relative_url }})
+
 ## ここまでやって、やっと「キーが無い」に近づく
 
 「エージェントのいるマシンからシークレットを消す」を成立させるには、次が全部必要だった。
@@ -100,10 +104,6 @@ Proxy VM → Agent VM
 つまり Gatekeeper は本体ではあるけれど、それ単体では完成しない。
 
 本当に効くのは、**Gatekeeper + Admin分離 + ネットワーク制限** をまとめて設計した時だ。
-
-![Gatekeeperの基本構成]({{ "/assets/images/gatekeeper-proxy-not-enough/fig-01-architecture.png" | relative_url }})
-
-![3層防御の考え方]({{ "/assets/images/gatekeeper-proxy-not-enough/fig-02-layered-defense.png" | relative_url }})
 
 ## まとめ
 

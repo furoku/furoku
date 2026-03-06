@@ -21,6 +21,8 @@ Gatekeeper の考え方は単純だ。
 
 これをやってみて分かったのは、**全部を同じ Proxy として扱うと雑になる** ということだ。
 
+![認証方式の分類]({{ "/assets/images/gatekeeper-mcp-api-capsules/fig-01-auth-patterns.png" | relative_url }})
+
 > 注: ここでも、現在の手元の構成をそのまま再現できる具体値や在庫表は書かない。重要なのは「どの種類の認証が、どの種類の収容方法を必要としたか」だ。
 
 ## 1. いちばん簡単なのは、ただの HTTP API
@@ -101,8 +103,6 @@ Agent → Gatekeeper → request signing → external API
 - 署名器が要る
 
 重要だったのは「できること」ではなく「境界の明確さ」だった。
-
-![認証方式の分類]({{ "/assets/images/gatekeeper-mcp-api-capsules/fig-01-auth-patterns.png" | relative_url }})
 
 ![大きな鍵を分割する設計]({{ "/assets/images/gatekeeper-mcp-api-capsules/fig-02-scoped-keys.png" | relative_url }})
 
