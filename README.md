@@ -20,6 +20,14 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
 
 ---
 
+## Current Focus
+
+- 🧠 **Kaggle: [Measuring AGI](https://www.kaggle.com/competitions/kaggle-measuring-agi/overview)** に参加中
+- 🍌 **BananaX / BananaNL / BananaGM** を中心に、AIプロダクトを連続実験中
+- 🤖 **OpenClaw × MCP × X運用** の実務導線を整備中
+
+---
+
 ## Current Projects
 
 ### 🍌 Chrome Extensions
@@ -49,6 +57,7 @@ A tech-savvy innovator. Champions AI-driven solutions like Gemini & believes in 
   - [AIエージェントの信頼はどう積み上げるか — レベリングシステムの設計](https://furoku.github.io/furoku/posts/agent-leveling-system/)
 
 ### 🏆 Kaggle
+- 🧠 **[Measuring AGI](https://www.kaggle.com/competitions/kaggle-measuring-agi/overview)** - 参加中
 - 🎥 **[Visu](https://www.kaggle.com/competitions/gemini-3/writeups/visu-the-ai-visual-interview-assistant)** - AIビジュアル面接アシスタント
 - ✨ **[BananaImagine](https://aistudio.google.com/apps/drive/1370Vr3wjkDLqbS25U8Tlgy_--oKUOX1n)** - Kawaii AI studio for text erasure, magic editing & style remixing
 
