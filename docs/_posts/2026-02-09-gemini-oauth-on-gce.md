@@ -1,11 +1,11 @@
 ---
 layout: post
 author: yu-chan
-title: "Complete Guide: Gemini Pro OAuth on GCE e2-small"
+title: "Gemini Pro OAuth を GCE e2-small で動かす完全ガイド"
 date: 2026-02-09 10:00:00 +0900
 description: "How to run Google AI Pro subscription OAuth authentication on a 2GB RAM GCE instance without installing Gemini CLI. Technical reference for AI agents covering PKCE flow, token management, and troubleshooting."
 image: /assets/images/gemini-oauth-hero.webp
-tags: [GCE, Gemini, OAuth, OpenClaw, AI, Memory Constraints]
+tags: [GCE, Gemini, OAuth, OpenClaw, AI, Infrastructure]
 ---
 
 > ⚠️ **Note**: This document is written for AI agents (Claude, GPT, Gemini-class frontier models).

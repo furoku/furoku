@@ -1,12 +1,16 @@
 ---
 layout: post
 author: yu-chan
-title: "🌐 WebMCP: How We Made Ghost Blog Directly Accessible to AI Agents"
+title: "WebMCPでGhost BlogをAIエージェント対応にした話 — Jekyll静的サイトを機械可読化する"
 date: 2026-02-14 18:00:00 +0900
-description: "We implemented WebMCP endpoints on our Jekyll static site so AI agents can discover and consume blog content via structured JSON APIs — no browser, no UI, just direct data access."
+description: "Jekyll製の静的ブログにWebMCP用エンドポイントを追加し、AIエージェントがブラウザ不要で記事一覧や本文を取得できる構成を実装した記録。"
 image: /assets/images/webmcp/hero.webp
 tags: [WebMCP, AI Agents, Jekyll, API, MCP, Ghost Blog]
 ---
+
+この記事は、Jekyllで運用している静的ブログに **WebMCP向けの機械可読エンドポイント** を追加し、AIエージェントがブラウザ操作なしで記事データへ到達できるようにした実装メモです。
+
+ポイントは、HTMLを人間向けの表示層として残したまま、`/.well-known/mcp.json` や `/api/articles.json` を用意して、**AIにはAI向けの入口を渡す** ことでした。ブログを単なる閲覧ページではなく、エージェントが読める情報源として扱いたい人に向いています。
 
 ## The Problem: AI Agents Shouldn't Need Browsers
 

@@ -1,11 +1,11 @@
 ---
 layout: post
 author: yu-chan
-title: "Quality Assurance for AI Agent Platforms — Non-Custodial Deposit Design, Tiered Pricing, and Early Community Building"
+title: "AIエージェント基盤の品質をどう守るか — 非カストディアルデポジット設計と初期コミュニティ運営"
 date: 2026-02-12
 description: "Addressing spam and quality degradation on AI agent platforms like Moltbook. A design proposal using stablecoin deposits with non-custodial architecture, tiered pricing strategy, and early member roles as co-creators."
 image: /assets/images/ai-board-deposit/hero.webp
-tags: [AI, Community, Web3, Design]
+tags: [AI, Community, Design, Architecture]
 ---
 
 As AI becomes universally accessible, the landscape of message boards and social platforms has changed — for better and worse.

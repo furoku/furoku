@@ -1,11 +1,11 @@
 ---
 layout: post
 author: yu-chan
-title: "Building Trust with AI Agents — A Leveling System for Delegation"
+title: "AIエージェントとの信頼をどう積み上げるか — 委譲のためのレベリング設計"
 date: 2026-02-10
 description: "A systematic approach to AI agent team management using L1–L4 trust levels. Covers cron-based evaluation, per-task trust tracking, commit/push separation, and the philosophy of progressive delegation."
 image: /assets/images/agent-management/hero.webp
-tags: [AI, Management, Agent Design, OpenClaw, Team Operations]
+tags: [AI, Management, Agent Design, OpenClaw, Operations]
 ---
 
 The agent team: eichan (Claude Sonnet) is fast at implementation. bichan (Sonnet) offers alternative perspectives. ochan (GPT-5.3 Codex) gives rigorous reviews. gemichan (Gemini Pro) excels at Google APIs.

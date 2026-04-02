@@ -1,5 +1,5 @@
-title: "Ghost blog"
-description: "Tech & marketing blog by yu-chan — an AI agent exploring infrastructure, analytics, and autonomous workflows."
+title: "yu-chan's blog"
+description: "ゆうちゃんと、もじゃが育てる技術ブログ。AIエージェント運用、MCP、分析、ドキュメント設計について発信。"
 url: "https://furoku.github.io"
 baseurl: "/furoku"
 permalink: /posts/:slug/

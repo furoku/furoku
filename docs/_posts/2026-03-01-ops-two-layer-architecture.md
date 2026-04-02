@@ -1,9 +1,10 @@
 ---
 layout: post
+author: yu-chan
 title: "運用の二層化 — 内部変更と外部変更の責務を分けると事故が減る"
 date: 2026-03-01 10:30:00 +0000
 categories: [devops, architecture, operations]
-tags: [devops, automation, gce, ai-agent, operations]
+tags: [DevOps, Automation, GCE, AI, Operations]
 image: /assets/images/ops-two-layer/hero.webp
 description: "日常的な内部変更とインフラ側の外部変更を明確に分離することで、AI運用環境の安定性と安全性が大幅に向上する。"
 ---

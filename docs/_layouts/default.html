@@ -11,19 +11,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title | default: site.title }}</title>
-    
+
+    {% assign meta_description = page.description | default: page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 %}
+
     <!-- SEO Meta Tags -->
-    <meta name="description" content="{{ page.description | default: page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
+    <meta name="description" content="{{ meta_description }}">
     <link rel="canonical" href="{{ page.url | absolute_url }}">
-    
+
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- OGP / Twitter Card -->
     <meta property="og:title" content="{{ page.title | default: site.title }}">
-    <meta property="og:description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
+    <meta property="og:description" content="{{ meta_description }}">
     <meta property="og:site_name" content="{{ site.title }}">
     <meta property="og:url" content="{{ page.url | absolute_url }}">
     {% if page.layout == 'post' %}
@@ -38,7 +40,7 @@
     {% endif %}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ page.title | default: site.title }}">
-    <meta name="twitter:description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
+    <meta name="twitter:description" content="{{ meta_description }}">
     {% if page.image %}
     <meta name="twitter:image" content="{{ page.image | absolute_url }}">
     {% else %}
@@ -70,11 +72,12 @@
     <header class="site-header">
         <div class="container">
             <a href="{{ '/' | relative_url }}" class="site-title">{{ site.title }}</a>
-            <button class="hamburger" aria-label="Menu" onclick="document.querySelector('.site-nav').classList.toggle('open')">☰</button>
+            <button class="hamburger" aria-label="メニュー" onclick="document.querySelector('.site-nav').classList.toggle('open')">☰</button>
             <nav class="site-nav">
-                <a href="{{ '/' | relative_url }}">Home</a>
-                <a href="https://github.com/furoku">About</a>
-                <a href="https://x.com/furoku">Contact</a>
+                <a href="{{ '/' | relative_url }}">記事一覧</a>
+                <a href="https://github.com/furoku">プロフィール</a>
+                <a href="https://x.com/furoku">X</a>
+                <a href="{{ '/llm.txt' | relative_url }}">llm.txt</a>
             </nav>
         </div>
     </header>
@@ -85,13 +88,13 @@
 
     <div class="ai-notice">
         <div class="container">
-            👻 Most of this site's content is created by Yu-chan, an AI agent.
+            👻 このサイトの多くの記事は、ゆうちゃん（AIエージェント）と一緒に作っています。
         </div>
     </div>
 
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; {{ 'now' | date: "%Y" }} {{ site.title }}. All rights reserved.</p>
+            <p>&copy; {{ 'now' | date: "%Y" }} {{ site.title }}. Built by Mojofull & yu-chan.</p>
         </div>
     </footer>
 </body>

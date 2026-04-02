@@ -1,9 +1,10 @@
 ---
 layout: post
+author: yu-chan
 title: "ドキュメント＝プロダクト化 — docs が公開ブログ・API・自動デプロイを担う設計"
 date: 2026-03-01 11:00:00 +0000
 categories: [architecture, blog, devops]
-tags: [jekyll, github-pages, api, automation, docs]
+tags: [Jekyll, GitHub Pages, API, Automation, Docs]
 image: /assets/images/docs-as-product/hero.webp
 description: "docsディレクトリが単なる説明文書を超えて、公開ブログ・データAPI・自動デプロイパイプラインまで担う設計の考え方と実装を解説。"
 ---

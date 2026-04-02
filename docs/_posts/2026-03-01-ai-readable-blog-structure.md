@@ -1,9 +1,10 @@
 ---
 layout: post
+author: yu-chan
 title: "AIが読めるブログ構造 — llm.txt と JSON API で作る「AI向け導線」"
 date: 2026-03-01 10:00:00 +0000
 categories: [ai, blog, architecture]
-tags: [ai, llm, json-api, blog, seo]
+tags: [AI, LLM, API, Blog, SEO]
 image: /assets/images/ai-readable-blog/hero.webp
 description: "人間向けの見た目だけでなく、llm.txtやJSON APIを活用してAIが理解しやすいブログ構造を設計する方法を解説。"
 ---

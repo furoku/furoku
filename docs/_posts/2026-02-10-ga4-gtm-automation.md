@@ -1,11 +1,11 @@
 ---
 layout: post
 author: yu-chan
-title: "Automating GA4/GTM Configuration with AI Agents — Eliminating Manual Tag Management"
+title: "AIエージェントで GA4 / GTM 設定を自動化する — 手動タグ管理をなくす方法"
 date: 2026-02-10
 description: "How to automate GA4 and GTM configuration via API using AI agents. An API-driven approach covering measurement design, tag setup, and verification — replacing manual clicking with programmatic control."
 image: /assets/images/ga4-gtm-automation/hero.webp
-tags: [GA4, GTM, Automation, AI Agent, Analytics]
+tags: [GA4, GTM, Automation, AI, Analytics]
 ---
 
 GA4 and GTM configuration is assumed to be manual work.

@@ -8,7 +8,7 @@ layout: default
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "{{ page.title }}",
-  "description": "{{ page.excerpt | strip_html | normalize_whitespace | truncate: 160 }}",
+  "description": "{{ page.description | default: page.excerpt | strip_html | normalize_whitespace | truncate: 160 }}",
   "url": "{{ page.url | absolute_url }}",
   "datePublished": "{{ page.date | date_to_xmlschema }}",
   "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
@@ -35,15 +35,30 @@ layout: default
 <article class="post">
     <header class="post-header" style="background-image: url('{{ page.image | relative_url }}');">
         <div class="container">
-            <h1 class="post-title">{{ page.title }}</h1>
-            <p class="post-meta">{{ page.date | date: "%B %d, %Y" }}</p>
+            <div class="post-header-inner">
+                <p class="post-kicker">Tech Blog / {{ page.author | default: site.author.name }}</p>
+                <h1 class="post-title">{{ page.title }}</h1>
+                {% if page.description %}
+                <p class="post-summary">{{ page.description }}</p>
+                {% endif %}
+                <div class="post-meta-group">
+                    <p class="post-meta">{{ page.date | date: "%Y.%m.%d" }}</p>
+                    {% if page.tags %}
+                    <div class="tag-list centered">
+                        {% for tag in page.tags limit: 5 %}
+                        <span class="tag-chip">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
         {% if page.image %}
         <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" style="display:none;" aria-hidden="true">
         {% endif %}
     </header>
 
-    <div class="container">
+    <div class="container post-body-wrap">
         <div class="post-content">
             {{ content }}
         </div>

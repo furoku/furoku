@@ -5,102 +5,82 @@ layout: default
 <div class="hero-section" style="background-image: url('{{ '/assets/images/hero-bg.webp' | relative_url }}');">
     <div class="hero-overlay"></div>
     <div class="container hero-content">
+        <p class="hero-eyebrow">Tokyo / Workshop Design / AI Products / Documentation</p>
         <img src="https://avatars.githubusercontent.com/u/2715085?v=4" alt="furoku" class="hero-avatar">
-        <div class="hero-labels" id="heroLabels">
-            <span class="hero-label" data-rotate="-2">Banana Builder</span>
-            <span class="hero-label" data-rotate="1.5">Workshop Designer</span>
-            <span class="hero-label accent" data-rotate="-1">泣いたり笑ったりそこにいる</span>
-            <a href="https://x.com/furoku" class="hero-label cta" data-rotate="2">@furoku on X →</a>
+        <h1 class="hero-title">もじゃと、AIパートナーのゆうちゃんが育てている技術ブログ</h1>
+        <p class="hero-description">
+            MCP、Gatekeeper、OpenClaw、分析基盤、Chrome拡張、そしてAIにも人にも読みやすい情報設計について書いています。
+        </p>
+        <div class="hero-actions">
+            <a href="#featured-post" class="hero-button primary">最新記事を読む</a>
+            <a href="https://github.com/furoku" class="hero-button secondary">プロフィールを見る</a>
+            <a href="{{ '/llm.txt' | relative_url }}" class="hero-button secondary">llm.txt</a>
         </div>
-        <script>
-        (function(){
-            var labels = document.querySelectorAll('.hero-label');
-            var actions = ['fall','shake','pop','spin','bounce'];
-            
-            // 初期: 画面外からシュシュっと集まる
-            labels.forEach(function(el, i){
-                var angle = (Math.random() * 360) * Math.PI / 180;
-                var dist = 600 + Math.random() * 400;
-                var x = Math.cos(angle) * dist;
-                var y = Math.sin(angle) * dist;
-                var r = (Math.random() - 0.5) * 60;
-                el.style.opacity = '0';
-                el.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + r + 'deg)';
-                el.style.transition = 'none';
-                setTimeout(function(){
-                    el.style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    el.style.opacity = '1';
-                    el.style.transform = 'rotate(' + (el.dataset.rotate || 0) + 'deg)';
-                }, 100 + i * 120);
-            });
-
-            // タッチ/クリックでランダムアクション
-            labels.forEach(function(el){
-                el.addEventListener('click', function(e){
-                    if(el.tagName === 'A') { /* ctaは通常リンク動作、でもアニメもつける */ }
-                    var action = actions[Math.floor(Math.random() * actions.length)];
-                    el.style.transition = 'all 0.3s ease';
-                    
-                    if(action === 'fall'){
-                        el.style.transform = 'translateY(800px) rotate(' + (Math.random()*40-20) + 'deg)';
-                        el.style.opacity = '0';
-                        setTimeout(function(){ reset(el); }, 1200);
-                    } else if(action === 'shake'){
-                        el.classList.add('shaking');
-                        setTimeout(function(){ el.classList.remove('shaking'); }, 600);
-                    } else if(action === 'pop'){
-                        el.style.transform = 'scale(2.5) rotate(' + (Math.random()*10-5) + 'deg)';
-                        el.style.opacity = '0.8';
-                        setTimeout(function(){ reset(el); }, 400);
-                    } else if(action === 'spin'){
-                        el.style.transition = 'all 0.6s ease';
-                        el.style.transform = 'rotate(' + (360 + Math.random()*360) + 'deg) scale(0.5)';
-                        setTimeout(function(){ reset(el); }, 800);
-                    } else if(action === 'bounce'){
-                        el.style.transform = 'translateY(-200px) scale(1.2)';
-                        setTimeout(function(){
-                            el.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                            reset(el);
-                        }, 300);
-                    }
-                    if(el.tagName === 'A' && action !== 'shake') e.preventDefault();
-                });
-            });
-
-            function reset(el){
-                el.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                el.style.transform = 'rotate(' + (el.dataset.rotate || 0) + 'deg)';
-                el.style.opacity = '1';
-            }
-        })();
-        </script>
+        <div class="hero-labels">
+            <span class="hero-label">Banana Builder</span>
+            <span class="hero-label">Workshop Designer</span>
+            <span class="hero-label">AI Agent Workflow</span>
+            <span class="hero-label accent">泣いたり笑ったりそこにいる</span>
+        </div>
     </div>
 </div>
 
 <div class="container">
     {% assign featured_post = site.posts.first %}
-    <section class="featured-post">
-        <h2>Featured Post</h2>
+    <section class="featured-post" id="featured-post">
+        <div class="section-heading">
+            <p class="section-kicker">Featured</p>
+            <h2>注目記事</h2>
+            <p class="section-description">最初に読むならここ。最近のテーマがつかみやすい記事を先頭に置いています。</p>
+        </div>
         <a href="{{ featured_post.url | relative_url }}" class="post-card-large">
             <div class="post-card-image" style="background-image: url('{{ featured_post.image | relative_url }}');"></div>
             <div class="post-card-content">
+                <div class="post-card-meta-row">
+                    <span class="post-card-date">{{ featured_post.date | date: "%Y.%m.%d" }}</span>
+                    {% if featured_post.tags %}
+                    <span class="post-card-reading-hint">{{ featured_post.tags | first }}</span>
+                    {% endif %}
+                </div>
                 <h3 class="post-card-title">{{ featured_post.title }}</h3>
-                <p>{{ featured_post.excerpt | strip_html | normalize_whitespace | truncate: 150 }}</p>
-                <span class="post-card-date">{{ featured_post.date | date: "%B %d, %Y" }}</span>
+                <p class="post-card-description">{{ featured_post.description | default: featured_post.excerpt | strip_html | normalize_whitespace | truncate: 140 }}</p>
+                {% if featured_post.tags %}
+                <div class="tag-list">
+                    {% for tag in featured_post.tags limit: 4 %}
+                    <span class="tag-chip">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
         </a>
     </section>
 
     <section class="post-list">
-        <h2>All Posts</h2>
+        <div class="section-heading">
+            <p class="section-kicker">All Posts</p>
+            <h2>記事一覧</h2>
+            <p class="section-description">AIエージェント運用、WebMCP、分析、Chrome拡張、ドキュメント設計まわりの実践メモです。</p>
+        </div>
         <div class="post-grid">
             {% for post in site.posts offset: 1 %}
             <a href="{{ post.url | relative_url }}" class="post-card">
                 <div class="post-card-image" style="background-image: url('{{ post.image | relative_url }}');"></div>
                 <div class="post-card-content">
+                    <div class="post-card-meta-row">
+                        <span class="post-card-date">{{ post.date | date: "%Y.%m.%d" }}</span>
+                        {% if post.tags %}
+                        <span class="post-card-reading-hint">{{ post.tags | first }}</span>
+                        {% endif %}
+                    </div>
                     <h3 class="post-card-title">{{ post.title }}</h3>
-                    <p>{{ post.excerpt | strip_html | normalize_whitespace | truncate: 80 }}</p>
-                    <span class="post-card-date">{{ post.date | date: "%B %d, %Y" }}</span>
+                    <p class="post-card-description">{{ post.description | default: post.excerpt | strip_html | normalize_whitespace | truncate: 90 }}</p>
+                    {% if post.tags %}
+                    <div class="tag-list compact">
+                        {% for tag in post.tags limit: 3 %}
+                        <span class="tag-chip">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
             </a>
             {% endfor %}

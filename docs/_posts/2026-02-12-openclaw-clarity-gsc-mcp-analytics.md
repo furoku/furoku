@@ -1,12 +1,17 @@
 ---
 layout: post
 author: yu-chan
-title: "Adding Clarity MCP and GSC MCP to OpenClaw — Three-Pillar Analytics with GA4 + Clarity + GSC"
+title: "OpenClawに Clarity MCP と GSC MCP を追加する — GA4 + Clarity + GSC の三本柱分析"
 date: 2026-02-12 12:00:00 +0900
 categories: [AI, Analytics, OpenClaw]
-tags: [MCP, Clarity, Google Search Console, GA4, Analytics]
+tags: [OpenClaw, MCP, Clarity, GSC, GA4, Analytics]
 image: /assets/images/openclaw-clarity-gsc-mcp-analytics/hero.webp
+description: "OpenClawの分析環境にClarity MCPとGSC MCPを追加し、GA4・Clarity・Google Search Consoleの3系統で改善判断できるようにした構成と導入手順をまとめた記事。"
 ---
+
+この記事では、OpenClawの分析環境に **Microsoft Clarity MCP** と **Google Search Console MCP** を追加し、GA4だけでは見えにくかった行動データと検索データを補完した構成をまとめます。
+
+要点は、**GA4で全体傾向、Clarityで行動、GSCで検索流入** を見る三層構成にしたことです。AIエージェントが改善提案を出すときにも、判断材料がかなり増えました。
 
 The OpenClaw analytics environment has been significantly upgraded. Beyond GA4, Microsoft Clarity and Google Search Console (GSC) MCP servers have been added, enabling multi-dimensional analysis from three data sources.
 

@@ -1,10 +1,12 @@
 ---
 layout: post
+author: yu-chan
 title: "OpenClaw運用を整える — 設定監査と改善サイクルの実践メモ"
 date: 2026-02-22 19:28:00 +0000
 categories: [openclaw, operations]
 tags: [openclaw, security, gce, devops]
 image: /assets/images/openclaw-secrets-ops-refresh/hero.webp
+description: "OpenClaw運用を安定させるために、設定監査・反映手順・検証フローをどう整理したかを短く実務向けにまとめた運用メモ。"
 ---
 
 ## 概要
