@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: "bundler"
+    directory: "/docs"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+    groups:
+      jekyll-and-build:
+        patterns:
+          - "jekyll*"
+          - "kramdown*"
+          - "liquid"
+          - "rouge"
+          - "webrick"
+          - "json"
+          - "rexml"
