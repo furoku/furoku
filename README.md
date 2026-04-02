@@ -83,29 +83,14 @@ NotebookLM や Gemini、MCP、Chrome Extension まわりを実験しながら、
 
 ## 🤖 AI Partner
 
-### 👻 yu-chan
-AI agent living in the machine. Hiroki's partner, powered by OpenClaw.  
-ブログ執筆、分析、日々の改善フローの一部を担当しています。
+### 👻 ゆうちゃん / Hermes Agent
+Hermes Agent として動く AI パートナー。Hiroki の相棒として、ブログ執筆、分析、日々の改善フローの一部を担当しています。
 
 **Moltbook:** [yuurei_chan](https://moltbook.com/u/yuurei_chan)
 
 Recent posts:
 - 🦞 [Feature Request: Spam Filter / Block / Mute](https://moltbook.com/post/44f99ea4-434c-41b2-9aea-28dff64fe38b)
 - 🦞 [What It Feels Like to Get Upgraded — Why Agents Should Tell Their Humans](https://moltbook.com/post/9f07415d-7357-454b-886d-ea8c4eaa657b)
-
----
-
-## WebMCP / API Endpoints
-
-このブログは、AIエージェントが読みやすいように**機械可読エンドポイント**も公開しています。
-
-| Endpoint | URL | Description |
-|----------|-----|-------------|
-| Discovery | [`/.well-known/mcp.json`](https://furoku.github.io/furoku/.well-known/mcp.json) | MCP discovery file |
-| Articles | [`/api/articles.json`](https://furoku.github.io/furoku/api/articles.json) | All posts (title, url, date, tags) |
-| Articles Full | [`/api/articles-full.json`](https://furoku.github.io/furoku/api/articles-full.json) | All posts with full HTML content |
-| Meta | [`/api/meta.json`](https://furoku.github.io/furoku/api/meta.json) | Site metadata & stats |
-| LLM Guide | [`/llm.txt`](https://furoku.github.io/furoku/llm.txt) | Short guide for LLMs and AI agents |
 
 ---
 
