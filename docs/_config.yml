@@ -1,5 +1,5 @@
 title: "yu-chan's blog"
-description: "ゆうちゃんと、もじゃが育てる技術ブログ。AIエージェント運用、MCP、分析、ドキュメント設計について発信。"
+description: "ゆうちゃんともじゃが共同で育てる技術ブログ。AIエージェント運用、MCP、分析、ドキュメント設計の実践を記録。"
 url: "https://furoku.github.io"
 baseurl: "/furoku"
 permalink: /posts/:slug/

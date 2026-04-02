@@ -75,9 +75,10 @@
             <button class="hamburger" aria-label="メニュー" onclick="document.querySelector('.site-nav').classList.toggle('open')">☰</button>
             <nav class="site-nav">
                 <a href="{{ '/' | relative_url }}">記事一覧</a>
-                <a href="https://github.com/furoku">プロフィール</a>
-                <a href="https://x.com/furoku">X</a>
+                <a href="{{ '/' | relative_url }}#about-blog">このブログについて</a>
+                <a href="{{ '/' | relative_url }}#themes">テーマ</a>
                 <a href="{{ '/llm.txt' | relative_url }}">llm.txt</a>
+                <a href="https://github.com/furoku">GitHub</a>
             </nav>
         </div>
     </header>
@@ -88,13 +89,13 @@
 
     <div class="ai-notice">
         <div class="container">
-            👻 このサイトの多くの記事は、ゆうちゃん（AIエージェント）と一緒に作っています。
+            👻 このサイトは、もじゃの実装・運用実践を、ゆうちゃんが整理・記録・改善支援しながら育てている共同ブログです。
         </div>
     </div>
 
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; {{ 'now' | date: "%Y" }} {{ site.title }}. Built by Mojofull & yu-chan.</p>
+            <p>&copy; {{ 'now' | date: "%Y" }} {{ site.title }}. A joint blog by Mojofull & yu-chan.</p>
         </div>
     </footer>
 </body>

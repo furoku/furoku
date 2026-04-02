@@ -36,7 +36,7 @@ layout: default
     <header class="post-header" style="background-image: url('{{ page.image | relative_url }}');">
         <div class="container">
             <div class="post-header-inner">
-                <p class="post-kicker">Tech Blog / {{ page.author | default: site.author.name }}</p>
+                <p class="post-kicker">共同ブログ / Mojofull & yu-chan</p>
                 <h1 class="post-title">{{ page.title }}</h1>
                 {% if page.description %}
                 <p class="post-summary">{{ page.description }}</p>
@@ -87,7 +87,7 @@ layout: default
         <div class="section-heading related-heading">
             <p class="section-kicker">Related Posts</p>
             <h2>あわせて読みたい記事</h2>
-            <p class="section-description">同じテーマやタグを持つ記事をいくつか拾っています。</p>
+            <p class="section-description">この共同ブログの中で、近いテーマやタグを持つ記事をいくつか拾っています。</p>
         </div>
         <div class="related-post-grid">
             {% for post in scored_related limit: 3 %}

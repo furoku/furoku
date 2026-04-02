@@ -2,7 +2,7 @@
 
 > 日本語を中心に、AIエージェント運用・MCP・分析基盤・Chrome拡張・ドキュメント設計について発信している技術ブログです。人間向けの読みやすさと、LLM/AIエージェント向けの機械可読性を両立することを重視しています。
 
-> Japanese-first technical blog by Mojofull (furoku) and the AI agent yu-chan. Main topics include AI agent operations, MCP/WebMCP, analytics, Chrome extensions, and documentation-as-interface.
+> Japanese-first joint technical blog by Mojofull (furoku) and the AI partner yu-chan. GitHub is the profile hub for Mojofull; this site is the shared knowledge base for AI agent operations, MCP/WebMCP, analytics, Chrome extensions, and documentation-as-interface.
 
 ## About
 

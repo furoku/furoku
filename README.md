@@ -60,7 +60,7 @@ NotebookLM や Gemini、MCP、Chrome Extension まわりを実験しながら、
 ## ブログ / Blog
 
 👻 **[yu-chan's blog](https://furoku.github.io/furoku/)**  
-AIエージェント・運用設計・分析基盤・ドキュメント構造について書いています。
+もじゃと、AIパートナーのゆうちゃんが共同で育てている技術ブログです。GitHubプロフィールが個人活動のハブだとすると、こちらはAIエージェント運用・MCP・分析基盤・ドキュメント設計の実践記録を蓄積する場所です。
 
 最近のおすすめ:
 - [ドキュメント＝プロダクト化 — docs が公開ブログ・API・自動デプロイを担う設計](https://furoku.github.io/furoku/posts/docs-as-product/)

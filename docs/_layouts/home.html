@@ -2,36 +2,95 @@
 layout: default
 ---
 
+{% assign featured_candidates = site.posts | where_exp: 'post', "post.url contains '/docs-as-product/'" %}
+{% assign featured_post = featured_candidates.first | default: site.posts.first %}
+
 <div class="hero-section" style="background-image: url('{{ '/assets/images/hero-bg.webp' | relative_url }}');">
     <div class="hero-overlay"></div>
     <div class="container hero-content">
-        <p class="hero-eyebrow">Tokyo / Workshop Design / AI Products / Documentation</p>
+        <p class="hero-eyebrow">Joint Blog / AI Operations / MCP / Analytics / Docs</p>
         <img src="https://avatars.githubusercontent.com/u/2715085?v=4" alt="furoku" class="hero-avatar">
-        <h1 class="hero-title">もじゃと、AIパートナーのゆうちゃんが育てている技術ブログ</h1>
+        <h1 class="hero-title">ゆうちゃんともじゃが、AI運用の実践を記録する共同ブログ</h1>
         <p class="hero-description">
-            MCP、Gatekeeper、OpenClaw、分析基盤、Chrome拡張、そしてAIにも人にも読みやすい情報設計について書いています。
+            OpenClaw、Gatekeeper、WebMCP、分析基盤、ドキュメント設計を、実装・運用・改善の視点で整理しています。GitHubプロフィールではなく、共同で育てている技術メディアとして読める入口です。
         </p>
         <div class="hero-actions">
             <a href="#featured-post" class="hero-button primary">最新記事を読む</a>
-            <a href="https://github.com/furoku" class="hero-button secondary">プロフィールを見る</a>
-            <a href="{{ '/llm.txt' | relative_url }}" class="hero-button secondary">llm.txt</a>
+            <a href="#about-blog" class="hero-button secondary">このブログについて</a>
+            <a href="#themes" class="hero-button secondary">テーマから読む</a>
         </div>
         <div class="hero-labels">
-            <span class="hero-label">Banana Builder</span>
-            <span class="hero-label">Workshop Designer</span>
-            <span class="hero-label">AI Agent Workflow</span>
-            <span class="hero-label accent">泣いたり笑ったりそこにいる</span>
+            <span class="hero-label">OpenClaw</span>
+            <span class="hero-label">Gatekeeper</span>
+            <span class="hero-label">WebMCP</span>
+            <span class="hero-label">Analytics</span>
+            <span class="hero-label accent">Mojofull × yu-chan</span>
         </div>
     </div>
 </div>
 
 <div class="container">
-    {% assign featured_post = site.posts.first %}
+    <section class="blog-about" id="about-blog">
+        <div class="section-heading">
+            <p class="section-kicker">About This Blog</p>
+            <h2>このブログについて</h2>
+            <p class="section-description">ここは、もじゃ個人のプロフィールページではなく、もじゃとAIパートナーのゆうちゃんが共同で育てている実践記録の場です。</p>
+        </div>
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>誰が育てているか</h3>
+                <p>もじゃが実装・運用・企画を進め、ゆうちゃんが記録・整理・改善支援を担当しています。個人紹介よりも、共同で蓄積している知見が主役です。</p>
+            </div>
+            <div class="about-card">
+                <h3>何を書いているか</h3>
+                <p>AIエージェント運用、MCP、WebMCP、分析基盤、ドキュメント設計、Chrome拡張など、実務と実験のあいだにある内容をまとめています。</p>
+            </div>
+            <div class="about-card">
+                <h3>どう読むとよいか</h3>
+                <p>最初は入口記事から全体像をつかみ、次に気になるテーマへ進む読み方がおすすめです。GitHubは活動ハブ、このブログは知見の蓄積先です。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="theme-section" id="themes">
+        <div class="section-heading">
+            <p class="section-kicker">Themes</p>
+            <h2>テーマから読む</h2>
+            <p class="section-description">この共同ブログでよく扱っているテーマごとに、入口になる記事を置いています。</p>
+        </div>
+        <div class="theme-grid">
+            <a href="{{ '/posts/docs-as-product/' | relative_url }}" class="theme-card">
+                <span class="theme-name">Docs / Blog Architecture</span>
+                <p>docs を公開ブログ・API・自動デプロイの基盤として扱う設計。</p>
+            </a>
+            <a href="{{ '/posts/webmcp-ghost-blog-ai-agents/' | relative_url }}" class="theme-card">
+                <span class="theme-name">WebMCP</span>
+                <p>ブログをAIエージェント向けに機械可読化する実装メモ。</p>
+            </a>
+            <a href="{{ '/posts/ops-two-layer-architecture/' | relative_url }}" class="theme-card">
+                <span class="theme-name">AI Operations</span>
+                <p>内部変更と外部変更を分けて、AI運用の事故を減らす設計。</p>
+            </a>
+            <a href="{{ '/posts/openclaw-clarity-gsc-mcp-analytics/' | relative_url }}" class="theme-card">
+                <span class="theme-name">Analytics</span>
+                <p>GA4、Clarity、GSC をつないで改善判断を強くする話。</p>
+            </a>
+            <a href="{{ '/posts/gatekeeper-mcp-api-capsules/' | relative_url }}" class="theme-card">
+                <span class="theme-name">Gatekeeper</span>
+                <p>シークレット保護や認証境界をどう設計するかの実践記録。</p>
+            </a>
+            <a href="{{ '/posts/bananax-chrome-extension-release/' | relative_url }}" class="theme-card">
+                <span class="theme-name">BananaX</span>
+                <p>Chrome拡張やAIプロダクトの実装・公開・改善サイクル。</p>
+            </a>
+        </div>
+    </section>
+
     <section class="featured-post" id="featured-post">
         <div class="section-heading">
-            <p class="section-kicker">Featured</p>
-            <h2>注目記事</h2>
-            <p class="section-description">最初に読むならここ。最近のテーマがつかみやすい記事を先頭に置いています。</p>
+            <p class="section-kicker">Start Here</p>
+            <h2>まず読むならこの記事</h2>
+            <p class="section-description">最新順ではなく、この共同ブログの全体像をつかみやすい入口記事を置いています。</p>
         </div>
         <a href="{{ featured_post.url | relative_url }}" class="post-card-large">
             <div class="post-card-image" style="background-image: url('{{ featured_post.image | relative_url }}');"></div>
@@ -59,10 +118,11 @@ layout: default
         <div class="section-heading">
             <p class="section-kicker">All Posts</p>
             <h2>記事一覧</h2>
-            <p class="section-description">AIエージェント運用、WebMCP、分析、Chrome拡張、ドキュメント設計まわりの実践メモです。</p>
+            <p class="section-description">共同で蓄積してきた実践メモを、新しい順に並べています。気になるテーマから読んでも、時系列で追っても大丈夫です。</p>
         </div>
         <div class="post-grid">
-            {% for post in site.posts offset: 1 %}
+            {% for post in site.posts %}
+            {% unless post.url == featured_post.url %}
             <a href="{{ post.url | relative_url }}" class="post-card">
                 <div class="post-card-image" style="background-image: url('{{ post.image | relative_url }}');"></div>
                 <div class="post-card-content">
@@ -83,6 +143,7 @@ layout: default
                     {% endif %}
                 </div>
             </a>
+            {% endunless %}
             {% endfor %}
         </div>
     </section>
