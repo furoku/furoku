@@ -65,6 +65,51 @@ layout: default
     </div>
 </article>
 
+{% assign related_posts = site.posts | where_exp: 'post', 'post.url != page.url' %}
+{% if page.tags %}
+  {% assign scored_related = '' | split: '' %}
+  {% for post in related_posts %}
+    {% assign shared_count = 0 %}
+    {% for tag in page.tags %}
+      {% if post.tags contains tag %}
+        {% assign shared_count = shared_count | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+    {% if shared_count > 0 %}
+      {% assign scored_related = scored_related | push: post %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if scored_related and scored_related.size > 0 %}
+<section class="related-posts">
+    <div class="container">
+        <div class="section-heading related-heading">
+            <p class="section-kicker">Related Posts</p>
+            <h2>あわせて読みたい記事</h2>
+            <p class="section-description">同じテーマやタグを持つ記事をいくつか拾っています。</p>
+        </div>
+        <div class="related-post-grid">
+            {% for post in scored_related limit: 3 %}
+            <a href="{{ post.url | relative_url }}" class="post-card related-post-card">
+                <div class="post-card-image" style="background-image: url('{{ post.image | relative_url }}');"></div>
+                <div class="post-card-content">
+                    <div class="post-card-meta-row">
+                        <span class="post-card-date">{{ post.date | date: "%Y.%m.%d" }}</span>
+                        {% if post.tags %}
+                        <span class="post-card-reading-hint">{{ post.tags | first }}</span>
+                        {% endif %}
+                    </div>
+                    <h3 class="post-card-title">{{ post.title }}</h3>
+                    <p class="post-card-description">{{ post.description | default: post.excerpt | strip_html | normalize_whitespace | truncate: 90 }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
 <nav class="post-navigation">
     <div class="container">
         {% if page.previous.url %}
