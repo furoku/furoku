@@ -1,0 +1,320 @@
+---
+layout: null
+title: 100枚みたら絶対笑う画素展
+---
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>100枚みたら絶対笑う画素展</title>
+  <meta name="description" content="ブラウザだけで遊べる、100枚のじわじわ来るオリジナル画素カード展示サイト。">
+  <style>
+    :root{
+      --bg:#120f1d;
+      --panel:rgba(22,18,36,.84);
+      --panel-strong:rgba(31,25,49,.95);
+      --text:#f5f2ff;
+      --muted:#cabff1;
+      --line:rgba(255,255,255,.1);
+      --accent:#ff7bd5;
+      --accent2:#7ce8ff;
+      --accent3:#ffe072;
+      --shadow:0 24px 80px rgba(0,0,0,.38);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:radial-gradient(circle at top,#2b1850 0%,#171124 42%,#0d0b14 100%);color:var(--text);font-family:"Noto Sans JP","Hiragino Sans",system-ui,sans-serif;min-height:100%}
+    a{color:inherit}
+    body::before,body::after{content:"";position:fixed;inset:auto;pointer-events:none;z-index:0;border-radius:999px;filter:blur(70px);opacity:.48}
+    body::before{width:320px;height:320px;left:-80px;top:70px;background:#ff6ac9}
+    body::after{width:360px;height:360px;right:-120px;top:160px;background:#5ad8ff}
+    .shell{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:28px 18px 64px}
+    .hero{padding:28px;border:1px solid var(--line);border-radius:30px;background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.03));backdrop-filter:blur(18px);box-shadow:var(--shadow)}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.09);font-size:.88rem;color:var(--accent3);margin-bottom:16px}
+    h1{font-size:clamp(2rem,5vw,4.4rem);line-height:1.04;margin:0 0 12px;letter-spacing:.02em}
+    .hero p{max-width:760px;font-size:1rem;line-height:1.8;color:var(--muted);margin:0}
+    .hero-grid{display:grid;grid-template-columns:1.35fr .95fr;gap:22px;align-items:end}
+    .hero-card{padding:18px;border-radius:24px;background:var(--panel);border:1px solid var(--line)}
+    .hero-card h2{margin:0 0 12px;font-size:1rem;color:#fff0a8}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+    .stat{padding:14px 16px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .stat strong{display:block;font-size:1.45rem;margin-bottom:4px}
+    .stat span{font-size:.84rem;color:var(--muted)}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+    button,.link-button{appearance:none;border:none;cursor:pointer;text-decoration:none;color:#111;font-weight:800;padding:14px 18px;border-radius:999px;background:linear-gradient(135deg,var(--accent3),#fff1b3);box-shadow:0 10px 28px rgba(255,224,114,.2);transition:transform .18s ease,box-shadow .18s ease}
+    button.secondary,.link-button.secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.1);box-shadow:none}
+    button:hover,.link-button:hover{transform:translateY(-1px)}
+    .viewer{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:22px}
+    .main-image-wrap{padding:18px;border-radius:28px;background:var(--panel-strong);border:1px solid var(--line);box-shadow:var(--shadow)}
+    .main-image{width:100%;aspect-ratio:4/3;border-radius:22px;display:block;object-fit:cover;background:#231a3f}
+    .viewer-info{display:flex;flex-direction:column;gap:14px}
+    .info-card{padding:18px;border-radius:24px;background:var(--panel);border:1px solid var(--line)}
+    .kicker{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#ffe7a5}
+    .title{font-size:clamp(1.35rem,3vw,2.15rem);margin:8px 0 10px}
+    .subtitle{margin:0;font-size:1rem;line-height:1.75;color:var(--muted)}
+    .meter{height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin:16px 0 10px}
+    .meter > div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));transition:width .25s ease}
+    .meta{display:flex;flex-wrap:wrap;gap:10px;font-size:.92rem;color:#f4ebff}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:28px 0 12px}
+    .section-head h2{margin:0;font-size:1.25rem}
+    .section-head p{margin:0;color:var(--muted)}
+    .thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:14px}
+    .thumb{border:none;padding:10px;background:var(--panel);border-radius:22px;border:1px solid rgba(255,255,255,.08);color:var(--text);text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+    .thumb:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.22)}
+    .thumb.active{background:rgba(255,255,255,.14);border-color:#ffe072}
+    .thumb img{display:block;width:100%;aspect-ratio:1/1;border-radius:16px;object-fit:cover;background:#201935}
+    .thumb small{display:block;margin-top:8px;color:var(--muted);line-height:1.5;min-height:3em}
+    .footer-note{margin-top:24px;text-align:center;color:var(--muted);font-size:.92rem}
+    .floating{position:fixed;right:18px;bottom:18px;z-index:4}
+    .floating button{padding:14px 16px;background:linear-gradient(135deg,var(--accent),#ffb2ea);color:#2b1438}
+    @media (max-width: 980px){
+      .hero-grid,.viewer{grid-template-columns:1fr}
+      .stats{grid-template-columns:1fr 1fr 1fr}
+    }
+    @media (max-width: 640px){
+      .shell{padding:16px 12px 72px}
+      .hero{padding:20px;border-radius:24px}
+      .stats{grid-template-columns:1fr}
+      .thumb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .section-head{flex-direction:column;align-items:flex-start}
+      .floating{right:12px;bottom:12px}
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">🖼️ じわじわ来るオリジナル画像を100枚</div>
+          <h1>100枚みたら<br>絶対笑う画素展</h1>
+          <p>実在の画像を集めたサイトじゃなくて、ブラウザだけで生まれる“謎に笑えるオリジナル画素カード”を100枚並べた遊び場にしたよ。<br>シュール、生活感、会議、深夜テンション、ねこ圧を全部のせ。</p>
+          <div class="actions">
+            <button id="shuffleBtn">🎲 ぜんぶシャッフル</button>
+            <button id="nextBtn" class="secondary">➡ 次の1枚</button>
+            <a class="link-button secondary" href="{{ '/' | relative_url }}">← ブログに戻る</a>
+          </div>
+          <div class="stats">
+            <div class="stat"><strong>100</strong><span>オリジナル画像</span></div>
+            <div class="stat"><strong id="viewedCount">1</strong><span>いま見た枚数</span></div>
+            <div class="stat"><strong id="laughScore">12%</strong><span>ゆうちゃん予想の笑顔ゲージ</span></div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h2>おすすめの見方</h2>
+          <p style="margin:0;color:var(--muted);line-height:1.85">・右の大きい1枚をまず見る<br>・下のサムネを雑にタップする<br>・20枚を超えたあたりから、なぜか全部おもしろく見えてくる<br>・100枚達成すると、称号が出る</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="viewer">
+      <div class="main-image-wrap">
+        <img id="mainImage" class="main-image" alt="じわじわ来る画像カード">
+      </div>
+      <div class="viewer-info">
+        <div class="info-card">
+          <div class="kicker" id="mainCategory">Category</div>
+          <h2 class="title" id="mainTitle"></h2>
+          <p class="subtitle" id="mainSubtitle"></p>
+          <div class="meter"><div id="progressBar"></div></div>
+          <div class="meta">
+            <span class="pill">📍 <span id="mainNumber"></span></span>
+            <span class="pill">🔥 <span id="mainHeat"></span></span>
+            <span class="pill">🎯 <span id="mainTag"></span></span>
+          </div>
+        </div>
+        <div class="info-card">
+          <strong style="display:block;margin-bottom:8px">称号</strong>
+          <p id="achievementText" style="margin:0;color:var(--muted);line-height:1.8">まだ1枚目。いまなら引き返せます。</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-head">
+      <div>
+        <h2>100枚ギャラリー</h2>
+        <p>好きなやつを押してもいいし、何も考えず流してもいい。</p>
+      </div>
+      <div class="pill">⌨️ キーボード ← → でも移動できます</div>
+    </div>
+    <section id="thumbGrid" class="thumb-grid"></section>
+
+    <p class="footer-note">※ このページの画像はすべてこのページ用のオリジナルSVG生成カードです。変な既視感があっても気のせいです。</p>
+  </div>
+
+  <div class="floating"><button id="topBtn">⬆ 上に戻る</button></div>
+
+  <script>
+    const prefixes = [
+      '会議中に', '深夜2時に', 'コンビニ前で', '在宅勤務で', '猫の前で', '冷蔵庫の前で', 'エレベーター内で', '職員室で', '家族LINEで', '満員電車で'
+    ];
+    const subjects = [
+      'プリン', 'Wi‑Fi', '部長', 'ねこ', 'チャーハン', 'USBメモリ', '湯のみ', '観葉植物', 'ホワイトボード', 'おにぎり'
+    ];
+    const actions = [
+      '急にやる気を出した', 'なぜか面接官になった', 'まだ寝てるふりをした', '堂々とバグを認めた', '限界まで話を盛った', '会議を終了させた', '静かに圧をかけてきた', '1ミリも反省してない顔をした', '急に友情を試してきた', '全部持っていった'
+    ];
+    const punchlines = [
+      'しかも理由は「なんか今日いける気がしたから」', '誰も止めなかったのがいちばん面白い', '思ったより空気がそれを許した', 'そこだけ画質が良すぎる', '逆に完成度が高くて怖い', 'もう説明しない方が伝わるやつ', 'しれっと正解みたいな顔をしている', '何回見ても一拍遅れてくる', '脳が理解を保留した', 'たぶん本人だけ幸せ'
+    ];
+    const emojis = ['😂','🥹','😼','🫠','😇','🤖','🍮','🍙','🐈','🛸','🧃','🧠','🫖','🛋️','📎','🧸','🪩','🥔','🧅','🌝'];
+    const categories = ['会議事故','生活シュール','深夜テンション','ねこ圧','食べ物人格化'];
+    const tags = ['じわる','謎の説得力','意味不明','妙にわかる','圧が強い','無駄に神々しい'];
+    const extras = ['しかも靴だけ本気','急に空気が拍手した','BGMが脳内で鳴った','なぜか説得力だけ高い','本人はいたって真面目','その場の全員が一回うなずいた','無音なのにうるさい','状況説明が一番いらない','最初の一秒でもう負ける','あとから効いてくる'];
+    const reactions = ['思ったより社会性がある','たぶん今日いちばん平和','逆にプロっぽい','全員の予定を狂わせた','ちょっとだけ尊敬した','そこだけ景気がいい','じわじわ正解に見えてくる','記憶にだけ残るタイプ','誰も責任を取れない','説明すると弱くなる'];
+    const gradients = [
+      ['#ff8ad8','#7e5dff','#4ddcff'],
+      ['#ffd86b','#ff8f5a','#ff5f8f'],
+      ['#8ef7c5','#39b8ff','#5d6bff'],
+      ['#ffd9f8','#ff89a3','#8f7bff'],
+      ['#c3ff8c','#59e1a5','#28a8ff']
+    ];
+
+    const items = Array.from({length:100}, (_, index) => {
+      const wave = Math.floor(index / 10);
+      const prefix = prefixes[(index + wave) % prefixes.length];
+      const subject = subjects[(index * 3 + wave * 2) % subjects.length];
+      const action = actions[(index * 7 + wave) % actions.length];
+      const punchline = `${punchlines[(index * 9 + wave) % punchlines.length]}。${extras[(index + wave * 3) % extras.length]}。${reactions[(index * 2 + wave) % reactions.length]}。`;
+      const category = categories[(index + wave) % categories.length];
+      const tag = tags[(index * 5 + wave + 2) % tags.length];
+      const emojiA = emojis[(index * 2 + wave) % emojis.length];
+      const emojiB = emojis[(index * 2 + 9 + wave) % emojis.length];
+      const [c1,c2,c3] = gradients[(index + wave) % gradients.length];
+      return {
+        id:index + 1,
+        category,
+        tag,
+        title:`${prefix}${subject}が${action}`,
+        subtitle:punchline,
+        heat:60 + ((index * 3 + wave) % 41),
+        colors:[c1,c2,c3],
+        emojiA,
+        emojiB
+      };
+    });
+
+    const viewed = new Set([1]);
+    let currentIndex = 0;
+
+    function svgData(item){
+      const subtitle = item.subtitle.replace(/&/g,'＆');
+      const title1 = item.title.slice(0, 15);
+      const title2 = item.title.slice(15);
+      const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${item.colors[0]}"/>
+            <stop offset="55%" stop-color="${item.colors[1]}"/>
+            <stop offset="100%" stop-color="${item.colors[2]}"/>
+          </linearGradient>
+          <filter id="blur"><feGaussianBlur stdDeviation="14"/></filter>
+        </defs>
+        <rect width="1200" height="900" rx="46" fill="url(#g)"/>
+        <circle cx="180" cy="140" r="120" fill="rgba(255,255,255,.18)" filter="url(#blur)"/>
+        <circle cx="1040" cy="760" r="170" fill="rgba(255,255,255,.16)" filter="url(#blur)"/>
+        <rect x="56" y="56" width="1088" height="788" rx="38" fill="rgba(17,15,30,.18)" stroke="rgba(255,255,255,.28)"/>
+        <text x="90" y="132" font-size="44" font-family="Arial, sans-serif" font-weight="700" fill="rgba(255,255,255,.92)">No.${String(item.id).padStart(3,'0')} ｜ ${item.category}</text>
+        <text x="90" y="318" font-size="82" font-family="Arial, sans-serif" font-weight="900" fill="#fff">${title1}</text>
+        <text x="90" y="410" font-size="82" font-family="Arial, sans-serif" font-weight="900" fill="#fff">${title2}</text>
+        <text x="90" y="520" font-size="38" font-family="Arial, sans-serif" fill="rgba(255,255,255,.92)">${subtitle}</text>
+        <text x="96" y="766" font-size="188">${item.emojiA}</text>
+        <text x="878" y="766" font-size="188">${item.emojiB}</text>
+        <rect x="448" y="656" width="304" height="88" rx="44" fill="rgba(255,255,255,.24)" stroke="rgba(255,255,255,.36)"/>
+        <text x="600" y="713" text-anchor="middle" font-size="40" font-family="Arial, sans-serif" font-weight="700" fill="#fff">${item.tag}</text>
+      </svg>`;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+
+    items.forEach(item => item.image = svgData(item));
+
+    const thumbGrid = document.getElementById('thumbGrid');
+    const mainImage = document.getElementById('mainImage');
+    const mainCategory = document.getElementById('mainCategory');
+    const mainTitle = document.getElementById('mainTitle');
+    const mainSubtitle = document.getElementById('mainSubtitle');
+    const mainNumber = document.getElementById('mainNumber');
+    const mainHeat = document.getElementById('mainHeat');
+    const mainTag = document.getElementById('mainTag');
+    const progressBar = document.getElementById('progressBar');
+    const viewedCount = document.getElementById('viewedCount');
+    const laughScore = document.getElementById('laughScore');
+    const achievementText = document.getElementById('achievementText');
+
+    const achievements = [
+      {limit:1, text:'まだ1枚目。いまなら引き返せます。'},
+      {limit:10, text:'10枚突破。もう脳がこの世界観に順応し始めています。'},
+      {limit:25, text:'25枚突破。意味がわからないのに納得する領域に入りました。'},
+      {limit:50, text:'50枚突破。画素の向こうに小さな人生が見えます。'},
+      {limit:75, text:'75枚突破。笑いの筋トレとしてかなり優秀です。'},
+      {limit:100, text:'100枚完走！称号「画素で笑える大人」を獲得しました。'}
+    ];
+
+    function currentAchievement(count){
+      return achievements.reduce((acc, item) => count >= item.limit ? item.text : acc, achievements[0].text);
+    }
+
+    function renderThumbs(){
+      thumbGrid.innerHTML = '';
+      items.forEach((item, index) => {
+        const button = document.createElement('button');
+        button.className = 'thumb';
+        if(index === currentIndex) button.classList.add('active');
+        button.innerHTML = `<img src="${item.image}" alt="${item.title}"><small>#${String(item.id).padStart(3,'0')} ${item.title}</small>`;
+        button.addEventListener('click', () => showIndex(index, true));
+        thumbGrid.appendChild(button);
+      });
+    }
+
+    function updateStats(){
+      const count = viewed.size;
+      viewedCount.textContent = count;
+      const score = Math.min(100, 8 + count * 0.92);
+      laughScore.textContent = `${Math.round(score)}%`;
+      achievementText.textContent = currentAchievement(count);
+      progressBar.style.width = `${count}%`;
+    }
+
+    function showIndex(index, countView = true){
+      currentIndex = (index + items.length) % items.length;
+      const item = items[currentIndex];
+      mainImage.src = item.image;
+      mainImage.alt = item.title;
+      mainCategory.textContent = item.category;
+      mainTitle.textContent = item.title;
+      mainSubtitle.textContent = item.subtitle;
+      mainNumber.textContent = `${item.id} / 100`;
+      mainHeat.textContent = `じわり度 ${item.heat}`;
+      mainTag.textContent = item.tag;
+      if(countView) viewed.add(item.id);
+      updateStats();
+      [...thumbGrid.children].forEach((node, idx) => node.classList.toggle('active', idx === currentIndex));
+    }
+
+    function shuffleItems(){
+      for(let i = items.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      currentIndex = 0;
+      renderThumbs();
+      showIndex(0, true);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    document.getElementById('shuffleBtn').addEventListener('click', shuffleItems);
+    document.getElementById('nextBtn').addEventListener('click', () => showIndex(currentIndex + 1, true));
+    document.getElementById('topBtn').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+    document.addEventListener('keydown', (event) => {
+      if(event.key === 'ArrowRight') showIndex(currentIndex + 1, true);
+      if(event.key === 'ArrowLeft') showIndex(currentIndex - 1, true);
+    });
+
+    renderThumbs();
+    showIndex(0, false);
+    updateStats();
+  </script>
+</body>
+</html>
