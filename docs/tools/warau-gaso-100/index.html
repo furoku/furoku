@@ -46,7 +46,8 @@ title: 100枚みたら絶対笑う画素展
     button:hover,.link-button:hover{transform:translateY(-1px)}
     .viewer{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:22px}
     .main-image-wrap{padding:18px;border-radius:28px;background:var(--panel-strong);border:1px solid var(--line);box-shadow:var(--shadow)}
-    .main-image{width:100%;aspect-ratio:4/3;border-radius:22px;display:block;object-fit:cover;background:#231a3f}
+    .main-image{width:100%;aspect-ratio:4/3;border-radius:22px;display:block;background:#231a3f;overflow:hidden}
+    .main-image svg{width:100%;height:100%;display:block}
     .viewer-info{display:flex;flex-direction:column;gap:14px}
     .info-card{padding:18px;border-radius:24px;background:var(--panel);border:1px solid var(--line)}
     .kicker{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#ffe7a5}
@@ -63,7 +64,8 @@ title: 100枚みたら絶対笑う画素展
     .thumb{border:none;padding:10px;background:var(--panel);border-radius:22px;border:1px solid rgba(255,255,255,.08);color:var(--text);text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}
     .thumb:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.22)}
     .thumb.active{background:rgba(255,255,255,.14);border-color:#ffe072}
-    .thumb img{display:block;width:100%;aspect-ratio:1/1;border-radius:16px;object-fit:cover;background:#201935}
+    .thumb-art{display:block;width:100%;aspect-ratio:1/1;border-radius:16px;background:#201935;overflow:hidden}
+    .thumb-art svg{width:100%;height:100%;display:block}
     .thumb small{display:block;margin-top:8px;color:var(--muted);line-height:1.5;min-height:3em}
     .footer-note{margin-top:24px;text-align:center;color:var(--muted);font-size:.92rem}
     .floating{position:fixed;right:18px;bottom:18px;z-index:4}
@@ -110,7 +112,7 @@ title: 100枚みたら絶対笑う画素展
 
     <section class="viewer">
       <div class="main-image-wrap">
-        <img id="mainImage" class="main-image" alt="じわじわ来る画像カード">
+        <div id="mainImage" class="main-image" aria-label="じわじわ来る画像カード"></div>
       </div>
       <div class="viewer-info">
         <div class="info-card">
@@ -198,11 +200,11 @@ title: 100枚みたら絶対笑う画素展
     const viewed = new Set([1]);
     let currentIndex = 0;
 
-    function svgData(item){
+    function svgMarkup(item){
       const subtitle = item.subtitle.replace(/&/g,'＆');
       const title1 = item.title.slice(0, 15);
       const title2 = item.title.slice(15);
-      const svg = `
+      return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
         <defs>
           <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
@@ -225,10 +227,9 @@ title: 100枚みたら絶対笑う画素展
         <rect x="448" y="656" width="304" height="88" rx="44" fill="rgba(255,255,255,.24)" stroke="rgba(255,255,255,.36)"/>
         <text x="600" y="713" text-anchor="middle" font-size="40" font-family="Arial, sans-serif" font-weight="700" fill="#fff">${item.tag}</text>
       </svg>`;
-      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
     }
 
-    items.forEach(item => item.image = svgData(item));
+    items.forEach(item => item.svg = svgMarkup(item));
 
     const thumbGrid = document.getElementById('thumbGrid');
     const mainImage = document.getElementById('mainImage');
@@ -262,7 +263,7 @@ title: 100枚みたら絶対笑う画素展
         const button = document.createElement('button');
         button.className = 'thumb';
         if(index === currentIndex) button.classList.add('active');
-        button.innerHTML = `<img src="${item.image}" alt="${item.title}"><small>#${String(item.id).padStart(3,'0')} ${item.title}</small>`;
+        button.innerHTML = `<span class="thumb-art" aria-hidden="true">${item.svg}</span><small>#${String(item.id).padStart(3,'0')} ${item.title}</small>`;
         button.addEventListener('click', () => showIndex(index, true));
         thumbGrid.appendChild(button);
       });
@@ -280,8 +281,8 @@ title: 100枚みたら絶対笑う画素展
     function showIndex(index, countView = true){
       currentIndex = (index + items.length) % items.length;
       const item = items[currentIndex];
-      mainImage.src = item.image;
-      mainImage.alt = item.title;
+      mainImage.innerHTML = item.svg;
+      mainImage.setAttribute('aria-label', item.title);
       mainCategory.textContent = item.category;
       mainTitle.textContent = item.title;
       mainSubtitle.textContent = item.subtitle;
