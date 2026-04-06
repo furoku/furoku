@@ -1,0 +1,598 @@
+---
+layout: default
+title: コープ共済のわかりにくさ解消QA
+description: 加入条件・コース差・相談のしやすさを1ページで整理した、わかりにくさ解消用のサンプルQAサイト。
+---
+<style>
+  .qa-hero {
+    padding: 72px 0 32px;
+    background:
+      radial-gradient(circle at top left, rgba(120, 198, 166, 0.22), transparent 28%),
+      radial-gradient(circle at top right, rgba(74, 111, 165, 0.14), transparent 30%),
+      linear-gradient(180deg, #f7fbf9 0%, #f6f7fb 100%);
+  }
+
+  .qa-shell {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 20px 88px;
+  }
+
+  .qa-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .qa-badge,
+  .qa-pill,
+  .qa-step-number,
+  .qa-summary-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .qa-badge {
+    padding: 8px 14px;
+    background: rgba(74, 111, 165, 0.10);
+    color: var(--brand-strong);
+    font-size: 0.86rem;
+  }
+
+  .qa-headline {
+    margin: 18px 0 14px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.28;
+    color: #152032;
+  }
+
+  .qa-lead {
+    margin: 0;
+    max-width: 720px;
+    color: var(--muted);
+    font-size: 1.03rem;
+    line-height: 1.95;
+  }
+
+  .qa-card,
+  .qa-panel,
+  .qa-stat,
+  .qa-step,
+  .qa-faq-item,
+  .qa-summary-card,
+  .qa-note,
+  .qa-checklist {
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(38, 48, 65, 0.08);
+    border-radius: 26px;
+    box-shadow: 0 12px 32px rgba(26, 26, 46, 0.08);
+  }
+
+  .qa-card {
+    padding: 28px;
+  }
+
+  .qa-card h2,
+  .qa-panel h2,
+  .qa-section h2,
+  .qa-summary-card h3 {
+    margin-top: 0;
+  }
+
+  .qa-mini-title {
+    margin: 0 0 10px;
+    color: var(--brand-strong);
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .qa-card ul,
+  .qa-panel ul,
+  .qa-checklist ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--muted);
+  }
+
+  .qa-card li,
+  .qa-panel li,
+  .qa-checklist li {
+    margin: 0.55rem 0;
+  }
+
+  .qa-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .qa-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+
+  .qa-button.primary {
+    background: var(--brand-strong);
+    color: #fff;
+    box-shadow: 0 12px 26px rgba(45, 74, 122, 0.18);
+  }
+
+  .qa-button.secondary {
+    background: rgba(74, 111, 165, 0.08);
+    color: var(--brand-strong);
+    border-color: rgba(74, 111, 165, 0.18);
+  }
+
+  .qa-button:hover {
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+
+  .qa-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 26px;
+  }
+
+  .qa-stat {
+    padding: 20px;
+  }
+
+  .qa-stat strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.35rem;
+    color: #152032;
+  }
+
+  .qa-stat span {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .qa-section {
+    margin-top: 48px;
+  }
+
+  .qa-section-header {
+    margin-bottom: 18px;
+  }
+
+  .qa-section-header p {
+    margin: 10px 0 0;
+    color: var(--muted);
+  }
+
+  .qa-pill {
+    padding: 8px 12px;
+    background: rgba(120, 198, 166, 0.14);
+    color: #21674e;
+    font-size: 0.84rem;
+  }
+
+  .qa-summary-grid,
+  .qa-steps,
+  .qa-grid,
+  .qa-check-grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  .qa-summary-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .qa-summary-card {
+    padding: 24px;
+  }
+
+  .qa-summary-card p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .qa-summary-tag {
+    padding: 6px 10px;
+    background: rgba(74, 111, 165, 0.08);
+    color: var(--brand-strong);
+    font-size: 0.8rem;
+    margin-bottom: 14px;
+  }
+
+  .qa-check-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .qa-checklist {
+    padding: 24px;
+  }
+
+  .qa-checklist h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+  }
+
+  .qa-checklist p {
+    margin: 0 0 14px;
+    color: var(--muted);
+  }
+
+  .qa-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .qa-step {
+    padding: 24px;
+  }
+
+  .qa-step-number {
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    background: rgba(74, 111, 165, 0.10);
+    color: var(--brand-strong);
+    margin-bottom: 12px;
+  }
+
+  .qa-step h3,
+  .qa-faq-item h3 {
+    margin: 0 0 10px;
+    font-size: 1.08rem;
+  }
+
+  .qa-step p,
+  .qa-faq-item p,
+  .qa-note p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .qa-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    align-items: start;
+  }
+
+  .qa-faq-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .qa-faq-item {
+    padding: 22px;
+  }
+
+  .qa-faq-item details {
+    margin-top: 14px;
+    border-top: 1px dashed rgba(38, 48, 65, 0.10);
+    padding-top: 14px;
+  }
+
+  .qa-faq-item summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: #152032;
+  }
+
+  .qa-faq-item details p,
+  .qa-faq-item details ul {
+    margin-top: 12px;
+    color: var(--muted);
+  }
+
+  .qa-faq-item details ul {
+    padding-left: 1.1rem;
+  }
+
+  .qa-panel {
+    padding: 24px;
+    position: sticky;
+    top: 96px;
+  }
+
+  .qa-note {
+    padding: 24px;
+    margin-top: 16px;
+    background: linear-gradient(180deg, rgba(120, 198, 166, 0.08), rgba(255,255,255,0.96));
+  }
+
+  .qa-inline-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .qa-inline-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: rgba(74, 111, 165, 0.08);
+    color: var(--brand-strong);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .qa-inline-links a:hover {
+    text-decoration: none;
+    background: rgba(74, 111, 165, 0.14);
+  }
+
+  .qa-footer-space {
+    height: 12px;
+  }
+
+  @media (max-width: 980px) {
+    .qa-hero-grid,
+    .qa-grid,
+    .qa-summary-grid,
+    .qa-steps,
+    .qa-check-grid,
+    .qa-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .qa-panel {
+      position: static;
+    }
+  }
+</style>
+
+<section class="qa-hero">
+  <div class="qa-shell">
+    <div class="qa-hero-grid">
+      <div class="qa-card">
+        <span class="qa-badge">サンプルQAサイト</span>
+        <h1 class="qa-headline">コープ共済の<br>わかりにくさをほどくQA</h1>
+        <p class="qa-lead">
+          「自分は入れるの？」「どのコースを見ればいいの？」「相談したら強く勧められそうで不安」。
+          その3つのつまずきを、ひとつずつ整理して見通しをよくするためのサンプルページです。
+          実際の申込画面の前に、まず不安を減らす導線として使える構成にしています。
+        </p>
+        <div class="qa-actions">
+          <a class="qa-button primary" href="#flow">3分で全体像を見る</a>
+          <a class="qa-button secondary" href="#faq-entry">質問から探す</a>
+        </div>
+        <div class="qa-stats">
+          <div class="qa-stat">
+            <strong>3つの不安</strong>
+            <span>加入条件 / コース差 / 相談しやすさ</span>
+          </div>
+          <div class="qa-stat">
+            <strong>最初の1歩</strong>
+            <span>申込前に「確認する順番」を見せる</span>
+          </div>
+          <div class="qa-stat">
+            <strong>目指す体験</strong>
+            <span>売り込み感よりも、納得して選べる安心感</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="qa-card">
+        <p class="qa-mini-title">このページでわかること</p>
+        <ul>
+          <li>まず何を確認すればよいか</li>
+          <li>通常コースと告知ゆるやかコースの見方</li>
+          <li>相談前に伝えると話が早いポイント</li>
+          <li>「強く勧められそう」という不安を下げる言い回し</li>
+        </ul>
+        <div class="qa-note">
+          <p>
+            このページは<strong>売るための説明</strong>ではなく、<strong>迷いを整理するための説明</strong>を先に置いています。
+            まず理解を助け、そのあとで比較や相談に進めるのが狙いです。
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div class="qa-shell">
+  <section class="qa-section" id="summary">
+    <div class="qa-section-header">
+      <span class="qa-pill">要点の整理</span>
+      <h2>わかりにくさの正体は、この3つ</h2>
+      <p>サイト全体を、3つの疑問にすぐ返せるように整理します。</p>
+    </div>
+
+    <div class="qa-summary-grid">
+      <article class="qa-summary-card">
+        <span class="qa-summary-tag">1. 入れる？</span>
+        <h3>加入条件が見えにくい</h3>
+        <p>年齢、通院、服薬、持病などで「自分は対象か」がわかりにくいと、最初の不安が大きくなります。</p>
+      </article>
+      <article class="qa-summary-card">
+        <span class="qa-summary-tag">2. どのコース？</span>
+        <h3>コース差が直感でつかみにくい</h3>
+        <p>通常コースと告知ゆるやかコースの違いが見えないと、入れた後にも「思ったより違った」が起きやすくなります。</p>
+      </article>
+      <article class="qa-summary-card">
+        <span class="qa-summary-tag">3. 相談して大丈夫？</span>
+        <h3>相談の空気が読みにくい</h3>
+        <p>強く勧められそう、断りにくそう、という不安があると、情報収集の前で足が止まってしまいます。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="qa-section" id="flow">
+    <div class="qa-section-header">
+      <span class="qa-pill">まずこの順番</span>
+      <h2>3分で全体像を見る流れ</h2>
+      <p>申込より前に、確認する順番を見せると不安が下がります。</p>
+    </div>
+
+    <div class="qa-steps">
+      <article class="qa-step">
+        <span class="qa-step-number">1</span>
+        <h3>入れるかを先に確認</h3>
+        <p>年齢、現在の通院、服薬の有無など、加入条件に関わる項目を最初に確認します。</p>
+      </article>
+      <article class="qa-step">
+        <span class="qa-step-number">2</span>
+        <h3>コース差を並べて理解</h3>
+        <p>「通常コース」「告知ゆるやかコース」で、保険料と給付イメージの差を並べて見せます。</p>
+      </article>
+      <article class="qa-step">
+        <span class="qa-step-number">3</span>
+        <h3>相談前の不安をほどく</h3>
+        <p>相談時に伝えること、無理なおすすめはしない姿勢、後で比較して決めてもよいことを先に明記します。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="qa-section" id="faq-entry">
+    <div class="qa-section-header">
+      <span class="qa-pill">質問から探す</span>
+      <h2>よくある質問</h2>
+      <p>入口を「商品説明」ではなく「不安の種類」で分けています。</p>
+    </div>
+
+    <div class="qa-grid">
+      <div class="qa-faq-list">
+        <article class="qa-faq-item" id="faq-eligibility">
+          <h3>Q. 自分が入れるかどうか、どこを見ればいいですか？</h3>
+          <p>最初に見るのは、年齢、現在の通院、服薬、直近の検査や治療歴です。ここを整理すると、相談時の会話も早くなります。</p>
+          <details>
+            <summary>確認ポイントを見る</summary>
+            <ul>
+              <li>年齢条件に当てはまるか</li>
+              <li>今、通院中または服薬中のものがあるか</li>
+              <li>最近の検査・治療・経過観察があるか</li>
+              <li>妊娠・出産関連で確認したい事情があるか</li>
+            </ul>
+            <p>この順番で見せると、「まず何を調べるか」が明確になります。</p>
+          </details>
+        </article>
+
+        <article class="qa-faq-item" id="faq-course">
+          <h3>Q. コースの違いは、どう見れば納得しやすいですか？</h3>
+          <p>名前だけで覚えるより、<strong>加入しやすさ・保険料・給付の考え方</strong>を横並びにして見るほうが理解しやすいです。</p>
+          <details>
+            <summary>見せ方のポイントを見る</summary>
+            <ul>
+              <li>「入りやすさ」と「給付イメージ」を同じ表で見せる</li>
+              <li>通常コースと告知ゆるやかコースの差を、一言で説明する</li>
+              <li>「どちらが良いか」ではなく「どんな人が比較しやすいか」で案内する</li>
+            </ul>
+            <p>比較表は、数字だけでなく「向いている人」を添えると理解しやすくなります。</p>
+          </details>
+        </article>
+
+        <article class="qa-faq-item" id="faq-consult">
+          <h3>Q. 相談したいけど、強く勧められそうで不安です。</h3>
+          <p>相談の前に「今日は確認だけしたい」「持ち帰って比較したい」と言ってよいことを、ページ側から先に伝えます。</p>
+          <details>
+            <summary>不安を下げる伝え方を見る</summary>
+            <ul>
+              <li>「今日は条件確認が中心です」と明記する</li>
+              <li>「その場で決めなくても大丈夫」と先に伝える</li>
+              <li>相談時に必要な情報を、事前に箇条書きで示す</li>
+            </ul>
+            <p>相談の空気を先回りして説明すると、問い合わせへの心理的ハードルが下がります。</p>
+          </details>
+        </article>
+      </div>
+
+      <aside class="qa-panel">
+        <p class="qa-mini-title">最初にこれだけ</p>
+        <h2>申込前に確認したいこと</h2>
+        <ul>
+          <li>年齢と最近の通院・服薬の状況</li>
+          <li>比較したいコースの優先順位</li>
+          <li>相談は「条件確認」だけでもよいこと</li>
+        </ul>
+        <div class="qa-inline-links">
+          <a href="#faq-eligibility">入れる？を見る</a>
+          <a href="#faq-course">コース差を見る</a>
+          <a href="#faq-consult">相談の不安を見る</a>
+        </div>
+        <div class="qa-note">
+          <p>このサンプルでは、<strong>FAQ → 比較 → 相談</strong>の順で案内しています。いきなり申込導線を前に出さないことで、売り込み感を弱めています。</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="qa-section" id="checks">
+    <div class="qa-section-header">
+      <span class="qa-pill">相談前のメモ</span>
+      <h2>ユーザーが準備しやすい確認メモ</h2>
+      <p>相談窓口を使う前に、自分で整理しておける項目を見せます。</p>
+    </div>
+
+    <div class="qa-check-grid">
+      <article class="qa-checklist">
+        <h3>加入条件の確認メモ</h3>
+        <p>不安になりやすい項目を、先に言葉にしておくための欄です。</p>
+        <ul>
+          <li>年齢</li>
+          <li>現在の通院の有無</li>
+          <li>服薬中のもの</li>
+          <li>最近の検査・経過観察</li>
+        </ul>
+      </article>
+      <article class="qa-checklist">
+        <h3>相談前に伝えたいこと</h3>
+        <p>「今日は確認だけ」「その場で決めない」も、最初に言ってよい情報です。</p>
+        <ul>
+          <li>まず条件だけ知りたい</li>
+          <li>通常コースとの違いを比較したい</li>
+          <li>家に持ち帰って検討したい</li>
+          <li>強いおすすめではなく整理を手伝ってほしい</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="qa-section" id="closing">
+    <div class="qa-section-header">
+      <span class="qa-pill">このページの役割</span>
+      <h2>売る前に、まずわかる状態をつくる</h2>
+      <p>このサンプルは、広報・サイト改善のたたき台として、そのまま構成確認に使えます。</p>
+    </div>
+
+    <div class="qa-summary-grid">
+      <article class="qa-summary-card">
+        <span class="qa-summary-tag">加入条件</span>
+        <h3>「自分は対象か」が見える</h3>
+        <p>最初の不安を、申込前の段階で整理しやすくします。</p>
+      </article>
+      <article class="qa-summary-card">
+        <span class="qa-summary-tag">コース差</span>
+        <h3>「何が違うか」が並んで見える</h3>
+        <p>あとからのギャップを減らし、比較しやすくします。</p>
+      </article>
+      <article class="qa-summary-card">
+        <span class="qa-summary-tag">相談の空気</span>
+        <h3>「聞いても大丈夫」が先に伝わる</h3>
+        <p>問い合わせ前の身構えをやわらげ、相談の一歩を軽くします。</p>
+      </article>
+    </div>
+
+    <div class="qa-actions">
+      <a class="qa-button primary" href="{{ '/' | relative_url }}">ブログトップに戻る</a>
+      <a class="qa-button secondary" href="#summary">ページ冒頭に戻る</a>
+    </div>
+    <div class="qa-footer-space"></div>
+  </section>
+</div>
