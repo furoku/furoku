@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3問ジャーナル</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f6f1e8;
+      --card: #fffaf0;
+      --text: #2c241b;
+      --muted: #756b5f;
+      --accent: #2f7d6d;
+      --accent-2: #f1b84b;
+      --danger: #b74a4a;
+      --shadow: 0 18px 45px rgba(58, 43, 28, .12);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #191714;
+        --card: #25211c;
+        --text: #f7ead8;
+        --muted: #b9ac9c;
+        --accent: #78d2bd;
+        --accent-2: #ffd47a;
+        --danger: #ff8a8a;
+        --shadow: 0 18px 45px rgba(0, 0, 0, .32);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(241, 184, 75, .32), transparent 30rem),
+        radial-gradient(circle at bottom right, rgba(47, 125, 109, .22), transparent 32rem),
+        var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+    main { width: min(920px, 100%); }
+    .hero {
+      background: color-mix(in srgb, var(--card) 88%, transparent);
+      border: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: clamp(22px, 4vw, 42px);
+      backdrop-filter: blur(8px);
+    }
+    h1 { margin: 0 0 8px; font-size: clamp(2rem, 5vw, 3.8rem); letter-spacing: -.06em; }
+    .lead { margin: 0 0 26px; color: var(--muted); line-height: 1.8; }
+    .date-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 24px; }
+    input[type="date"] {
+      border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: var(--card);
+      color: var(--text);
+      font: inherit;
+    }
+    .questions { display: grid; gap: 16px; }
+    label { display: grid; gap: 8px; font-weight: 700; }
+    .hint { color: var(--muted); font-size: .9rem; font-weight: 500; }
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+      border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: color-mix(in srgb, var(--card) 92%, white 8%);
+      color: var(--text);
+      font: inherit;
+      line-height: 1.65;
+    }
+    textarea:focus, input:focus { outline: 3px solid color-mix(in srgb, var(--accent) 36%, transparent); border-color: var(--accent); }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 12px; }
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 800;
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+      transition: transform .15s ease, opacity .15s ease;
+    }
+    button:hover { transform: translateY(-1px); }
+    button.secondary { background: color-mix(in srgb, var(--accent-2) 86%, #000 8%); color: #2c241b; }
+    button.ghost { background: transparent; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); }
+    button.danger { background: transparent; color: var(--danger); border: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); }
+    .status { min-height: 1.5em; color: var(--muted); font-size: .95rem; }
+    .history { margin-top: 24px; }
+    .history h2 { font-size: 1.15rem; margin: 0 0 12px; }
+    .entries { display: grid; gap: 10px; }
+    details {
+      background: color-mix(in srgb, var(--card) 85%, transparent);
+      border: 1px solid color-mix(in srgb, var(--muted) 18%, transparent);
+      border-radius: 16px;
+      padding: 12px 14px;
+    }
+    summary { cursor: pointer; font-weight: 800; }
+    .entry-body { white-space: pre-wrap; color: var(--muted); line-height: 1.65; margin-top: 10px; }
+    .empty { color: var(--muted); border: 1px dashed color-mix(in srgb, var(--muted) 35%, transparent); border-radius: 16px; padding: 14px; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero" aria-labelledby="app-title">
+      <h1 id="app-title">3問ジャーナル</h1>
+      <p class="lead">今日の終わりに3つだけ答える、軽いふりかえりアプリです。入力はブラウザ内に自動保存され、Markdownとしてコピーできます。</p>
+
+      <div class="date-row">
+        <label>日付
+          <input id="entryDate" type="date" />
+        </label>
+      </div>
+
+      <form id="journalForm" class="questions">
+        <label>1. 今日よかったことは？
+          <span class="hint">小さな達成・助かったこと・うれしかったことを1つ以上。</span>
+          <textarea id="good" data-field="good" placeholder="例: 朝の散歩で気分が整った"></textarea>
+        </label>
+        <label>2. 少しだけ直したいことは？
+          <span class="hint">反省ではなく、明日ラクにするための調整として書きます。</span>
+          <textarea id="improve" data-field="improve" placeholder="例: 午後の作業前に机を片づける"></textarea>
+        </label>
+        <label>3. 明日の自分に渡す一言は？
+          <span class="hint">次の日の最初に見たいメモや励ましを残します。</span>
+          <textarea id="tomorrow" data-field="tomorrow" placeholder="例: まず10分だけ始めれば大丈夫"></textarea>
+        </label>
+      </form>
+
+      <div class="actions">
+        <button id="saveBtn" type="button">保存</button>
+        <button id="copyBtn" class="secondary" type="button">Markdownをコピー</button>
+        <button id="clearBtn" class="ghost" type="button">入力をクリア</button>
+        <button id="deleteBtn" class="danger" type="button">この日の記録を削除</button>
+      </div>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+
+      <section class="history" aria-labelledby="history-title">
+        <h2 id="history-title">保存済みの記録</h2>
+        <div id="entries" class="entries"></div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'three-question-journal:v1';
+    const dateInput = document.querySelector('#entryDate');
+    const fields = ['good', 'improve', 'tomorrow'];
+    const statusEl = document.querySelector('#status');
+    const entriesEl = document.querySelector('#entries');
+
+    function today() {
+      const d = new Date();
+      const offset = d.getTimezoneOffset() * 60000;
+      return new Date(d.getTime() - offset).toISOString().slice(0, 10);
+    }
+
+    function loadAll() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+      catch { return {}; }
+    }
+
+    function saveAll(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function currentEntry() {
+      return Object.fromEntries(fields.map(id => [id, document.getElementById(id).value.trim()]));
+    }
+
+    function setEntry(entry = {}) {
+      fields.forEach(id => { document.getElementById(id).value = entry[id] || ''; });
+    }
+
+    function toMarkdown(date, entry) {
+      return `# 3問ジャーナル ${date}\n\n## 今日よかったこと\n${entry.good || '-'}\n\n## 少しだけ直したいこと\n${entry.improve || '-'}\n\n## 明日の自分に渡す一言\n${entry.tomorrow || '-'}`;
+    }
+
+    function renderHistory() {
+      const all = loadAll();
+      const dates = Object.keys(all).sort().reverse();
+      entriesEl.innerHTML = '';
+      if (!dates.length) {
+        entriesEl.innerHTML = '<div class="empty">まだ保存済みの記録はありません。</div>';
+        return;
+      }
+      for (const date of dates) {
+        const details = document.createElement('details');
+        if (date === dateInput.value) details.open = true;
+        const summary = document.createElement('summary');
+        summary.textContent = date;
+        const body = document.createElement('div');
+        body.className = 'entry-body';
+        body.textContent = toMarkdown(date, all[date]);
+        details.append(summary, body);
+        details.addEventListener('toggle', () => {
+          if (details.open) {
+            dateInput.value = date;
+            setEntry(loadAll()[date]);
+          }
+        });
+        entriesEl.appendChild(details);
+      }
+    }
+
+    function show(message) {
+      statusEl.textContent = message;
+      window.clearTimeout(show.timer);
+      show.timer = window.setTimeout(() => statusEl.textContent = '', 2600);
+    }
+
+    function saveCurrent({ quiet = false } = {}) {
+      const all = loadAll();
+      all[dateInput.value] = currentEntry();
+      saveAll(all);
+      renderHistory();
+      if (!quiet) show('保存しました。');
+    }
+
+    dateInput.value = today();
+    setEntry(loadAll()[dateInput.value]);
+    renderHistory();
+
+    dateInput.addEventListener('change', () => {
+      setEntry(loadAll()[dateInput.value]);
+      renderHistory();
+    });
+    fields.forEach(id => document.getElementById(id).addEventListener('input', () => saveCurrent({ quiet: true })));
+    document.querySelector('#saveBtn').addEventListener('click', () => saveCurrent());
+    document.querySelector('#copyBtn').addEventListener('click', async () => {
+      const markdown = toMarkdown(dateInput.value, currentEntry());
+      try {
+        await navigator.clipboard.writeText(markdown);
+        show('Markdownをコピーしました。');
+      } catch {
+        show('コピーできませんでした。下の保存履歴から選択してください。');
+      }
+    });
+    document.querySelector('#clearBtn').addEventListener('click', () => {
+      setEntry({});
+      show('入力欄をクリアしました。保存済み記録は残っています。');
+    });
+    document.querySelector('#deleteBtn').addEventListener('click', () => {
+      const all = loadAll();
+      delete all[dateInput.value];
+      saveAll(all);
+      setEntry({});
+      renderHistory();
+      show('この日の記録を削除しました。');
+    });
+  </script>
+</body>
+</html>
