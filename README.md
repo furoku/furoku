@@ -22,7 +22,6 @@ NotebookLM や Gemini、MCP、Chrome Extension まわりを実験しながら、
 
 ## 今やっていること / Current Focus
 
-- 🛠️ **6/11 プレビュー画像のトラブル対応中**
 - 🍌 **BananaX / BananaNL / BananaGM** を軸に、AI支援プロダクトを連続実験
 - 🤖 **OpenClaw × MCP × 運用導線** を整え、AIエージェントの実務利用を前進
 - 🧠 **Kaggle: [Measuring AGI](https://www.kaggle.com/competitions/kaggle-measuring-agi/overview)** に参加中
