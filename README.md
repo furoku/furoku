@@ -13,9 +13,6 @@ Chrome拡張、macOSツール、AIエージェント運用、データマーケ�
 
 ## Featured Projects
 
-### 🐾 [Codex Weekmeter](https://github.com/furoku/codex-weekmeter)
-Codexの7日間の使用量と残りペースを、macOSのメニューバーで確認する非公式OSSツール。日本語・英語・韓国語・繁体字・簡体字に対応しています。
-
 ### 🌐 [Gemini Translator](https://github.com/furoku/gemini-translator)
 X.com上の外国語テキストをGemini APIで翻訳するChrome拡張。用語集、日次コスト上限、サイト別ルールを備えています。
 
