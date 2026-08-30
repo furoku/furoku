@@ -11,16 +11,27 @@ Chrome拡張、macOSツール、AIエージェント運用、データマーケ�
 
 ---
 
-## Featured Projects
+## Products & Services
 
-### 🌐 [Gemini Translator](https://github.com/furoku/gemini-translator)
-X.com上の外国語テキストをGemini APIで翻訳するChrome拡張。用語集、日次コスト上限、サイト別ルールを備えています。
+### 🌐 ウェブサービス
 
-### 📓 [BananaNL](https://chromewebstore.google.com/detail/banananl/mjennffndagebhgcbeblffhgooohling)
-NotebookLMをはじめとするAIサービスで、プロンプトやデザインスタイルを扱いやすくするChrome拡張です。
+- **[BananaX](https://furoku.github.io/bananaX/projects/infographic-evaluation/index.html?lang=ja)** — 300以上のAIインフォグラフィック用プロンプトを、見本から選んでコピーできるスタイル集
 
-### 🚀 [BananaGM](https://chromewebstore.google.com/detail/bananagm/ipjhfbcgjmbiledamkaghljnneabaock)
-プロンプトサイトからGeminiへ、内容をワンクリックで受け渡すChrome拡張です。
+### 🧩 Chrome拡張
+
+- **[Gemini Translator](https://github.com/furoku/gemini-translator)** — X.com上の外国語テキストをGemini APIで翻訳。用語集、日次コスト上限、サイト別ルールに対応
+- **[BananaNL](https://banananl.mojofull.com/pricing)** — NotebookLM、ChatGPT、Gemini、Grokで、デザインプロンプトを選んで入力欄へ挿入
+- **[BananaGM](https://chromewebstore.google.com/detail/bananagm/ipjhfbcgjmbiledamkaghljnneabaock)** — プロンプトサイトからGeminiへ、内容をワンクリックで受け渡し
+- **[mazemaze](https://mazemaze.mojofull.com/)** — Webページの一部を学びたい言語に置き換え、普段の記事を読みながら語学学習
+- **[まもるくん](https://mamoru.mojofull.com/)** — ChatGPTやGeminiへ送る前に、個人情報・機密情報を見つけて確認・マスク
+
+### 🤖 Androidアプリ
+
+- **[Banana Keyboard](https://keyboard.mojofull.com/)** — スライドのデザイン指示や自分のプロンプトを、Androidのキーボードから選んで挿入
+
+### 🖥️ macOSユーティリティ
+
+- **[Codex Weekmeter](https://x.com/furoku/status/2093639499385561308?s=20)** — Codexの週次利用ペースを、残量だけでなく「何日分先か」で把握できるメニューバーツール
 
 ---
 
