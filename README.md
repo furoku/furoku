@@ -21,6 +21,13 @@ Chrome拡張、macOSツール、AIエージェント運用、データマーケ�
 
 - **[Gemini Translator](https://github.com/furoku/gemini-translator)** — X.com上の外国語テキストをGemini APIで翻訳。用語集、日次コスト上限、サイト別ルールに対応
 - **[BananaNL](https://banananl.mojofull.com/pricing)** — NotebookLM、ChatGPT、Gemini、Grokで、デザインプロンプトを選んで入力欄へ挿入
+
+<p align="center">
+  <a href="https://banananl.mojofull.com/pricing">
+    <img src="assets/banananl-chrome-extension.png" width="820" alt="BananaNL Chrome拡張のプロンプトギャラリー画面">
+  </a>
+</p>
+
 - **[BananaGM](https://chromewebstore.google.com/detail/bananagm/ipjhfbcgjmbiledamkaghljnneabaock)** — プロンプトサイトからGeminiへ、内容をワンクリックで受け渡し
 - **[mazemaze](https://mazemaze.mojofull.com/)** — Webページの一部を学びたい言語に置き換え、普段の記事を読みながら語学学習
 - **[まもるくん](https://mamoru.mojofull.com/)** — ChatGPTやGeminiへ送る前に、個人情報・機密情報を見つけて確認・マスク
@@ -32,6 +39,12 @@ Chrome拡張、macOSツール、AIエージェント運用、データマーケ�
 ### 🖥️ macOSユーティリティ
 
 - **[Codex Weekmeter](https://x.com/furoku/status/2093639499385561308?s=20)** — Codexの週次利用ペースを、残量だけでなく「何日分先か」で把握できるメニューバーツール
+
+<p align="center">
+  <a href="https://x.com/furoku/status/2093639499385561308?s=20">
+    <img src="assets/codex-weekmeter.png" width="440" alt="Codex Weekmeterの利用状況画面">
+  </a>
+</p>
 
 ---
 
