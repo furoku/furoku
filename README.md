@@ -37,6 +37,7 @@ Chrome拡張、macOSツール、AIエージェント運用、データマーケ�
 
 ## Open-source Experiments
 
+- 🗣️ **[/futsu](https://github.com/furoku/furoku/tree/main/skills/futsu)** — ChatGPTやCodexの開発用語を、普通の日本語に直す小さなSkill
 - 📷 **[WSL Smart Home Camera](https://github.com/furoku/wsl-smart-home-camera)** — USBカメラ、WSL2、Nature Remoを組み合わせた、確認可能なスマートホーム運用ガイド
 - ⚛️ **[Quantum-Assisted AI Iteration](https://github.com/furoku/ai-quantum-bilingual-paper)** — 検証可能なAIイテレーションを扱う英日バイリンガル研究パッケージ
 - 🎬 **[Video Project Lab](https://github.com/furoku/video-project)** — キャラクター一貫性と生成ワークフローを検証するAI動画制作アーカイブ
